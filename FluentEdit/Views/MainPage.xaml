@@ -1,0 +1,147 @@
+﻿<Page
+    x:Class="TextControlBox_DemoApp.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TextControlBox_DemoApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals" xmlns:textcontrolbox="using:TextControlBox"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    NavigationCacheMode="Enabled" ActualThemeChanged="Page_ActualThemeChanged"
+    AllowDrop="True" Drop="Page_Drop" DragEnter="Page_DragEnter">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="Titlebar" Background="Transparent" Grid.Row="0" Height="30" Margin="0,0,170,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
+                <ColumnDefinition/>
+                <ColumnDefinition x:Name="RightPaddingColumn" Width="0"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="/Assets/StoreLogo.png" 
+                   Grid.Column="1"
+                   HorizontalAlignment="Left"
+                   Width="16" Height="16"
+                   Margin="8,0,0,0"/>
+            <TextBlock x:Name="titleDisplay"
+                       Text="" 
+                       Style="{StaticResource CaptionTextBlockStyle}" 
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Margin="28,0,0,0"/>
+        </Grid>
+      
+        <muxc:MenuBar Margin="0,2,0,0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <muxc:MenuBarItem Title="File">
+                <MenuFlyoutItem Text="New" Click="NewFile_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="N" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Open" Click="OpenFile_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="O" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Save" Click="SaveFile_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="S" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Save as" Click="SaveFileAs_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="S" Modifiers="Control, Shift"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Exit" Click="ExitApp_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F4" Modifiers="Menu"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+            </muxc:MenuBarItem>
+
+            <muxc:MenuBarItem Title="Edit">
+                <MenuFlyoutItem Text="Undo" Click="Undo_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Z" IsEnabled="False" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Redo" Click="Redo_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Y" IsEnabled="False" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Cut" Click="Cut_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="X" IsEnabled="False" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Copy" Click="Copy_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="C" IsEnabled="False" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Paste" Click="Paste_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="V" IsEnabled="False" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Select All" Click="SelectAll_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="A" IsEnabled="False" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+            </muxc:MenuBarItem>
+
+            <muxc:MenuBarItem Title="Advanced">
+                <MenuFlyoutItem Text="Duplicate line" Click="DuplicateLine_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="D" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutSubItem Text="Language">
+                    <MenuFlyoutItem Text="C#" Tag="CSharp" Click="Language_Click"/>
+                    <MenuFlyoutItem Text="Gcode" Tag="GCode" Click="Language_Click"/>
+                    <MenuFlyoutItem Text="Json" Tag="Json" Click="Language_Click"/>
+                    <MenuFlyoutItem Text="Batch" Tag="Batch" Click="Language_Click"/>
+                    <MenuFlyoutItem Text="Html" Tag="Html" Click="Language_Click"/>
+                    <MenuFlyoutItem Text="C++" Tag="Cpp" Click="Language_Click"/>
+                    <MenuFlyoutItem Text="None" Tag="" Click="Language_Click"/>
+                </MenuFlyoutSubItem>
+                <MenuFlyoutSubItem Text="Tab-mode">
+                    <MenuFlyoutItem Text="Spaces" Tag="0" Click="TabMode_Click"/>
+                    <MenuFlyoutItem Text="Tabs" Tag="1"  Click="TabMode_Click"/>
+                </MenuFlyoutSubItem>
+            </muxc:MenuBarItem>
+        </muxc:MenuBar>
+
+        <textcontrolbox:TextControlBox LineEnding="CRLF" x:Name="textbox" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            TextChanged="textbox_TextChanged" SelectionChanged="textbox_SelectionChanged" ZoomChanged="textbox_ZoomChanged"                               
+        />
+        <Button Click="Settings_Click" Margin="0,7,10,0" BorderThickness="0" Padding="0" Grid.Row="1" Width="30" Height="30" Background="Transparent" HorizontalAlignment="Right" x:Name="SettingsButton" VerticalAlignment="Top">
+            <muxc:AnimatedIcon Width="16" Height="16" x:Name="SettingAnimatedIcon" >
+                <muxc:AnimatedIcon.Source>
+                    <animatedvisuals:AnimatedSettingsVisualSource/>
+                </muxc:AnimatedIcon.Source>
+                <muxc:AnimatedIcon.FallbackIconSource>
+                    <muxc:SymbolIconSource Symbol="Setting"/>
+                </muxc:AnimatedIcon.FallbackIconSource>
+            </muxc:AnimatedIcon>
+        </Button>
+        <Grid Grid.Row="3" Height="30" x:Name="infoBar">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+                <TextBlock x:Name="Infobar_Cursor" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120" ></TextBlock>
+                <TextBlock x:Name="Infobar_Zoom" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
+                <TextBlock x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
+                <TextBlock x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

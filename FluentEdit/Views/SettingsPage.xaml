@@ -26,7 +26,7 @@
                    Width="16" Height="16"
                    Margin="23,0,0,0"/>
             <TextBlock x:Name="titleDisplay"
-                       Text="Settings - TextControlBox Demo" 
+                       Text="Settings - FluentEdit" 
                        Style="{StaticResource CaptionTextBlockStyle}" 
                        Grid.Column="1"
                        VerticalAlignment="Center"
@@ -93,18 +93,17 @@
                             <TextBlock FontSize="18" x:Name="VersionDisplay" Text="Version: "/>
                             <TextBlock Margin="0,5,0,0" FontSize="18" Text="Developed by: Julius Kirsch"/>
                             <TextBlock Margin="0,20,0,0" FontSize="18" Text="Found a bug?"/>
-                            <HyperlinkButton FontSize="16" Grid.Row="1" NavigateUri="https://github.com/FrozenAssassine/TextControlBox-UWP/issues/new" Content="Report it here"/>
+                            <HyperlinkButton FontSize="16" Grid.Row="1" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/issues/new" Content="Report it here"/>
 
                             <StackPanel Margin="0,50,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
-                                <HyperlinkButton FontSize="20" Grid.Row="0" NavigateUri="https://github.com/FrozenAssassine/TextControlBox-UWP/blob/master/PrivacyPolicy.md"  Content="Privacy Policy"/>
-                                <HyperlinkButton FontSize="20" Grid.Row="1" NavigateUri="https://github.com/FrozenAssassine/TextControlBox-UWP/blob/master/Disclaimer.md"  Content="Disclaimer"/>
+                                <HyperlinkButton FontSize="20" Grid.Row="0" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/blob/master/PrivacyPolicy.md"  Content="Privacy Policy"/>
+                                <HyperlinkButton FontSize="20" Grid.Row="1" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/blob/master/Disclaimer.md"  Content="Disclaimer"/>
                            </StackPanel>
                         </StackPanel>
                         <Grid Grid.Column="1">
                             <TextBlock FontSize="18" Text="Nuget packages used:"/>
                             <StackPanel Orientation="Vertical" Margin="0,50,0,0">
                                 <HyperlinkButton FontSize="16" NavigateUri="https://github.com/FrozenAssassine/TextControlBox-UWP/tree/master/TextControlBox" Content="TextControlBox"/>
-                                <HyperlinkButton FontSize="16" NavigateUri="https://github.com/Microsoft/Win2D" Content="Win2D"/>
                                 <HyperlinkButton FontSize="16" NavigateUri="https://github.com/Microsoft/microsoft-ui-xaml" Content="Microsoft Ui Xaml"/>
                             </StackPanel>
                         </Grid>

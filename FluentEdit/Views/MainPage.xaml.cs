@@ -121,9 +121,9 @@ namespace TextControlBox_DemoApp.Views
         private void UpdateTitle()
         {
             if (OpenedFile == null)
-                titleDisplay.Text = (UnsavedChanges ? "*" : "") + "Untitled.txt  - TCB Editor";
+                titleDisplay.Text = (UnsavedChanges ? "*" : "") + "Untitled.txt  - FluentEdit";
             else
-                titleDisplay.Text = (UnsavedChanges ? "*" : "") + OpenedFile.Name + " - TCB Editor";
+                titleDisplay.Text = (UnsavedChanges ? "*" : "") + OpenedFile.Name + " - FluentEdit";
         }
         public async Task<(string Text, Encoding encoding, bool Succed)> ReadTextFromFileAsync(StorageFile file, Encoding encoding = null)
         {

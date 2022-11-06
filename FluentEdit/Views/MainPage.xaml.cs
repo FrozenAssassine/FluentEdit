@@ -38,6 +38,7 @@ namespace TextControlBox_DemoApp.Views
         private StorageFile OpenedFile = null;
         private CoreApplicationViewTitleBar coreTitleBar;
         private Encoding CurrentEncoding = Encoding.UTF8;
+        ApplicationView appView = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
 
         public MainPage()
         {
@@ -123,9 +124,9 @@ namespace TextControlBox_DemoApp.Views
         private void UpdateTitle()
         {
             if (OpenedFile == null)
-                titleDisplay.Text = (UnsavedChanges ? "*" : "") + "Untitled.txt  - FluentEdit";
+                titleDisplay.Text = (appView.Title = (UnsavedChanges ? "*" : "") + "Untitled.txt") + " - FluentEdit";
             else
-                titleDisplay.Text = (UnsavedChanges ? "*" : "") + OpenedFile.Name + " - FluentEdit";
+                titleDisplay.Text = (appView.Title = (UnsavedChanges ? "*" : "") + OpenedFile.Name) + " - FluentEdit";
         }
         public async Task<(string Text, Encoding encoding, bool Succed)> ReadTextFromFileAsync(StorageFile file, Encoding encoding = null)
         {

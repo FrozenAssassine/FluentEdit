@@ -15,10 +15,16 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Controls;
 using Windows.Storage;
+using static System.Net.WebRequestMethods;
+using Windows.UI.Core;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
+using Windows.Storage.Streams;
+using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Core.Preview;
 
@@ -188,7 +194,7 @@ namespace TextControlBox_DemoApp.Views
                 if (OpenedFile != null)
                     savePicker.SuggestedFileName = OpenedFile.DisplayName;
                 else
-                    savePicker.SuggestedFileName = "Untitled.txt";
+                savePicker.SuggestedFileName = "Untitled.txt";
                 StorageFile file = await savePicker.PickSaveFileAsync();
                 if (file != null)
                 {
@@ -381,7 +387,7 @@ namespace TextControlBox_DemoApp.Views
             {
                 var files = await e.DataView.GetStorageItemsAsync();
                 if (files.Count >= 1)
-                { 
+                {
                     if (await CheckUnsavedChanges())
                         return;
 

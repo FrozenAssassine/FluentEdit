@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
+  IgnorableNamespaces="uap mp desktop4 iot2 rescap uap10">
+
+  <Identity
+    Name="52804JuliusKirsch.FluentEdit"
+    Publisher="CN=131520D9-7303-41D1-808C-53CCB4ADFB34"
+    Version="1.0.0.0" />
+
+  <mp:PhoneIdentity PhoneProductId="92159b7f-0bbc-4b6c-9a74-7402e1857346" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Properties>
+    <DisplayName>FluentEdit</DisplayName>
+    <PublisherDisplayName>Julius Kirsch</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="FluentEdit.App"
+      desktop4:SupportsMultipleInstances="true"
+      iot2:SupportsMultipleInstances="true">
+		
+      <uap:VisualElements
+        DisplayName="FluentEdit"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        BackgroundColor="transparent" Description="A simple but powerful texteditor">
+        <uap:DefaultTile Square71x71Logo="Assets\SmallTile.png"/>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape"/>
+          <uap:Rotation Preference="portrait"/>
+          <uap:Rotation Preference="landscapeFlipped"/>
+          <uap:Rotation Preference="portraitFlipped"/></uap:InitialRotationPreference>
+      </uap:VisualElements>
+		<Extensions>
+			<uap:Extension Category="windows.fileTypeAssociation">
+				<uap:FileTypeAssociation Name="anyfile">
+					<uap:SupportedFileTypes>
+						<uap:FileType>.randomextension</uap:FileType>
+						<uap10:FileType>*</uap10:FileType>
+					</uap:SupportedFileTypes>
+					<uap:EditFlags OpenIsSafe="true" />
+					<uap:Logo>Assets\ExtensionIcons\any\any.png</uap:Logo>
+					<uap:DisplayName>Fastedit</uap:DisplayName>
+				</uap:FileTypeAssociation>
+			</uap:Extension>
+		</Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <rescap:Capability Name="confirmAppClose" />
+  </Capabilities>
+</Package>

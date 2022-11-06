@@ -27,6 +27,8 @@ using Windows.Storage.Streams;
 using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Core.Preview;
+using Windows.ApplicationModel.Activation;
+using Windows.UI.Popups;
 
 namespace TextControlBox_DemoApp.Views
 {
@@ -228,22 +230,70 @@ namespace TextControlBox_DemoApp.Views
             if (file != null)
             {
                 OpenedFile = file;
-                UpdateTitle();
                 var res = await ReadTextFromFileAsync(file);
-                CurrentEncoding = res.encoding;
-                Infobar_Encoding.Text = CurrentEncoding.EncodingName;
+                if (res.Succed)
+                {
+                    SelectCodeLanguageByFile(file);
+                    CurrentEncoding = res.encoding;
+                    Infobar_Encoding.Text = CurrentEncoding.EncodingName;
 
-                textbox.LoadText(res.Text);
-                Infobar_LineEnding.Text = textbox.LineEnding.ToString();
-                UnsavedChanges = false;
+                    textbox.LoadText(res.Text);
+                    Infobar_LineEnding.Text = textbox.LineEnding.ToString();
+                    UnsavedChanges = false;
+
+                    UpdateTitle();
+                }
+            }
+        }
+        private void SelectCodeLanguageByFile(StorageFile file)
+        {
+            if (file == null)
+                return;
+
+            Debug.WriteLine(file.FileType);
+
+            switch (file.FileType)
+            {
+                case ".cpp":
+                    textbox.SelectCodeLanguageById("Cpp");
+                    break;
+                case ".html":
+                case ".htm":
+                    textbox.SelectCodeLanguageById("Html");
+                    break;
+                case ".cs":
+                    textbox.SelectCodeLanguageById("CSharp");
+                    break;
+                case ".bat":
+                    textbox.SelectCodeLanguageById("Batch");
+                    break;
+                case ".json":
+                    textbox.SelectCodeLanguageById("Json");
+                    break;
+                case ".gcode":
+                case ".nc":
+                case ".cnc":
+                case ".tap":
+                    textbox.SelectCodeLanguageById("GCode");
+                    break;
+                default:
+                    textbox.CodeLanguage = null;
+                    break;
             }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+
             ApplySettings();
             CustomTitleBar();
-            base.OnNavigatedTo(e);
+
+            if (e.Parameter is IReadOnlyList<IStorageItem> files)
+            {
+                if(files.Count >= 1)
+                    await OpenFile(files[0] as StorageFile);
+            }
         }
 
         //Titlebar events:

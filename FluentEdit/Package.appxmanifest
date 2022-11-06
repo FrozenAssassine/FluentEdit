@@ -59,8 +59,62 @@
 						<uap10:FileType>*</uap10:FileType>
 					</uap:SupportedFileTypes>
 					<uap:EditFlags OpenIsSafe="true" />
-					<uap:Logo>Assets\ExtensionIcons\any\any.png</uap:Logo>
-					<uap:DisplayName>Fastedit</uap:DisplayName>
+					<uap:Logo></uap:Logo>
+					<uap:DisplayName>FluentEdit</uap:DisplayName>
+				</uap:FileTypeAssociation>
+			</uap:Extension>
+			<uap:Extension Category="windows.fileTypeAssociation">
+				<uap:FileTypeAssociation Name="textfile">
+					<uap:SupportedFileTypes>
+						<uap:FileType>.txt</uap:FileType>
+					</uap:SupportedFileTypes>
+					<uap:EditFlags OpenIsSafe="true"/>
+					<uap:DisplayName>Text file</uap:DisplayName>
+				</uap:FileTypeAssociation>
+			</uap:Extension>
+			<uap:Extension Category="windows.fileTypeAssociation">
+				<uap:FileTypeAssociation Name="csharpfile">
+					<uap:SupportedFileTypes>
+						<uap:FileType>.cs</uap:FileType>
+					</uap:SupportedFileTypes>
+					<uap:DisplayName>C# Source File</uap:DisplayName>
+					<uap:EditFlags OpenIsSafe="true"/>
+				</uap:FileTypeAssociation>
+			</uap:Extension>
+			<uap:Extension Category="windows.fileTypeAssociation">
+				<uap:FileTypeAssociation Name="gcodefile">
+					<uap:SupportedFileTypes>
+						<uap:FileType>.gcode</uap:FileType>
+						<uap:FileType>.nc</uap:FileType>
+						<uap:FileType>.cnc</uap:FileType>
+						<uap:FileType>.tap</uap:FileType>
+					</uap:SupportedFileTypes>
+					<uap:DisplayName>G-Code</uap:DisplayName>
+				</uap:FileTypeAssociation>
+			</uap:Extension>
+			<uap:Extension Category="windows.fileTypeAssociation">
+				<uap:FileTypeAssociation Name="jsoncode">
+					<uap:SupportedFileTypes>
+						<uap:FileType>.json</uap:FileType>
+					</uap:SupportedFileTypes>
+					<uap:DisplayName>Json Source file</uap:DisplayName>
+				</uap:FileTypeAssociation>
+			</uap:Extension>
+			<uap:Extension Category="windows.fileTypeAssociation">
+				<uap:FileTypeAssociation Name="htmlcode">
+					<uap:SupportedFileTypes>
+						<uap:FileType>.html</uap:FileType>
+						<uap:FileType>.htm</uap:FileType>
+					</uap:SupportedFileTypes>
+					<uap:DisplayName>Html file</uap:DisplayName>
+				</uap:FileTypeAssociation>
+			</uap:Extension>
+			<uap:Extension Category="windows.fileTypeAssociation">
+				<uap:FileTypeAssociation Name="cppcode">
+					<uap:SupportedFileTypes>
+						<uap:FileType>.cpp</uap:FileType>
+					</uap:SupportedFileTypes>
+					<uap:DisplayName>C++ Source file</uap:DisplayName>
 				</uap:FileTypeAssociation>
 			</uap:Extension>
 		</Extensions>

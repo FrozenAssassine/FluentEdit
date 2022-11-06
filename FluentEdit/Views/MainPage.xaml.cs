@@ -381,7 +381,7 @@ namespace TextControlBox_DemoApp.Views
             {
                 var files = await e.DataView.GetStorageItemsAsync();
                 if (files.Count >= 1)
-                {
+                { 
                     if (await CheckUnsavedChanges())
                         return;
 

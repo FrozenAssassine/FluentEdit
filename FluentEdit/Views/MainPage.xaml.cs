@@ -73,6 +73,7 @@ namespace TextControlBox_DemoApp.Views
         {
             textbox.FontFamily = new FontFamily(AppSettings.GetSettings("fontFamily") ?? "Consolas");
             textbox.FontSize = AppSettings.GetSettingsAsInt("fontSize", 18);
+            textbox.UseSpacesInsteadTabs = AppSettings.GetSettingsAsInt("tabMode") == 1;
 
             if (Window.Current.Content is FrameworkElement rootElement)
             {
@@ -408,6 +409,7 @@ namespace TextControlBox_DemoApp.Views
             if (sender is MenuFlyoutItem item)
             {
                 textbox.UseSpacesInsteadTabs = item.Tag.ToString().Equals("0");
+                AppSettings.SaveSettings("tabMode", textbox.UseSpacesInsteadTabs ? 1 : 0);
             }
         }
 

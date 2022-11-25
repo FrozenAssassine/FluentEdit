@@ -106,13 +106,7 @@
                         <KeyboardAccelerator Key="D" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutSubItem Text="Language">
-                    <MenuFlyoutItem Text="C#" Tag="CSharp" Click="Language_Click"/>
-                    <MenuFlyoutItem Text="Gcode" Tag="GCode" Click="Language_Click"/>
-                    <MenuFlyoutItem Text="Json" Tag="Json" Click="Language_Click"/>
-                    <MenuFlyoutItem Text="Batch" Tag="Batch" Click="Language_Click"/>
-                    <MenuFlyoutItem Text="Html" Tag="Html" Click="Language_Click"/>
-                    <MenuFlyoutItem Text="C++" Tag="Cpp" Click="Language_Click"/>
+                <MenuFlyoutSubItem Text="Language" x:Name="LanguagesMenubarItem">
                     <MenuFlyoutItem Text="None" Tag="" Click="Language_Click"/>
                 </MenuFlyoutSubItem>
                 <MenuFlyoutSubItem Text="Tab-mode">

@@ -69,6 +69,20 @@ namespace TextControlBox_DemoApp.Views
             return false;
         }
 
+        private void CreateMenubarFromLanguage()
+        {
+            foreach(var item in TextControlBox.TextControlBox.CodeLanguages)
+            {
+                var menuItem = new MenuFlyoutItem
+                {
+                    Text = item.Value.Name,
+                    Tag = item.Key,
+                };
+                menuItem.Click += Language_Click;
+                LanguagesMenubarItem.Items.Add(menuItem);
+            }
+        }
+
         private void ApplySettings()
         {
             textbox.FontFamily = new FontFamily(AppSettings.GetSettings("fontFamily") ?? "Consolas");
@@ -251,31 +265,42 @@ namespace TextControlBox_DemoApp.Views
             if (file == null)
                 return;
 
-            Debug.WriteLine(file.FileType);
-
-            switch (file.FileType)
+            switch (file.FileType.ToLower())
             {
                 case ".cpp":
-                    textbox.SelectCodeLanguageById("Cpp");
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("Cpp");
                     break;
                 case ".html":
                 case ".htm":
-                    textbox.SelectCodeLanguageById("Html");
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("Html");
                     break;
                 case ".cs":
-                    textbox.SelectCodeLanguageById("CSharp");
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("CSharp");
                     break;
                 case ".bat":
-                    textbox.SelectCodeLanguageById("Batch");
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("Batch");
                     break;
                 case ".json":
-                    textbox.SelectCodeLanguageById("Json");
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("Json");
                     break;
                 case ".gcode":
                 case ".nc":
                 case ".cnc":
                 case ".tap":
-                    textbox.SelectCodeLanguageById("GCode");
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("GCode");
+                    break;
+                case ".js":
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("Javascript");
+                    break;
+                case ".php":
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("PHP");
+                    break;
+                case ".ini":
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("ConfigFile");
+                    break;
+                case ".hex":
+                case ".bin":
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("HexFile");
                     break;
                 default:
                     textbox.CodeLanguage = null;
@@ -289,6 +314,7 @@ namespace TextControlBox_DemoApp.Views
 
             ApplySettings();
             CustomTitleBar();
+            CreateMenubarFromLanguage();
 
             if (e.Parameter is IReadOnlyList<IStorageItem> files)
             {
@@ -391,8 +417,8 @@ namespace TextControlBox_DemoApp.Views
             {
                 if (item.Tag.ToString() == "")
                     textbox.CodeLanguage = null;
-                else 
-                    textbox.SelectCodeLanguageById(item.Tag.ToString());
+                else
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId(item.Tag.ToString());
             }
         }
         private void DuplicateLine_Click(object sender, RoutedEventArgs e)

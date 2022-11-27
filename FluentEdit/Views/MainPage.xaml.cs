@@ -307,6 +307,18 @@ namespace TextControlBox_DemoApp.Views
                     break;
             }
         }
+        private void OpenSearch()
+        {
+            SearchBox.Visibility = Visibility.Visible;
+            SearchContent_Textbox.Text = "";
+            SearchContent_Textbox.Focus(FocusState.Programmatic);
+        }
+        private void CloseSearch()
+        {
+            textbox.EndSearch();
+            SearchBox.Visibility = Visibility.Collapsed;
+            SearchContent_Textbox.Text = "";
+        }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -436,6 +448,10 @@ namespace TextControlBox_DemoApp.Views
                 textbox.UseSpacesInsteadTabs = item.Tag.ToString().Equals("0");
             }
         }
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            OpenSearch();
+        }
 
         private void textbox_TextChanged(TextControlBox.TextControlBox sender, string Text)
         {
@@ -475,6 +491,45 @@ namespace TextControlBox_DemoApp.Views
         private void Page_DragEnter(object sender, DragEventArgs e)
         {
             e.AcceptedOperation = DataPackageOperation.Copy;
+        }
+
+        private void SearchContent_Textbox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            textbox.BeginSearch(SearchContent_Textbox.Text, false, false);
+        }
+        private void SearchContent_Textbox_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            var shift = Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                if (shift)
+                    textbox.FindPrevious();
+                else
+                    textbox.FindNext();
+            }
+            else if (e.Key == Windows.System.VirtualKey.Escape)
+            {
+                CloseSearch();
+            }
+        }
+        private void FindPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                textbox.FindPrevious();
+            }
+            catch (IndexOutOfRangeException)
+            {
+
+            }
+        }
+        private void FindNext_Click(object sender, RoutedEventArgs e)
+        {
+            textbox.FindNext();
+        }
+        private void CloseSearch_Click(object sender, RoutedEventArgs e)
+        {
+            CloseSearch();
         }
     }
 }

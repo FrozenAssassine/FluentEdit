@@ -98,6 +98,11 @@
                         <KeyboardAccelerator Key="A" IsEnabled="False" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Search" Click="Search_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
             </muxc:MenuBarItem>
 
             <muxc:MenuBarItem Title="Advanced">
@@ -119,6 +124,28 @@
         <textcontrolbox:TextControlBox LineEnding="CRLF" x:Name="textbox" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
             TextChanged="textbox_TextChanged" SelectionChanged="textbox_SelectionChanged" ZoomChanged="textbox_ZoomChanged"                               
         />
+
+        <Grid x:Name="SearchBox" BorderThickness="1" Visibility="Collapsed" Grid.Row="1" Width="270" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center" BorderBrush="{ThemeResource SystemAccentColorDark1}" CornerRadius="5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox KeyDown="SearchContent_Textbox_KeyDown" x:Name="SearchContent_Textbox" TextChanged="SearchContent_Textbox_TextChanged" Height="30" Grid.Column="0" Width="140"/>
+
+            <Button Click="FindNext_Click" Height="40" Width="30" Padding="0" Grid.Column="1"  Background="Transparent" BorderThickness="0">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70D;"/>
+            </Button>
+            <Button Click="FindPrevious_Click" Height="40" Width="30" Padding="0" Grid.Column="2" Background="Transparent" BorderThickness="0">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70E;"/>
+            </Button>
+            <Button Click="CloseSearch_Click" Height="40" Width="40" Padding="0" Grid.Column="4" Background="Transparent" BorderThickness="0">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;"/>
+            </Button>
+        </Grid>
+
         <Button Click="Settings_Click" Margin="0,7,10,0" BorderThickness="0" Padding="0" Grid.Row="1" Width="30" Height="30" Background="Transparent" HorizontalAlignment="Right" x:Name="SettingsButton" VerticalAlignment="Top">
             <muxc:AnimatedIcon Width="16" Height="16" x:Name="SettingAnimatedIcon" >
                 <muxc:AnimatedIcon.Source>

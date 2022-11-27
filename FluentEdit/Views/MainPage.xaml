@@ -158,8 +158,14 @@
         </Button>
         <Grid Grid.Row="3" Height="30" x:Name="infoBar">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
-                <TextBlock x:Name="Infobar_Cursor" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120" ></TextBlock>
-                <TextBlock x:Name="Infobar_Zoom" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
+                <TextBlock x:Name="Infobar_Cursor" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
+                <Button PointerWheelChanged="Infobar_Zoom_PointerWheelChanged" DoubleTapped="ZoomSlider_DoubleTapped" Background="Transparent" BorderThickness="0" x:Name="Infobar_Zoom" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="120">
+                    <Button.Flyout>
+                        <Flyout>
+                            <Slider TickFrequency="5" TickPlacement="Outside" StepFrequency="5" DoubleTapped="ZoomSlider_DoubleTapped" Header="Zoom: " x:Name="ZoomSlider" ValueChanged="ZoomSlider_ValueChanged" Width="150" Value="100" Maximum="400" Minimum="20"/>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
                 <TextBlock x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
                 <TextBlock x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
             </StackPanel>

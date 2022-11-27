@@ -75,7 +75,7 @@ namespace TextControlBox_DemoApp.Views
         private void CreateMenubarFromLanguage()
         {
             //items already added
-            if (LanguagesMenubarItem.Items.Count > 0)
+            if (LanguagesMenubarItem.Items.Count > 1)
                 return;
 
             foreach(var item in TextControlBox.TextControlBox.CodeLanguages)
@@ -134,6 +134,7 @@ namespace TextControlBox_DemoApp.Views
                 PrimaryButtonText = "Save",
                 SecondaryButtonText = "Don't save",
                 CloseButtonText = "Cancel",
+                DefaultButton = ContentDialogButton.Primary,
                 RequestedTheme = this.ActualTheme
             };
             var res = await SaveDialog.ShowAsync();
@@ -218,12 +219,15 @@ namespace TextControlBox_DemoApp.Views
         }
         private async Task<bool> SaveFile(bool ForceSaveNew = false)
         {
-            if (FileToken.Length == 0|| ForceSaveNew)
+            if (FileToken.Length == 0 || ForceSaveNew)
             {
                 var savePicker = new Windows.Storage.Pickers.FileSavePicker();
                 savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
 
-                StorageFile OpenedFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
+                StorageFile OpenedFile = null;
+                if (FileToken.Length > 0)
+                    OpenedFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
+
                 //Add the extension of the current file
                 if (OpenedFile != null)
                     savePicker.FileTypeChoices.Add("Current extension", new List<string>() { OpenedFile.FileType });
@@ -494,7 +498,8 @@ namespace TextControlBox_DemoApp.Views
         }
         private void textbox_ZoomChanged(TextControlBox.TextControlBox sender, int ZoomFactor)
         {
-            Infobar_Zoom.Text = ZoomFactor + "%";
+            Infobar_Zoom.Content = ZoomFactor + "%";
+            ZoomSlider_ValueChanged(null, null);
         }
         private void textbox_SelectionChanged(TextControlBox.TextControlBox sender, TextControlBox.Text.SelectionChangedEventHandler args)
         {
@@ -564,6 +569,36 @@ namespace TextControlBox_DemoApp.Views
         private void CloseSearch_Click(object sender, RoutedEventArgs e)
         {
             CloseSearch();
+        }
+
+        private void ZoomSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if ((ZoomSlider.Tag ?? "") == "LOCK")
+            {
+                ZoomSlider.Tag = "";
+                return;
+            }
+
+            //called by the textbox event:
+            if (sender == null)
+            {
+                ZoomSlider.Value = textbox.ZoomFactor;
+                ZoomSlider.Tag = "LOCK";
+            }
+            else
+                textbox.ZoomFactor = (int)ZoomSlider.Value;
+        }
+
+        private void ZoomSlider_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            //reset to default
+            ZoomSlider.Value = 100;
+        }
+
+        private void Infobar_Zoom_PointerWheelChanged(object sender, PointerRoutedEventArgs e)
+        {
+            var delta = e.GetCurrentPoint(this).Properties.MouseWheelDelta;
+            textbox.ZoomFactor += delta / 20;
         }
     }
 }

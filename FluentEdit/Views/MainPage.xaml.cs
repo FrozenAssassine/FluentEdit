@@ -41,7 +41,7 @@ namespace TextControlBox_DemoApp.Views
         private Encoding CurrentEncoding = Encoding.UTF8;
         private string FileToken = "";
         private string FileName = "";
-        ApplicationView appView = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+        ApplicationView appView = ApplicationView.GetForCurrentView();
 
         public MainPage()
         {
@@ -74,6 +74,10 @@ namespace TextControlBox_DemoApp.Views
 
         private void CreateMenubarFromLanguage()
         {
+            //items already added
+            if (LanguagesMenubarItem.Items.Count > 0)
+                return;
+
             foreach(var item in TextControlBox.TextControlBox.CodeLanguages)
             {
                 var menuItem = new MenuFlyoutItem
@@ -130,6 +134,7 @@ namespace TextControlBox_DemoApp.Views
                 PrimaryButtonText = "Save",
                 SecondaryButtonText = "Don't save",
                 CloseButtonText = "Cancel",
+                RequestedTheme = this.ActualTheme
             };
             var res = await SaveDialog.ShowAsync();
             if(res == ContentDialogResult.Primary)
@@ -276,6 +281,9 @@ namespace TextControlBox_DemoApp.Views
 
                     textbox.LoadText(res.Text);
                     Infobar_LineEnding.Text = textbox.LineEnding.ToString();
+                    textbox.GoToLine(0);
+                    textbox.ScrollLineIntoView(0);
+                    SetPositionInInfobar(0, 0);
                     UnsavedChanges = false;
 
                     UpdateTitle();
@@ -340,6 +348,10 @@ namespace TextControlBox_DemoApp.Views
             textbox.EndSearch();
             SearchBox.Visibility = Visibility.Collapsed;
             SearchContent_Textbox.Text = "";
+        }
+        private void SetPositionInInfobar(int line, int charPos)
+        {
+            Infobar_Cursor.Text = "Ln: " + (line + 1) + ", Col:" + charPos;
         }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -486,7 +498,7 @@ namespace TextControlBox_DemoApp.Views
         }
         private void textbox_SelectionChanged(TextControlBox.TextControlBox sender, TextControlBox.Text.SelectionChangedEventHandler args)
         {
-            Infobar_Cursor.Text = "Ln: " + (args.LineNumber + 1) + ", Col:" + args.CharacterPositionInLine;
+            SetPositionInInfobar(args.LineNumber, args.CharacterPositionInLine);
         }
 
         private void Page_ActualThemeChanged(FrameworkElement sender, object args)

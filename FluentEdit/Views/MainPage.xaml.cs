@@ -29,15 +29,18 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Core.Preview;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Popups;
+using TextControlBox.Helper;
+using Windows.Storage.AccessCache;
 
 namespace TextControlBox_DemoApp.Views
 {
     public sealed partial class MainPage : Page
     {
         private bool UnsavedChanges = false;
-        private StorageFile OpenedFile = null;
         private CoreApplicationViewTitleBar coreTitleBar;
         private Encoding CurrentEncoding = Encoding.UTF8;
+        private string FileToken = "";
+        private string FileName = "";
         ApplicationView appView = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
 
         public MainPage()
@@ -137,10 +140,10 @@ namespace TextControlBox_DemoApp.Views
         }
         private void UpdateTitle()
         {
-            if (OpenedFile == null)
+            if (FileToken.Length == 0)
                 titleDisplay.Text = (appView.Title = (UnsavedChanges ? "*" : "") + "Untitled.txt") + " - FluentEdit";
             else
-                titleDisplay.Text = (appView.Title = (UnsavedChanges ? "*" : "") + OpenedFile.Name) + " - FluentEdit";
+                titleDisplay.Text = (appView.Title = (UnsavedChanges ? "*" : "") + FileName) + " - FluentEdit";
         }
         public async Task<(string Text, Encoding encoding, bool Succed)> ReadTextFromFileAsync(StorageFile file, Encoding encoding = null)
         {
@@ -188,7 +191,19 @@ namespace TextControlBox_DemoApp.Views
             }
             catch (IOException)
             {
-                return await SaveFile(true);
+                try
+                {
+                    Debug.WriteLine("Different");
+                    //try a different way of saving files
+                    var bytestoWrite = encoding.GetBytes(text);
+                    var buffer = encoding.GetPreamble().Concat(bytestoWrite).ToArray();
+                    await PathIO.WriteBytesAsync(file.Path, buffer);
+                    return true;
+                }
+                catch
+                {
+                    return await SaveFile(true);
+                }
             }
             catch (Exception ex)
             {
@@ -198,13 +213,14 @@ namespace TextControlBox_DemoApp.Views
         }
         private async Task<bool> SaveFile(bool ForceSaveNew = false)
         {
-            if (OpenedFile == null || ForceSaveNew)
+            if (FileToken.Length == 0|| ForceSaveNew)
             {
                 var savePicker = new Windows.Storage.Pickers.FileSavePicker();
                 savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-                
+
+                StorageFile OpenedFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
                 //Add the extension of the current file
-                if(OpenedFile != null)
+                if (OpenedFile != null)
                     savePicker.FileTypeChoices.Add("Current extension", new List<string>() { OpenedFile.FileType });
                 savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
 
@@ -216,6 +232,7 @@ namespace TextControlBox_DemoApp.Views
                 if (file != null)
                 {
                     CachedFileManager.DeferUpdates(file);
+                    FileName = file.Name;
                     await WriteTextToFileAsync(file, textbox.GetText(), CurrentEncoding);
                     Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
 
@@ -230,7 +247,10 @@ namespace TextControlBox_DemoApp.Views
             }
             else
             {
-                var res = await WriteTextToFileAsync(OpenedFile, textbox.GetText(), CurrentEncoding);
+                StorageFile file = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
+                FileName = file.Name;
+
+                var res = await WriteTextToFileAsync(file, textbox.GetText(), CurrentEncoding);
                 if(res == true)
                 {
                     UnsavedChanges = false;
@@ -244,7 +264,9 @@ namespace TextControlBox_DemoApp.Views
         {
             if (file != null)
             {
-                OpenedFile = file;
+                FileName = file.Name;
+                FileToken = StorageApplicationPermissions.FutureAccessList.Add(file);
+
                 var res = await ReadTextFromFileAsync(file);
                 if (res.Succed)
                 {
@@ -375,8 +397,8 @@ namespace TextControlBox_DemoApp.Views
         {
             if (await CheckUnsavedChanges())
                 return;
-            
-            OpenedFile = null;
+
+            FileName = FileToken = "";
             UnsavedChanges = false;
             UpdateTitle();
             textbox.LoadText("");

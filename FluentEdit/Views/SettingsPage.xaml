@@ -30,7 +30,7 @@
                        Style="{StaticResource CaptionTextBlockStyle}" 
                        Grid.Column="1"
                        VerticalAlignment="Center"
-                       Margin="48,0,0,0"/>
+                       Margin="36,0,0,0"/>
         </Grid>
         <ScrollViewer Grid.Row="1">
             <Grid Margin="60,0,40,0">
@@ -40,7 +40,7 @@
                     <RowDefinition Height="*" MaxHeight="300"/>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock FontWeight="SemiBold" FontSize="48" Grid.Row="1" Text="Settings"/>
+                <TextBlock FontWeight="SemiBold" FontSize="36" Grid.Row="1" Text="Settings"/>
                 <StackPanel Grid.Row="2" VerticalAlignment="Top">
                     <muxc:Expander HorizontalAlignment="Stretch" Margin="0,0,20,0" HorizontalContentAlignment="Stretch">
                         <muxc:Expander.Header>
@@ -80,8 +80,8 @@
                     </Grid>
 
                 </StackPanel>
-                <StackPanel Grid.Row="3">
-                    <TextBlock Grid.Column="0" FontWeight="SemiBold" FontSize="48" Text="About"/>
+                <StackPanel Grid.Row="3" Margin="0,80,0,0"> 
+                    <TextBlock Grid.Column="0" FontWeight="SemiBold" FontSize="36" Text="About"/>
 
                     <Grid  Margin="0,20,0,0">
                         <Grid.ColumnDefinitions>

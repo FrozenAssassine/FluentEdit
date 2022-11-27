@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Core;
 using Windows.ApplicationModel;
+using Windows.UI.Core.Preview;
 
 // Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
 
@@ -42,11 +43,18 @@ namespace TextControlBox_DemoApp.Views
             this.InitializeComponent();
             CustomTitleBar();
             FillVersionDisplay();
+            SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += SettingsPage_CloseRequested;
 
             themeCombobox.SelectedIndex = AppSettings.GetSettingsAsInt("theme");
             fontFamilyCombobox.SelectedIndex = AppSettings.GetSettingsAsInt("fontFamilyIndex", Fonts.IndexOf("Consolas"));
             fontSizeNumberBox.Value = AppSettings.GetSettingsAsInt("fontSize", 18);
         }
+
+        private void SettingsPage_CloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
+        {
+            CurrentView_BackRequested(null, null);
+        }
+
         private void FillVersionDisplay()
         {
             VersionDisplay.Text = "Version: " + Package.Current.Id.Version.Major + "." +

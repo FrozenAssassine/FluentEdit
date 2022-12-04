@@ -11,7 +11,7 @@
   IgnorableNamespaces="uap mp desktop4 iot2 rescap uap10">
 
   <Identity
-    Name="52804JuliusKirsch.FluentEdit"
+    Name="52804JuliusKirsch.TextControlBoxDemo"
     Publisher="CN=juliu"
     Version="1.1.0.0" />
 

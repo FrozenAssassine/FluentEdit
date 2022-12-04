@@ -157,11 +157,24 @@
             </muxc:AnimatedIcon>
         </Button>
         <Grid Grid.Row="3" Height="30" x:Name="infoBar">
+            <Button Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Margin="5,0,5,0"  VerticalAlignment="Center" MinWidth="110">
+                <Button.Flyout>
+                    <Flyout Closed="Flyout_Closed">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Header="Filename:" x:Name="Infobar_FileNameInput" TextChanged="Infobar_FileNameInput_TextChanged" Width="150"/>
+                            <Button Margin="5,30,0,0" Click="Infobar_RenameFile_Click" Content="Rename" x:Name="Infobar_RenameFile"/>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+                <Button.Content>
+                    <TextBlock CanDrag="True" DragStarting="FileNameDisplay_DragStarting" Text="" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="FileNameDisplay"/>
+                </Button.Content>
+            </Button>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
                 <TextBlock x:Name="Infobar_Cursor" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
-                <Button PointerWheelChanged="Infobar_Zoom_PointerWheelChanged" DoubleTapped="ZoomSlider_DoubleTapped" Background="Transparent" BorderThickness="0" x:Name="Infobar_Zoom" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="120">
+                <Button PointerWheelChanged="Infobar_Zoom_PointerWheelChanged" DoubleTapped="ZoomSlider_DoubleTapped" Background="Transparent" BorderThickness="0" x:Name="Infobar_Zoom" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,0,5,0" MinWidth="110">
                     <Button.Flyout>
-                        <Flyout>
+                        <Flyout Closed="Flyout_Closed">
                             <Slider TickFrequency="5" TickPlacement="Outside" StepFrequency="5" DoubleTapped="ZoomSlider_DoubleTapped" Header="Zoom: " x:Name="ZoomSlider" ValueChanged="ZoomSlider_ValueChanged" Width="150" Value="100" Maximum="400" Minimum="20"/>
                         </Flyout>
                     </Button.Flyout>
@@ -170,5 +183,9 @@
                 <TextBlock x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
             </StackPanel>
         </Grid>
+
+
+        <muxc:InfoBar Grid.Row="2" x:Name="InfoDisplay" Title="Test" Message="Hello World" Severity="Warning" IsOpen="False" IsClosable="True" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"/>
+
     </Grid>
 </Page>

@@ -31,16 +31,21 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Popups;
 using TextControlBox.Helper;
 using Windows.Storage.AccessCache;
+using Microsoft.UI.Xaml.CustomAttributes;
 
 namespace TextControlBox_DemoApp.Views
 {
     public sealed partial class MainPage : Page
     {
+        private const string UntitledFileName = "Untitled.txt";
+
         private bool UnsavedChanges = false;
         private CoreApplicationViewTitleBar coreTitleBar;
         private Encoding CurrentEncoding = Encoding.UTF8;
         private string FileToken = "";
         private string FileName = "";
+        private bool FileIsDragDropped = false;
+        DispatcherTimer InfobarCloseTimer = new DispatcherTimer();
         ApplicationView appView = ApplicationView.GetForCurrentView();
 
         public MainPage()
@@ -50,8 +55,11 @@ namespace TextControlBox_DemoApp.Views
             //event to handle closing
             SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += Application_OnCloseRequest;
 
+            FileName = UntitledFileName;
+
             UpdateTitle();
             CustomTitleBar();
+            CheckFirstStart();
 
             //Update the infobar
             textbox_ZoomChanged(textbox, 100);
@@ -59,6 +67,29 @@ namespace TextControlBox_DemoApp.Views
             Infobar_LineEnding.Text = textbox.LineEnding.ToString();
         }
 
+        private void CheckFirstStart()
+        {
+            if (AppSettings.GetSettings("FirstStart") == "")
+            {
+                //DragDropFile_Info = (TeachingTip)FindName("DragDropFile_Info");
+                AppSettings.SaveSettings("FirstStart", "1");
+            }
+        }
+        private void ShowInfobar(InfoBarSeverity severity, string message, string title)
+        {
+            InfoDisplay.Message = message;
+            InfoDisplay.Title = title;
+            InfoDisplay.Severity = severity;
+            InfoDisplay.IsOpen = true;
+
+            InfobarCloseTimer.Interval = new TimeSpan(0, 0, 4);
+            InfobarCloseTimer.Start();
+            InfobarCloseTimer.Tick += delegate
+            {
+                InfoDisplay.IsOpen = false;
+                InfobarCloseTimer.Stop();
+            };
+        }
         private bool IsContentDialogOpen()
         {
             var openedpopups = VisualTreeHelper.GetOpenPopups(Window.Current);
@@ -71,7 +102,6 @@ namespace TextControlBox_DemoApp.Views
             }
             return false;
         }
-
         private void CreateMenubarFromLanguage()
         {
             //items already added
@@ -89,7 +119,6 @@ namespace TextControlBox_DemoApp.Views
                 LanguagesMenubarItem.Items.Add(menuItem);
             }
         }
-
         private void ApplySettings()
         {
             textbox.FontFamily = new FontFamily(AppSettings.GetSettings("fontFamily") ?? "Consolas");
@@ -146,10 +175,8 @@ namespace TextControlBox_DemoApp.Views
         }
         private void UpdateTitle()
         {
-            if (FileToken.Length == 0)
-                titleDisplay.Text = (appView.Title = (UnsavedChanges ? "*" : "") + "Untitled.txt") + " - FluentEdit";
-            else
-                titleDisplay.Text = (appView.Title = (UnsavedChanges ? "*" : "") + FileName) + " - FluentEdit";
+            titleDisplay.Text = (appView.Title = (UnsavedChanges ? "*" : "") + FileName) + " - FluentEdit";
+            FileNameDisplay.Text = Infobar_FileNameInput.Text = FileName;
         }
         public async Task<(string Text, Encoding encoding, bool Succed)> ReadTextFromFileAsync(StorageFile file, Encoding encoding = null)
         {
@@ -173,11 +200,16 @@ namespace TextControlBox_DemoApp.Views
                     }
                 }
             }
+            catch (UnauthorizedAccessException)
+            {
+                ShowInfobar(InfoBarSeverity.Error, "No access to read from file", "No access");
+
+            }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
-                return ("", Encoding.Default, false);
+                ShowInfobar(InfoBarSeverity.Error, ex.Message, "Read file exception");
             }
+            return ("", Encoding.Default, false);
         }
         public async Task<bool> WriteTextToFileAsync(StorageFile file, string text, Encoding encoding)
         {
@@ -186,6 +218,16 @@ namespace TextControlBox_DemoApp.Views
                 if (file == null)
                     return false;
 
+                //Only do this for drag/dropped files
+                if (FileIsDragDropped)
+                {
+                    var bytestoWrite = encoding.GetBytes(text);
+                    var buffer = encoding.GetPreamble().Concat(bytestoWrite).ToArray();
+                    await PathIO.WriteBytesAsync(file.Path, buffer);
+                    return true;
+                }        
+
+                await FileIO.WriteTextAsync(file, "");
                 using (var stream = await file.OpenStreamForWriteAsync())
                 {
                     using (var writer = new StreamWriter(stream, encoding))
@@ -195,59 +237,45 @@ namespace TextControlBox_DemoApp.Views
                     }
                 }
             }
-            catch (IOException)
+            catch (UnauthorizedAccessException)
             {
-                try
-                {
-                    Debug.WriteLine("Different");
-                    //try a different way of saving files
-                    var bytestoWrite = encoding.GetBytes(text);
-                    var buffer = encoding.GetPreamble().Concat(bytestoWrite).ToArray();
-                    await PathIO.WriteBytesAsync(file.Path, buffer);
-                    return true;
-                }
-                catch
-                {
-                    return await SaveFile(true);
-                }
+                ShowInfobar(InfoBarSeverity.Error, "No access to write to file", "No access");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
-                return false;
+                ShowInfobar(InfoBarSeverity.Error, ex.Message, "Write file exception");
             }
+            return false;
         }
         private async Task<bool> SaveFile(bool ForceSaveNew = false)
         {
             if (FileToken.Length == 0 || ForceSaveNew)
             {
                 var savePicker = new Windows.Storage.Pickers.FileSavePicker();
-                savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-
-                StorageFile OpenedFile = null;
-                if (FileToken.Length > 0)
-                    OpenedFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
+                savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.ComputerFolder;
 
                 //Add the extension of the current file
-                if (OpenedFile != null)
-                    savePicker.FileTypeChoices.Add("Current extension", new List<string>() { OpenedFile.FileType });
+                savePicker.FileTypeChoices.Add("Current extension", new List<string>() { Path.GetExtension(FileName) });
+                //Add the other extensions
                 savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
 
-                if (OpenedFile != null)
-                    savePicker.SuggestedFileName = OpenedFile.DisplayName;
-                else
-                savePicker.SuggestedFileName = "Untitled.txt";
+                 savePicker.SuggestedFileName = FileName;
+
                 StorageFile file = await savePicker.PickSaveFileAsync();
                 if (file != null)
                 {
                     CachedFileManager.DeferUpdates(file);
-                    FileName = file.Name;
                     await WriteTextToFileAsync(file, textbox.GetText(), CurrentEncoding);
                     Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
 
                     if (status == Windows.Storage.Provider.FileUpdateStatus.Complete)
                     {
-                        OpenedFile = file;
+                        //delete the old file permission and add a new one
+                        if (FileToken.Length > 0)
+                            StorageApplicationPermissions.FutureAccessList.Remove(FileToken);
+                        FileToken = StorageApplicationPermissions.FutureAccessList.Add(file);
+                     
+                        FileName = file.Name;
                         UnsavedChanges = false;
                         UpdateTitle();
                         return true;
@@ -256,16 +284,21 @@ namespace TextControlBox_DemoApp.Views
             }
             else
             {
-                StorageFile file = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
-                FileName = file.Name;
-
-                var res = await WriteTextToFileAsync(file, textbox.GetText(), CurrentEncoding);
-                if(res == true)
+                if (StorageApplicationPermissions.FutureAccessList.ContainsItem(FileToken))
                 {
-                    UnsavedChanges = false;
-                    UpdateTitle();
+                    StorageFile file = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
+                    FileName = file.Name;
+
+                    var res = await WriteTextToFileAsync(file, textbox.GetText(), CurrentEncoding);
+                    if (res == true)
+                    {
+                        UnsavedChanges = false;
+                        UpdateTitle();
+                    }
+                    return res;
                 }
-                return res;
+                else
+                    return await SaveFile(true);
             }
             return false;
         }
@@ -357,7 +390,49 @@ namespace TextControlBox_DemoApp.Views
         {
             Infobar_Cursor.Text = "Ln: " + (line + 1) + ", Col:" + charPos;
         }
+        private async void Renamefile(string newName)
+        {
+            string newFileName = Infobar_FileNameInput.Text;
 
+            Infobar_RenameFile.IsEnabled = newFileName.Length > 0;
+            if (newFileName.Length < 1)
+                return;
+
+            //File has been saved or opened
+            if (FileToken.Length > 0)
+            {
+                var currentFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
+                if (currentFile != null)
+                {
+                    //Nothing to rename
+                    if (currentFile.Name == newFileName)
+                        return;
+
+                    //Check if the file already exists
+                    bool FileAlreadyExists = Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
+
+                    if (FileAlreadyExists)
+                    {
+                        ShowInfobar(InfoBarSeverity.Error, "A file with this name already exists", "File exists");
+                        return;
+                    }
+
+                    try
+                    {
+                        await currentFile.RenameAsync(newFileName, NameCollisionOption.FailIfExists);
+                        FileToken = StorageApplicationPermissions.FutureAccessList.Add(currentFile);
+                    }
+                    catch (Exception ex)
+                    {
+                        ShowInfobar(InfoBarSeverity.Error, ex.Message, "Exception");
+                        return;
+                    }
+
+                }
+            }
+            FileName = newFileName;
+            UpdateTitle();
+        }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -406,15 +481,16 @@ namespace TextControlBox_DemoApp.Views
             picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
             picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
             picker.FileTypeFilter.Add("*");
-
+            FileIsDragDropped = false;
             await OpenFile(await picker.PickSingleFileAsync());
         }
         private async void NewFile_Click(object sender, RoutedEventArgs e)
         {
             if (await CheckUnsavedChanges())
                 return;
-
-            FileName = FileToken = "";
+            FileIsDragDropped = false;
+            FileName = UntitledFileName;
+            FileToken = "";
             UnsavedChanges = false;
             UpdateTitle();
             textbox.LoadText("");
@@ -523,6 +599,7 @@ namespace TextControlBox_DemoApp.Views
                     if (await CheckUnsavedChanges())
                         return;
 
+                    FileIsDragDropped = true;
                     await OpenFile(files[0] as StorageFile);
                 }
             }
@@ -531,7 +608,6 @@ namespace TextControlBox_DemoApp.Views
         {
             e.AcceptedOperation = DataPackageOperation.Copy;
         }
-
         private void SearchContent_Textbox_TextChanged(object sender, TextChangedEventArgs e)
         {
             textbox.BeginSearch(SearchContent_Textbox.Text, false, false);
@@ -570,10 +646,9 @@ namespace TextControlBox_DemoApp.Views
         {
             CloseSearch();
         }
-
         private void ZoomSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            if ((ZoomSlider.Tag ?? "") == "LOCK")
+            if (ZoomSlider.Tag != null && (ZoomSlider.Tag.ToString() ?? "") == "LOCK")
             {
                 ZoomSlider.Tag = "";
                 return;
@@ -594,11 +669,51 @@ namespace TextControlBox_DemoApp.Views
             //reset to default
             ZoomSlider.Value = 100;
         }
-
         private void Infobar_Zoom_PointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
             var delta = e.GetCurrentPoint(this).Properties.MouseWheelDelta;
             textbox.ZoomFactor += delta / 20;
+        }
+
+        //Infobar-FileName:
+        private async void FileNameDisplay_DragStarting(UIElement sender, DragStartingEventArgs args)
+        {
+            args.AllowedOperations = DataPackageOperation.Copy;
+
+            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName == "" ? ".txt" : FileName, CreationCollisionOption.OpenIfExists);
+            await FileIO.WriteTextAsync(file, textbox.GetText());
+
+            args.Data.SetStorageItems(new IStorageItem[] { file });
+        }
+        private void Infobar_RenameFile_Click(object sender, RoutedEventArgs e)
+        {
+            Renamefile(Infobar_FileNameInput.Text);
+        }
+        private async void Infobar_FileNameInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string newFileName = Infobar_FileNameInput.Text;
+            
+            Infobar_RenameFile.IsEnabled = newFileName.Length > 0;
+            if (newFileName.Length < 1)
+                return;
+
+            //File has been saved or opened
+            if (FileToken.Length > 0)
+            {
+                var currentFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
+                if (currentFile != null)
+                {
+                    Debug.WriteLine("Check: " + Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
+                    bool res = Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
+                    Debug.WriteLine("Exists: " + !res);
+                }
+            }
+        }
+
+        //refocus the textbox after the flyout closes
+        private void Flyout_Closed(object sender, object e)
+        {
+            textbox.Focus(FocusState.Programmatic);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentEdit.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,15 +27,9 @@ namespace TextControlBox_DemoApp
         }
         public static int GetSettingsAsInt(string Value, int defaultvalue = 0)
         {
-            int toInt(string val, int defaultValue = 0)
-            {
-                if(int.TryParse(val, out int result))
-                    return result;
-                return defaultValue;
-            }
 
             return ApplicationData.Current.LocalSettings.Values[Value] is string value
-                ? toInt(value, defaultvalue) : defaultvalue;
+                ? ConvertHelper.ToInt(value, defaultvalue) : defaultvalue;
         }
     }
 }

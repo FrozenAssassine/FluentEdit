@@ -32,6 +32,7 @@ using Windows.UI.Popups;
 using TextControlBox.Helper;
 using Windows.Storage.AccessCache;
 using Microsoft.UI.Xaml.CustomAttributes;
+using FluentEdit.Helper;
 
 namespace TextControlBox_DemoApp.Views
 {
@@ -41,7 +42,7 @@ namespace TextControlBox_DemoApp.Views
 
         private bool UnsavedChanges = false;
         private CoreApplicationViewTitleBar coreTitleBar;
-        private Encoding CurrentEncoding = Encoding.UTF8;
+        private Encoding CurrentEncoding = Encoding.Default;
         private string FileToken = "";
         private string FileName = "";
         private bool FileIsDragDropped = false;
@@ -60,13 +61,18 @@ namespace TextControlBox_DemoApp.Views
             UpdateTitle();
             CustomTitleBar();
             CheckFirstStart();
+            UpdateEncodingInfobar();
 
             //Update the infobar
             textbox_ZoomChanged(textbox, 100);
-            Infobar_Encoding.Text = CurrentEncoding.EncodingName;
+
             Infobar_LineEnding.Text = textbox.LineEnding.ToString();
         }
 
+        private void UpdateEncodingInfobar()
+        {
+            Infobar_Encoding.Content = EncodingHelper.GetEncodingName(CurrentEncoding);
+        }
         private void CheckFirstStart()
         {
             if (AppSettings.GetSettings("FirstStart") == "")
@@ -193,10 +199,8 @@ namespace TextControlBox_DemoApp.Views
                         byte[] buffer = new byte[stream.Length];
                         stream.Read(buffer, 0, buffer.Length);
 
-                        reader.Read();
-                        encoding = reader.CurrentEncoding;
-
-                        return (encoding.GetString(buffer, 0, buffer.Length), encoding, true);
+                        encoding = EncodingHelper.DetectTextEncoding(buffer, out string text);
+                        return (text, encoding, true);
                     }
                 }
             }
@@ -314,8 +318,7 @@ namespace TextControlBox_DemoApp.Views
                 {
                     SelectCodeLanguageByFile(file);
                     CurrentEncoding = res.encoding;
-                    Infobar_Encoding.Text = CurrentEncoding.EncodingName;
-
+                    UpdateEncodingInfobar();
                     textbox.LoadText(res.Text);
                     Infobar_LineEnding.Text = textbox.LineEnding.ToString();
                     textbox.GoToLine(0);
@@ -409,7 +412,8 @@ namespace TextControlBox_DemoApp.Views
                         return;
 
                     //Check if the file already exists
-                    bool FileAlreadyExists = Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
+                    Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
+                    bool FileAlreadyExists = !Infobar_RenameFile.IsEnabled;
 
                     if (FileAlreadyExists)
                     {
@@ -663,7 +667,6 @@ namespace TextControlBox_DemoApp.Views
             else
                 textbox.ZoomFactor = (int)ZoomSlider.Value;
         }
-
         private void ZoomSlider_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             //reset to default
@@ -714,6 +717,17 @@ namespace TextControlBox_DemoApp.Views
         private void Flyout_Closed(object sender, object e)
         {
             textbox.Focus(FocusState.Programmatic);
+        }
+
+        private void Infobar_Encoding_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuFlyoutItem mfI && mfI.Tag != null)
+            {
+                CurrentEncoding = EncodingHelper.GetEncodingByIndex(ConvertHelper.ToInt(mfI.Tag.ToString()));
+                UpdateEncodingInfobar();
+                UnsavedChanges = true;
+                UpdateTitle();
+            }
         }
     }
 }

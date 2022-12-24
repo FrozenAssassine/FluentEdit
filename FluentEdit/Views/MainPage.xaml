@@ -183,11 +183,12 @@
                 <Button Background="Transparent" BorderThickness="0"  x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="80">
                     <Button.Flyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem Text="Ansi" Tag="0" Click="Infobar_Encoding_Click"/>
-                            <MenuFlyoutItem Text="Utf-8" Tag="1" Click="Infobar_Encoding_Click"/>
-                            <MenuFlyoutItem Text="Utf-8 Bom" Tag="2" Click="Infobar_Encoding_Click"/>
-                            <MenuFlyoutItem Text="Utf-16 LE" Tag="3" Click="Infobar_Encoding_Click"/>
-                            <MenuFlyoutItem Text="Utf-16 BE" Tag="4" Click="Infobar_Encoding_Click"/>
+                            <MenuFlyoutItem Text="UTF-8" Tag="1" Click="Infobar_Encoding_Click"/>
+                            <MenuFlyoutItem Text="UTF-8 BOM" Tag="2" Click="Infobar_Encoding_Click"/>
+                            <MenuFlyoutItem Text="UTF-16 LE" Tag="3" Click="Infobar_Encoding_Click"/>
+                            <MenuFlyoutItem Text="UTF-16 BE" Tag="4" Click="Infobar_Encoding_Click"/>
+                            <MenuFlyoutItem Text="UTF-16 LE BOM" Tag="5" Click="Infobar_Encoding_Click"/>
+                            <MenuFlyoutItem Text="UTF-16 BE BOM" Tag="6" Click="Infobar_Encoding_Click"/>
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>

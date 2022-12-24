@@ -63,7 +63,7 @@ namespace TextControlBox_DemoApp.Views
 
             //Update the infobar
             textbox_ZoomChanged(textbox, 100);
-            Infobar_Encoding.Text = CurrentEncoding.EncodingName;
+            Infobar_Encoding.Content = CurrentEncoding.EncodingName;
             Infobar_LineEnding.Text = textbox.LineEnding.ToString();
         }
 
@@ -314,7 +314,7 @@ namespace TextControlBox_DemoApp.Views
                 {
                     SelectCodeLanguageByFile(file);
                     CurrentEncoding = res.encoding;
-                    Infobar_Encoding.Text = CurrentEncoding.EncodingName;
+                    Infobar_Encoding.Content = CurrentEncoding.EncodingName;
 
                     textbox.LoadText(res.Text);
                     Infobar_LineEnding.Text = textbox.LineEnding.ToString();

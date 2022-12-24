@@ -179,8 +179,19 @@
                         </Flyout>
                     </Button.Flyout>
                 </Button>
-                <TextBlock x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
-                <TextBlock x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
+
+                <Button Background="Transparent" BorderThickness="0"  x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="80">
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Ansi" Tag="0" Click="Infobar_Encoding_Click"/>
+                            <MenuFlyoutItem Text="Utf-8" Tag="1" Click="Infobar_Encoding_Click"/>
+                            <MenuFlyoutItem Text="Utf-8 Bom" Tag="2" Click="Infobar_Encoding_Click"/>
+                            <MenuFlyoutItem Text="Utf-16 LE" Tag="3" Click="Infobar_Encoding_Click"/>
+                            <MenuFlyoutItem Text="Utf-16 BE" Tag="4" Click="Infobar_Encoding_Click"/>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+                <TextBlock x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="80"></TextBlock>
             </StackPanel>
         </Grid>
 

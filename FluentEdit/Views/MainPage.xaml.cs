@@ -318,7 +318,6 @@ namespace TextControlBox_DemoApp.Views
 
                     textbox.LoadText(res.Text);
                     Infobar_LineEnding.Text = textbox.LineEnding.ToString();
-                    textbox.GoToLine(0);
                     textbox.ScrollLineIntoView(0);
                     SetPositionInInfobar(0, 0);
                     UnsavedChanges = false;

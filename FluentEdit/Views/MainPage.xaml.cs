@@ -17,21 +17,17 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Storage;
-using static System.Net.WebRequestMethods;
 using Windows.UI.Core;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
-using Windows.Storage.Streams;
-using Newtonsoft.Json.Linq;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Core.Preview;
-using Windows.ApplicationModel.Activation;
-using Windows.UI.Popups;
-using TextControlBox.Helper;
 using Windows.Storage.AccessCache;
-using Microsoft.UI.Xaml.CustomAttributes;
+using Fastedit2.Helper;
+using FluentEdit.Helper;
+using Windows.UI.WindowManagement;
+using Windows.UI.Xaml.Hosting;
+using System.Diagnostics;
 
 namespace TextControlBox_DemoApp.Views
 {
@@ -63,10 +59,14 @@ namespace TextControlBox_DemoApp.Views
 
             //Update the infobar
             textbox_ZoomChanged(textbox, 100);
-            Infobar_Encoding.Content = CurrentEncoding.EncodingName;
             Infobar_LineEnding.Text = textbox.LineEnding.ToString();
+            UpdateEncodingInfobar();
         }
 
+        private void UpdateEncodingInfobar()
+        {
+            Infobar_Encoding.Content = EncodingHelper.GetEncodingName(CurrentEncoding);
+        }
         private void CheckFirstStart()
         {
             if (AppSettings.GetSettings("FirstStart") == "")
@@ -178,25 +178,25 @@ namespace TextControlBox_DemoApp.Views
             titleDisplay.Text = (appView.Title = (UnsavedChanges ? "*" : "") + FileName) + " - FluentEdit";
             FileNameDisplay.Text = Infobar_FileNameInput.Text = FileName;
         }
-        public async Task<(string Text, Encoding encoding, bool Succed)> ReadTextFromFileAsync(StorageFile file, Encoding encoding = null)
+
+        public async Task<(string text, Encoding encoding, bool Succed)> ReadTextFromFileAsync(StorageFile file, Encoding encoding = null)
         {
             try
             {
                 if (file == null)
-                    return ("", Encoding.Default, false);
+                    return (null, Encoding.Default, false);
 
                 using (var stream = (await file.OpenReadAsync()).AsStreamForRead())
-                {
-                    //Detect the encoding:
+                {               
                     using (var reader = new StreamReader(stream, true))
                     {
+                        //Detect the encoding:
                         byte[] buffer = new byte[stream.Length];
                         stream.Read(buffer, 0, buffer.Length);
+                        encoding = EncodingHelper.DetectTextEncoding(buffer, out string text);
 
-                        reader.Read();
-                        encoding = reader.CurrentEncoding;
-
-                        return (encoding.GetString(buffer, 0, buffer.Length), encoding, true);
+                        //read the text with the encoding:
+                        return (text, encoding, true);
                     }
                 }
             }
@@ -209,7 +209,7 @@ namespace TextControlBox_DemoApp.Views
             {
                 ShowInfobar(InfoBarSeverity.Error, ex.Message, "Read file exception");
             }
-            return ("", Encoding.Default, false);
+            return (null, Encoding.Default, false);
         }
         public async Task<bool> WriteTextToFileAsync(StorageFile file, string text, Encoding encoding)
         {
@@ -227,14 +227,15 @@ namespace TextControlBox_DemoApp.Views
                     return true;
                 }        
 
+                //clear the file content
                 await FileIO.WriteTextAsync(file, "");
                 using (var stream = await file.OpenStreamForWriteAsync())
                 {
                     using (var writer = new StreamWriter(stream, encoding))
                     {
-                        await writer.WriteAsync(text);
-                        return true;
+                        writer.Write(text);
                     }
+                    return true;
                 }
             }
             catch (UnauthorizedAccessException)
@@ -314,9 +315,9 @@ namespace TextControlBox_DemoApp.Views
                 {
                     SelectCodeLanguageByFile(file);
                     CurrentEncoding = res.encoding;
-                    Infobar_Encoding.Content = CurrentEncoding.EncodingName;
+                    UpdateEncodingInfobar();
 
-                    textbox.LoadText(res.Text);
+                    textbox.LoadText(res.text);
                     Infobar_LineEnding.Text = textbox.LineEnding.ToString();
                     textbox.ScrollLineIntoView(0);
                     SetPositionInInfobar(0, 0);
@@ -331,46 +332,19 @@ namespace TextControlBox_DemoApp.Views
             if (file == null)
                 return;
 
-            switch (file.FileType.ToLower())
+            string extension = file.FileType.ToLower();
+
+            //search through the dictionary of codelanguages in the textbox
+            foreach (var item in TextControlBox.TextControlBox.CodeLanguages)
             {
-                case ".cpp":
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("Cpp");
-                    break;
-                case ".html":
-                case ".htm":
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("Html");
-                    break;
-                case ".cs":
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("CSharp");
-                    break;
-                case ".bat":
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("Batch");
-                    break;
-                case ".json":
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("Json");
-                    break;
-                case ".gcode":
-                case ".nc":
-                case ".cnc":
-                case ".tap":
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("GCode");
-                    break;
-                case ".js":
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("Javascript");
-                    break;
-                case ".php":
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("PHP");
-                    break;
-                case ".ini":
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("ConfigFile");
-                    break;
-                case ".hex":
-                case ".bin":
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId("HexFile");
-                    break;
-                default:
-                    textbox.CodeLanguage = null;
-                    break;
+                for (int i = 0; i < item.Value.Filter.Length; i++)
+                {
+                    if (item.Value.Filter[i].Equals(extension, StringComparison.OrdinalIgnoreCase))
+                    {
+                        textbox.CodeLanguage = item.Value;
+                        return;
+                    }
+                }
             }
         }
         private void OpenSearch()
@@ -387,7 +361,7 @@ namespace TextControlBox_DemoApp.Views
         }
         private void SetPositionInInfobar(int line, int charPos)
         {
-            Infobar_Cursor.Text = "Ln: " + (line + 1) + ", Col:" + charPos;
+            Infobar_Cursor.Content = "Ln: " + (line + 1) + ", Col:" + charPos;
         }
         private async void Renamefile(string newName)
         {
@@ -412,7 +386,7 @@ namespace TextControlBox_DemoApp.Views
 
                     if (FileAlreadyExists)
                     {
-                        ShowInfobar(InfoBarSeverity.Error, "A file with this name already exists", "File exists");
+                        ShowInfobar(InfoBarSeverity.Error, "A file with this name already exists\nor there is no access to the path", "File exists/no access");
                         return;
                     }
 
@@ -432,6 +406,7 @@ namespace TextControlBox_DemoApp.Views
             FileName = newFileName;
             UpdateTitle();
         }
+
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -463,7 +438,10 @@ namespace TextControlBox_DemoApp.Views
             var deferral = e.GetDeferral();
 
             if (IsContentDialogOpen())
+            {
                 e.Handled = true;
+                return;
+            }
 
             if (await CheckUnsavedChanges())
                 e.Handled = true;
@@ -515,40 +493,46 @@ namespace TextControlBox_DemoApp.Views
         private void Undo_Click(object sender, RoutedEventArgs e)
         {
             textbox.Undo();
+            textbox.Focus(FocusState.Programmatic);
         }
         private void Redo_Click(object sender, RoutedEventArgs e)
         {
             textbox.Redo();
+            textbox.Focus(FocusState.Programmatic);
         }
         private void Cut_Click(object sender, RoutedEventArgs e)
         {
             textbox.Cut();
+            textbox.Focus(FocusState.Programmatic);
         }
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
             textbox.Copy();
+            textbox.Focus(FocusState.Programmatic);
         }
         private void Paste_Click(object sender, RoutedEventArgs e)
         {
             textbox.Paste();
+            textbox.Focus(FocusState.Programmatic);
         }
         private void SelectAll_Click(object sender, RoutedEventArgs e)
         {
             textbox.SelectAll();
+            textbox.Focus(FocusState.Programmatic);
         }
         private void Language_Click(object sender, RoutedEventArgs e)
         {
             if (sender is MenuFlyoutItem item)
             {
-                if (item.Tag.ToString() == "")
-                    textbox.CodeLanguage = null;
-                else
-                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId(item.Tag.ToString());
+                textbox.CodeLanguage = item.Tag == null ? null : TextControlBox.TextControlBox.GetCodeLanguageFromId(item.Tag.ToString());
+
+                textbox.Focus(FocusState.Programmatic);
             }
         }
         private void DuplicateLine_Click(object sender, RoutedEventArgs e)
         {
             textbox.DuplicateLine(textbox.CurrentLineIndex);
+            textbox.Focus(FocusState.Programmatic);
         }
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
@@ -559,14 +543,22 @@ namespace TextControlBox_DemoApp.Views
             if (sender is MenuFlyoutItem item)
             {
                 textbox.UseSpacesInsteadTabs = item.Tag.ToString().Equals("0");
+                textbox.Focus(FocusState.Programmatic);
             }
         }
         private void Search_Click(object sender, RoutedEventArgs e)
         {
+            if (SearchBox.Visibility == Visibility.Visible)
+            {
+                SearchBox.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+
             OpenSearch();
         }
 
-        private void textbox_TextChanged(TextControlBox.TextControlBox sender, string Text)
+        private void textbox_TextChanged(TextControlBox.TextControlBox sender)
         {
             UnsavedChanges = true;
             UpdateTitle();
@@ -677,12 +669,19 @@ namespace TextControlBox_DemoApp.Views
         //Infobar-FileName:
         private async void FileNameDisplay_DragStarting(UIElement sender, DragStartingEventArgs args)
         {
-            args.AllowedOperations = DataPackageOperation.Copy;
+            try
+            {
+                args.AllowedOperations = DataPackageOperation.Copy;
 
-            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName == "" ? ".txt" : FileName, CreationCollisionOption.OpenIfExists);
-            await FileIO.WriteTextAsync(file, textbox.GetText());
+                StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName == "" ? ".txt" : FileName, CreationCollisionOption.OpenIfExists);
+                await FileIO.WriteTextAsync(file, textbox.GetText());
 
-            args.Data.SetStorageItems(new IStorageItem[] { file });
+                args.Data.SetStorageItems(new IStorageItem[] { file });
+            }
+            catch
+            {
+                ShowInfobar(InfoBarSeverity.Error, "Could not drag the document", "Drag file error");
+            }
         }
         private void Infobar_RenameFile_Click(object sender, RoutedEventArgs e)
         {
@@ -702,9 +701,7 @@ namespace TextControlBox_DemoApp.Views
                 var currentFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
                 if (currentFile != null)
                 {
-                    Debug.WriteLine("Check: " + Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
-                    bool res = Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
-                    Debug.WriteLine("Exists: " + !res);
+                    Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
                 }
             }
         }
@@ -714,6 +711,54 @@ namespace TextControlBox_DemoApp.Views
         {
             textbox.Focus(FocusState.Programmatic);
         }
+
+        //Infobar-Gotoline flyout:
+        private void Infobar_GoToLine_Click(object sender, RoutedEventArgs e)
+        {
+            int line = (int)Infobar_GoToLineTextbox.Value - 1;
+
+            textbox.GoToLine(line);
+            textbox.ScrollLineIntoView(textbox.CursorPosition.LineNumber);
+            textbox.ClearSelection();
+            textbox.Focus(FocusState.Programmatic);
+
+            Infobar_GoToLineFlyout.Hide();
+        }    
+        private void Infobar_GoToLineFlyout_Opened(object sender, object e)
+        {
+            Infobar_GoToLineTextbox.Maximum = textbox.NumberOfLines;
+            Infobar_GoToLineTextbox.Focus(FocusState.Programmatic);
+        }
+        private void GoToLineTextbox_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                Infobar_GoToLine_Click(sender, null);
+            }
+        }
+
+        //Infobar-Encodings:
+        private void Infobar_Encoding_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuFlyoutItem mfi && mfi.Tag != null)
+            {
+                CurrentEncoding = EncodingHelper.GetEncodingByIndex(ConvertHelper.ToInt(mfi.Tag));
+                UpdateEncodingInfobar();
+            }
+        }
+
+        private async void CompactOverlay_Click(object sender, RoutedEventArgs e)
+        {
+            await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(
+              ApplicationView.GetForCurrentView().ViewMode == ApplicationViewMode.Default ? ApplicationViewMode.CompactOverlay : ApplicationViewMode.Default);
+        }
+
+        private void Fullscreen_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ApplicationView.GetForCurrentView().IsFullScreenMode)
+                ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
+            else
+                ApplicationView.GetForCurrentView().ExitFullScreenMode();
+        }
     }
 }
-    

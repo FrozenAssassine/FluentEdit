@@ -19,6 +19,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
+        
         <Grid x:Name="Titlebar" Background="Transparent" Grid.Row="0" Height="30" Margin="0,0,170,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="LeftPaddingColumn" Width="0"/>
@@ -60,6 +61,7 @@
                         <KeyboardAccelerator Key="S" Modifiers="Control, Shift"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
+                <MenuFlyoutSeparator/>
                 <MenuFlyoutItem Text="Exit" Click="ExitApp_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="F4" Modifiers="Menu"/>
@@ -118,6 +120,17 @@
                     <MenuFlyoutItem Text="Spaces" Tag="0" Click="TabMode_Click"/>
                     <MenuFlyoutItem Text="Tabs" Tag="1"  Click="TabMode_Click"/>
                 </MenuFlyoutSubItem>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem Text="Compact overlay" Click="CompactOverlay_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="K" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Fullscreen" Click="Fullscreen_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F11"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
             </muxc:MenuBarItem>
         </muxc:MenuBar>
 
@@ -125,7 +138,7 @@
             TextChanged="textbox_TextChanged" SelectionChanged="textbox_SelectionChanged" ZoomChanged="textbox_ZoomChanged"                               
         />
 
-        <Grid x:Name="SearchBox" BorderThickness="1" Visibility="Collapsed" Grid.Row="1" Width="270" Height="40" VerticalAlignment="Top" HorizontalAlignment="Center" BorderBrush="{ThemeResource SystemAccentColorDark1}" CornerRadius="5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,0" x:Name="SearchBox" BorderThickness="1" Visibility="Collapsed" Width="270" Height="40" BorderBrush="{ThemeResource SystemAccentColorDark1}" CornerRadius="5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
@@ -133,19 +146,18 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox KeyDown="SearchContent_Textbox_KeyDown" x:Name="SearchContent_Textbox" TextChanged="SearchContent_Textbox_TextChanged" Height="30" Grid.Column="0" Width="140"/>
+            <TextBox PlaceholderText="Search" KeyDown="SearchContent_Textbox_KeyDown" x:Name="SearchContent_Textbox" TextChanged="SearchContent_Textbox_TextChanged" Height="30" Grid.Column="0" Width="140"/>
 
             <Button Click="FindNext_Click" Height="40" Width="30" Padding="0" Grid.Column="1"  Background="Transparent" BorderThickness="0">
-                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70D;"/>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE70D;"/>
             </Button>
             <Button Click="FindPrevious_Click" Height="40" Width="30" Padding="0" Grid.Column="2" Background="Transparent" BorderThickness="0">
-                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70E;"/>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE70E;"/>
             </Button>
             <Button Click="CloseSearch_Click" Height="40" Width="40" Padding="0" Grid.Column="4" Background="Transparent" BorderThickness="0">
-                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;"/>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE711;"/>
             </Button>
         </Grid>
-
         <Button Click="Settings_Click" Margin="0,7,10,0" BorderThickness="0" Padding="0" Grid.Row="1" Width="30" Height="30" Background="Transparent" HorizontalAlignment="Right" x:Name="SettingsButton" VerticalAlignment="Top">
             <muxc:AnimatedIcon Width="16" Height="16" x:Name="SettingAnimatedIcon" >
                 <muxc:AnimatedIcon.Source>
@@ -171,7 +183,16 @@
                 </Button.Content>
             </Button>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
-                <TextBlock x:Name="Infobar_Cursor" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="120"></TextBlock>
+                <Button Background="Transparent" BorderThickness="0" BorderBrush="Transparent" x:Name="Infobar_Cursor" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="80">
+                    <Button.Flyout>
+                        <Flyout x:Name="Infobar_GoToLineFlyout" Closed="Flyout_Closed" Opened="Infobar_GoToLineFlyout_Opened">
+                            <StackPanel Orientation="Horizontal">
+                                <muxc:NumberBox AcceptsExpression="False" Height="33" SmallChange="1" LargeChange="50" Maximum="{x:Bind textbox.NumberOfLines, Mode=OneWay}" Minimum="0" Width="120" x:Name="Infobar_GoToLineTextbox" PlaceholderText="Go to" Margin="0,0,0,0" KeyUp="GoToLineTextbox_KeyUp"/>
+                                <Button Height="32" Margin="10,0,0,0" Click="Infobar_GoToLine_Click" Content="&#xE73E;" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>                    
+                </Button>
                 <Button PointerWheelChanged="Infobar_Zoom_PointerWheelChanged" DoubleTapped="ZoomSlider_DoubleTapped" Background="Transparent" BorderThickness="0" x:Name="Infobar_Zoom" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,0,5,0" MinWidth="110">
                     <Button.Flyout>
                         <Flyout Closed="Flyout_Closed">
@@ -182,7 +203,7 @@
 
                 <Button Background="Transparent" BorderThickness="0"  x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="80">
                     <Button.Flyout>
-                        <MenuFlyout>
+                        <MenuFlyout Closed="Flyout_Closed">
                             <MenuFlyoutItem Text="UTF-8" Tag="1" Click="Infobar_Encoding_Click"/>
                             <MenuFlyoutItem Text="UTF-8 BOM" Tag="2" Click="Infobar_Encoding_Click"/>
                             <MenuFlyoutItem Text="UTF-16 LE" Tag="3" Click="Infobar_Encoding_Click"/>
@@ -195,7 +216,6 @@
                 <TextBlock x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="80"></TextBlock>
             </StackPanel>
         </Grid>
-
 
         <muxc:InfoBar Grid.Row="2" x:Name="InfoDisplay" Title="Test" Message="Hello World" Severity="Warning" IsOpen="False" IsClosable="True" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"/>
 

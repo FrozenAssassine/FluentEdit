@@ -44,7 +44,9 @@
                 <StackPanel Grid.Row="2" VerticalAlignment="Top">
                     <muxc:Expander HorizontalAlignment="Stretch" Margin="0,0,20,0" HorizontalContentAlignment="Stretch">
                         <muxc:Expander.Header>
-                            <TextBlock FontSize="18" Text="Font:"/>
+                            <Grid Height="70">
+                                <TextBlock VerticalAlignment="Center" FontSize="18" Text="Font:"/>
+                            </Grid>
                         </muxc:Expander.Header>
                         <muxc:Expander.Content>
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -68,7 +70,7 @@
                         </muxc:Expander.Content>
                     </muxc:Expander>
 
-                    <Grid Margin="0,5,20,0" Height="50" CornerRadius="5" Padding="{StaticResource ExpanderHeaderPadding}" HorizontalAlignment="Stretch" Background="{ThemeResource ExpanderHeaderBackground}" BorderThickness="{ThemeResource ExpanderHeaderBorderThickness}" BorderBrush="{ThemeResource ExpanderHeaderBorderBrush}">
+                    <Grid Margin="0,5,20,0" Height="70" CornerRadius="5" Padding="{StaticResource ExpanderHeaderPadding}" HorizontalAlignment="Stretch" Background="{ThemeResource ExpanderHeaderBackground}" BorderThickness="{ThemeResource ExpanderHeaderBorderThickness}" BorderBrush="{ThemeResource ExpanderHeaderBorderBrush}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Theme:"/>
                         </StackPanel>

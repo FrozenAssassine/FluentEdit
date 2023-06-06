@@ -19,14 +19,10 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Core;
 using Windows.ApplicationModel;
 using Windows.UI.Core.Preview;
-
-// Die Elementvorlage "Leere Seite" wird unter https://go.microsoft.com/fwlink/?LinkId=234238 dokumentiert.
+using FluentEdit.Helper;
 
 namespace TextControlBox_DemoApp.Views
 {
-    /// <summary>
-    /// Eine leere Seite, die eigenständig verwendet oder zu der innerhalb eines Rahmens navigiert werden kann.
-    /// </summary>
     public sealed partial class SettingsPage : Page
     {
         public List<string> Fonts
@@ -112,11 +108,7 @@ namespace TextControlBox_DemoApp.Views
         {
             AppSettings.SaveSettings("theme", themeCombobox.SelectedIndex);
 
-            //change the theme
-            if (Window.Current.Content is FrameworkElement rootElement)
-            {
-                rootElement.RequestedTheme = (ElementTheme)Enum.Parse(typeof(ElementTheme), themeCombobox.SelectedIndex.ToString());
-            }
+            ThemeHelper.CurrentTheme = (ElementTheme)Enum.Parse(typeof(ElementTheme), themeCombobox.SelectedIndex.ToString());
         }
         private void fontFamilyCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -126,6 +118,12 @@ namespace TextControlBox_DemoApp.Views
         private void fontSizeNumberBox_ValueChanged(Microsoft.UI.Xaml.Controls.NumberBox sender, Microsoft.UI.Xaml.Controls.NumberBoxValueChangedEventArgs args)
         {
             AppSettings.SaveSettings("fontSize", fontSizeNumberBox.Value);
+        }
+
+        private void Page_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Escape)
+                App.TryGoBack();
         }
     }
 }

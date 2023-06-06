@@ -28,19 +28,20 @@ using FluentEdit.Helper;
 using Windows.UI.WindowManagement;
 using Windows.UI.Xaml.Hosting;
 using System.Diagnostics;
+using FluentEdit.Core;
+using FluentEdit.Dialogs;
+using FluentEdit.Storage;
+using FluentEdit.Controls;
 
 namespace TextControlBox_DemoApp.Views
 {
     public sealed partial class MainPage : Page
     {
         private const string UntitledFileName = "Untitled.txt";
+        private TextDocument document = new TextDocument();
 
-        private bool UnsavedChanges = false;
         private CoreApplicationViewTitleBar coreTitleBar;
-        private Encoding CurrentEncoding = Encoding.UTF8;
-        private string FileToken = "";
-        private string FileName = "";
-        private bool FileIsDragDropped = false;
+        public bool FileIsDragDropped = false;
         DispatcherTimer InfobarCloseTimer = new DispatcherTimer();
         ApplicationView appView = ApplicationView.GetForCurrentView();
 
@@ -51,7 +52,7 @@ namespace TextControlBox_DemoApp.Views
             //event to handle closing
             SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += Application_OnCloseRequest;
 
-            FileName = UntitledFileName;
+            document.FileName = UntitledFileName;
 
             UpdateTitle();
             CustomTitleBar();
@@ -63,26 +64,21 @@ namespace TextControlBox_DemoApp.Views
             UpdateEncodingInfobar();
         }
 
-        private void UpdateEncodingInfobar()
-        {
-            Infobar_Encoding.Content = EncodingHelper.GetEncodingName(CurrentEncoding);
-        }
         private void CheckFirstStart()
         {
             if (AppSettings.GetSettings("FirstStart") == "")
             {
-                //DragDropFile_Info = (TeachingTip)FindName("DragDropFile_Info");
                 AppSettings.SaveSettings("FirstStart", "1");
             }
         }
-        private void ShowInfobar(InfoBarSeverity severity, string message, string title)
+        public void ShowInfobar(InfoBarSeverity severity, string message, string title)
         {
             InfoDisplay.Message = message;
             InfoDisplay.Title = title;
             InfoDisplay.Severity = severity;
             InfoDisplay.IsOpen = true;
 
-            InfobarCloseTimer.Interval = new TimeSpan(0, 0, 4);
+            InfobarCloseTimer.Interval = new TimeSpan(0, 0, 6);
             InfobarCloseTimer.Start();
             InfobarCloseTimer.Tick += delegate
             {
@@ -124,10 +120,7 @@ namespace TextControlBox_DemoApp.Views
             textbox.FontFamily = new FontFamily(AppSettings.GetSettings("fontFamily") ?? "Consolas");
             textbox.FontSize = AppSettings.GetSettingsAsInt("fontSize", 18);
 
-            if (Window.Current.Content is FrameworkElement rootElement)
-            {
-                textbox.RequestedTheme = rootElement.RequestedTheme = (ElementTheme)Enum.Parse(typeof(ElementTheme), AppSettings.GetSettingsAsInt("theme", 0).ToString());
-            }
+            textbox.RequestedTheme = ThemeHelper.CurrentTheme = (ElementTheme)Enum.Parse(typeof(ElementTheme), AppSettings.GetSettingsAsInt("theme", 0).ToString());
         }
         private void CustomTitleBar()
         {
@@ -151,183 +144,69 @@ namespace TextControlBox_DemoApp.Views
             // For example, when the title bar is invoked in full screen mode.
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
         }
-        private async Task<bool> CheckUnsavedChanges()
-        {
-            if (!UnsavedChanges)
-                return false;
 
-            var SaveDialog = new ContentDialog
-            {
-                Title = "Save file?",
-                Content = "Would you like to save the file?",
-                PrimaryButtonText = "Save",
-                SecondaryButtonText = "Don't save",
-                CloseButtonText = "Cancel",
-                DefaultButton = ContentDialogButton.Primary,
-                RequestedTheme = this.ActualTheme
-            };
-            var res = await SaveDialog.ShowAsync();
-            if(res == ContentDialogResult.Primary)
-                return !await SaveFile();
-            else if (res == ContentDialogResult.None)
-                return true;
-            return false;
+        public void UpdateLineEndings()
+        {
+            Infobar_LineEnding.Text = textbox.LineEnding.ToString();
         }
-        private void UpdateTitle()
+        public void UpdateTitle()
         {
-            titleDisplay.Text = (appView.Title = (UnsavedChanges ? "*" : "") + FileName) + " - FluentEdit";
-            FileNameDisplay.Text = Infobar_FileNameInput.Text = FileName;
+            titleDisplay.Text = (appView.Title = (document.UnsavedChanges ? "*" : "") + document.FileName) + " - FluentEdit";
+            FileNameDisplay.Text = Infobar_FileNameInput.Text = document.FileName;
         }
-
-        public async Task<(string text, Encoding encoding, bool Succed)> ReadTextFromFileAsync(StorageFile file, Encoding encoding = null)
+        public void UpdateEncodingInfobar()
         {
-            try
-            {
-                if (file == null)
-                    return (null, Encoding.Default, false);
+            Infobar_Encoding.Content = EncodingHelper.GetEncodingName(document.CurrentEncoding);
+        }
+        public void SetPositionInInfobar(int line, int charPos)
+        {
+            Infobar_Cursor.Content = "Ln: " + (line + 1) + ", Col:" + charPos;
+        }
+        private async void Renamefile(string newName)
+        {
+            string newFileName = Infobar_FileNameInput.Text;
 
-                using (var stream = (await file.OpenReadAsync()).AsStreamForRead())
-                {               
-                    using (var reader = new StreamReader(stream, true))
+            Infobar_RenameFile.IsEnabled = newFileName.Length > 0;
+            if (newFileName.Length < 1)
+                return;
+
+            //File has been saved or opened
+            if (document.FileToken.Length > 0)
+            {
+                var currentFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(document.FileToken);
+                if (currentFile != null)
+                {
+                    //Nothing to rename
+                    if (currentFile.Name == newFileName)
+                        return;
+
+                    //Check if the file already exists
+                    bool FileAlreadyExists = Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
+
+                    if (FileAlreadyExists)
                     {
-                        //Detect the encoding:
-                        byte[] buffer = new byte[stream.Length];
-                        stream.Read(buffer, 0, buffer.Length);
-                        encoding = EncodingHelper.DetectTextEncoding(buffer, out string text);
-
-                        //read the text with the encoding:
-                        return (text, encoding, true);
+                        ShowInfobar(InfoBarSeverity.Error, "A file with this name already exists\nor there is no access to the path", "File exists/no access");
+                        return;
                     }
-                }
-            }
-            catch (UnauthorizedAccessException)
-            {
-                ShowInfobar(InfoBarSeverity.Error, "No access to read from file", "No access");
 
-            }
-            catch (Exception ex)
-            {
-                ShowInfobar(InfoBarSeverity.Error, ex.Message, "Read file exception");
-            }
-            return (null, Encoding.Default, false);
-        }
-        public async Task<bool> WriteTextToFileAsync(StorageFile file, string text, Encoding encoding)
-        {
-            try
-            {
-                if (file == null)
-                    return false;
-
-                //Only do this for drag/dropped files
-                if (FileIsDragDropped)
-                {
-                    var bytestoWrite = encoding.GetBytes(text);
-                    var buffer = encoding.GetPreamble().Concat(bytestoWrite).ToArray();
-                    await PathIO.WriteBytesAsync(file.Path, buffer);
-                    return true;
-                }        
-
-                //clear the file content
-                await FileIO.WriteTextAsync(file, "");
-                using (var stream = await file.OpenStreamForWriteAsync())
-                {
-                    using (var writer = new StreamWriter(stream, encoding))
+                    try
                     {
-                        writer.Write(text);
+                        await currentFile.RenameAsync(newFileName, NameCollisionOption.FailIfExists);
+                        document.FileToken = StorageApplicationPermissions.FutureAccessList.Add(currentFile);
                     }
-                    return true;
-                }
-            }
-            catch (UnauthorizedAccessException)
-            {
-                ShowInfobar(InfoBarSeverity.Error, "No access to write to file", "No access");
-            }
-            catch (Exception ex)
-            {
-                ShowInfobar(InfoBarSeverity.Error, ex.Message, "Write file exception");
-            }
-            return false;
-        }
-        private async Task<bool> SaveFile(bool ForceSaveNew = false)
-        {
-            if (FileToken.Length == 0 || ForceSaveNew)
-            {
-                var savePicker = new Windows.Storage.Pickers.FileSavePicker();
-                savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.ComputerFolder;
-
-                //Add the extension of the current file
-                savePicker.FileTypeChoices.Add("Current extension", new List<string>() { Path.GetExtension(FileName) });
-                //Add the other extensions
-                savePicker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
-
-                 savePicker.SuggestedFileName = FileName;
-
-                StorageFile file = await savePicker.PickSaveFileAsync();
-                if (file != null)
-                {
-                    CachedFileManager.DeferUpdates(file);
-                    await WriteTextToFileAsync(file, textbox.GetText(), CurrentEncoding);
-                    Windows.Storage.Provider.FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
-
-                    if (status == Windows.Storage.Provider.FileUpdateStatus.Complete)
+                    catch (Exception ex)
                     {
-                        //delete the old file permission and add a new one
-                        if (FileToken.Length > 0)
-                            StorageApplicationPermissions.FutureAccessList.Remove(FileToken);
-                        FileToken = StorageApplicationPermissions.FutureAccessList.Add(file);
-                     
-                        FileName = file.Name;
-                        UnsavedChanges = false;
-                        UpdateTitle();
-                        return true;
+                        ShowInfobar(InfoBarSeverity.Error, ex.Message, "Exception");
+                        return;
                     }
-                }
-            }
-            else
-            {
-                if (StorageApplicationPermissions.FutureAccessList.ContainsItem(FileToken))
-                {
-                    StorageFile file = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
-                    FileName = file.Name;
 
-                    var res = await WriteTextToFileAsync(file, textbox.GetText(), CurrentEncoding);
-                    if (res == true)
-                    {
-                        UnsavedChanges = false;
-                        UpdateTitle();
-                    }
-                    return res;
                 }
-                else
-                    return await SaveFile(true);
             }
-            return false;
+            document.FileName = newFileName;
+            UpdateTitle();
         }
-        private async Task OpenFile(StorageFile file)
-        {
-            if (file != null)
-            {
-                FileName = file.Name;
-                FileToken = StorageApplicationPermissions.FutureAccessList.Add(file);
 
-                var res = await ReadTextFromFileAsync(file);
-                if (res.Succed)
-                {
-                    SelectCodeLanguageByFile(file);
-                    CurrentEncoding = res.encoding;
-                    UpdateEncodingInfobar();
-
-                    textbox.LoadText(res.text);
-                    Infobar_LineEnding.Text = textbox.LineEnding.ToString();
-                    textbox.ScrollLineIntoView(0);
-                    SetPositionInInfobar(0, 0);
-                    UnsavedChanges = false;
-
-                    UpdateTitle();
-                }
-            }
-        }
-        private void SelectCodeLanguageByFile(StorageFile file)
+        public void SelectCodeLanguageByFile(StorageFile file)
         {
             if (file == null)
                 return;
@@ -347,65 +226,6 @@ namespace TextControlBox_DemoApp.Views
                 }
             }
         }
-        private void OpenSearch()
-        {
-            SearchBox.Visibility = Visibility.Visible;
-            SearchContent_Textbox.Text = "";
-            SearchContent_Textbox.Focus(FocusState.Programmatic);
-        }
-        private void CloseSearch()
-        {
-            textbox.EndSearch();
-            SearchBox.Visibility = Visibility.Collapsed;
-            SearchContent_Textbox.Text = "";
-        }
-        private void SetPositionInInfobar(int line, int charPos)
-        {
-            Infobar_Cursor.Content = "Ln: " + (line + 1) + ", Col:" + charPos;
-        }
-        private async void Renamefile(string newName)
-        {
-            string newFileName = Infobar_FileNameInput.Text;
-
-            Infobar_RenameFile.IsEnabled = newFileName.Length > 0;
-            if (newFileName.Length < 1)
-                return;
-
-            //File has been saved or opened
-            if (FileToken.Length > 0)
-            {
-                var currentFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
-                if (currentFile != null)
-                {
-                    //Nothing to rename
-                    if (currentFile.Name == newFileName)
-                        return;
-
-                    //Check if the file already exists
-                    bool FileAlreadyExists = Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
-
-                    if (FileAlreadyExists)
-                    {
-                        ShowInfobar(InfoBarSeverity.Error, "A file with this name already exists\nor there is no access to the path", "File exists/no access");
-                        return;
-                    }
-
-                    try
-                    {
-                        await currentFile.RenameAsync(newFileName, NameCollisionOption.FailIfExists);
-                        FileToken = StorageApplicationPermissions.FutureAccessList.Add(currentFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        ShowInfobar(InfoBarSeverity.Error, ex.Message, "Exception");
-                        return;
-                    }
-
-                }
-            }
-            FileName = newFileName;
-            UpdateTitle();
-        }
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -418,7 +238,7 @@ namespace TextControlBox_DemoApp.Views
             if (e.Parameter is IReadOnlyList<IStorageItem> files)
             {
                 if(files.Count >= 1)
-                    await OpenFile(files[0] as StorageFile);
+                    await OpenFileHelper.OpenFile(this, document, textbox, files[0] as StorageFile);
             }
         }
 
@@ -443,7 +263,7 @@ namespace TextControlBox_DemoApp.Views
                 return;
             }
 
-            if (await CheckUnsavedChanges())
+            if (await AskSaveDialog.CheckUnsavedChanges(this, document, textbox))
                 e.Handled = true;
 
             deferral.Complete();
@@ -451,41 +271,33 @@ namespace TextControlBox_DemoApp.Views
 
         private async void OpenFile_Click(object sender, RoutedEventArgs e)
         {
-            if (await CheckUnsavedChanges())
-                return;
-
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-            picker.FileTypeFilter.Add("*");
-            FileIsDragDropped = false;
-            await OpenFile(await picker.PickSingleFileAsync());
+            await OpenFileHelper.OpenFile(this, document, textbox);
         }
         private async void NewFile_Click(object sender, RoutedEventArgs e)
         {
-            if (await CheckUnsavedChanges())
+            if (await AskSaveDialog.CheckUnsavedChanges(this, document, textbox))
                 return;
             FileIsDragDropped = false;
-            FileName = UntitledFileName;
-            FileToken = "";
-            UnsavedChanges = false;
+            document.FileName = UntitledFileName;
+            document.FileToken = "";
+            document.UnsavedChanges = false;
             UpdateTitle();
             textbox.LoadText("");
         }
         private async void SaveFile_Click(object sender, RoutedEventArgs e)
         {
-            await SaveFile(false);
+            await SaveFileHelper.SaveFile(this, document, textbox, false);
         }
         private async void SaveFileAs_Click(object sender, RoutedEventArgs e)
         {
-            await SaveFile(true);
+            await SaveFileHelper.SaveFile(this, document, textbox, true);
         }
         private async void ExitApp_Click(object sender, RoutedEventArgs e)
         {
             if (IsContentDialogOpen())
                 return;
 
-            if (await CheckUnsavedChanges())
+            if (await AskSaveDialog.CheckUnsavedChanges(this, document, textbox))
                 return;
 
             await ApplicationView.GetForCurrentView().TryConsolidateAsync();
@@ -546,21 +358,43 @@ namespace TextControlBox_DemoApp.Views
                 textbox.Focus(FocusState.Programmatic);
             }
         }
+        private void ZoomIn_Click(object sender, RoutedEventArgs e)
+        {
+            textbox.ZoomFactor += 5;
+        }
+        private void ZoomOut_Click(object sender, RoutedEventArgs e)
+        {
+            textbox.ZoomFactor -= 5;
+        }
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            if (SearchBox.Visibility == Visibility.Visible)
-            {
-                SearchBox.Visibility = Visibility.Collapsed;
-                return;
-            }
+            SearchBox.ShowSearch(textbox);
+        }
+        private void Replace_Click(object sender, RoutedEventArgs e)
+        {
+            SearchBox.ShowReplace(textbox);
+        }
 
-
-            OpenSearch();
+        private async void CompactOverlay_Click(object sender, RoutedEventArgs e)
+        {
+            await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(
+              ApplicationView.GetForCurrentView().ViewMode == ApplicationViewMode.Default ? ApplicationViewMode.CompactOverlay : ApplicationViewMode.Default);
+        }
+        private void Fullscreen_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ApplicationView.GetForCurrentView().IsFullScreenMode)
+                ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
+            else
+                ApplicationView.GetForCurrentView().ExitFullScreenMode();
+        }
+        private async void ShowFileInfo_Click(object sender, RoutedEventArgs e)
+        {
+            await FileInfoDialog.Show(document, textbox);
         }
 
         private void textbox_TextChanged(TextControlBox.TextControlBox sender)
         {
-            UnsavedChanges = true;
+            document.UnsavedChanges = true;
             UpdateTitle();
         }
         private void textbox_ZoomChanged(TextControlBox.TextControlBox sender, int ZoomFactor)
@@ -575,10 +409,7 @@ namespace TextControlBox_DemoApp.Views
 
         private void Page_ActualThemeChanged(FrameworkElement sender, object args)
         {
-            if (Window.Current.Content is FrameworkElement rootElement)
-            {
-                textbox.RequestedTheme = rootElement.RequestedTheme;
-            }
+            textbox.RequestedTheme = ThemeHelper.CurrentTheme;
         }
         private async void Page_Drop(object sender, DragEventArgs e)
         {
@@ -587,11 +418,11 @@ namespace TextControlBox_DemoApp.Views
                 var files = await e.DataView.GetStorageItemsAsync();
                 if (files.Count >= 1)
                 {
-                    if (await CheckUnsavedChanges())
+                    if (await AskSaveDialog.CheckUnsavedChanges(this, document, textbox))
                         return;
 
                     FileIsDragDropped = true;
-                    await OpenFile(files[0] as StorageFile);
+                    await OpenFileHelper.OpenFile(this, document, textbox, files[0] as StorageFile);
                 }
             }
         }
@@ -599,44 +430,7 @@ namespace TextControlBox_DemoApp.Views
         {
             e.AcceptedOperation = DataPackageOperation.Copy;
         }
-        private void SearchContent_Textbox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            textbox.BeginSearch(SearchContent_Textbox.Text, false, false);
-        }
-        private void SearchContent_Textbox_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            var shift = Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
-            if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                if (shift)
-                    textbox.FindPrevious();
-                else
-                    textbox.FindNext();
-            }
-            else if (e.Key == Windows.System.VirtualKey.Escape)
-            {
-                CloseSearch();
-            }
-        }
-        private void FindPrevious_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                textbox.FindPrevious();
-            }
-            catch (IndexOutOfRangeException)
-            {
 
-            }
-        }
-        private void FindNext_Click(object sender, RoutedEventArgs e)
-        {
-            textbox.FindNext();
-        }
-        private void CloseSearch_Click(object sender, RoutedEventArgs e)
-        {
-            CloseSearch();
-        }
         private void ZoomSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (ZoomSlider.Tag != null && (ZoomSlider.Tag.ToString() ?? "") == "LOCK")
@@ -654,7 +448,6 @@ namespace TextControlBox_DemoApp.Views
             else
                 textbox.ZoomFactor = (int)ZoomSlider.Value;
         }
-
         private void ZoomSlider_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             //reset to default
@@ -673,7 +466,7 @@ namespace TextControlBox_DemoApp.Views
             {
                 args.AllowedOperations = DataPackageOperation.Copy;
 
-                StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(FileName == "" ? ".txt" : FileName, CreationCollisionOption.OpenIfExists);
+                StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(document.FileName == "" ? ".txt" : document.FileName, CreationCollisionOption.OpenIfExists);
                 await FileIO.WriteTextAsync(file, textbox.GetText());
 
                 args.Data.SetStorageItems(new IStorageItem[] { file });
@@ -696,9 +489,9 @@ namespace TextControlBox_DemoApp.Views
                 return;
 
             //File has been saved or opened
-            if (FileToken.Length > 0)
+            if (document.FileToken.Length > 0)
             {
-                var currentFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(FileToken);
+                var currentFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(document.FileToken);
                 if (currentFile != null)
                 {
                     Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
@@ -742,23 +535,9 @@ namespace TextControlBox_DemoApp.Views
         {
             if (sender is MenuFlyoutItem mfi && mfi.Tag != null)
             {
-                CurrentEncoding = EncodingHelper.GetEncodingByIndex(ConvertHelper.ToInt(mfi.Tag));
+                document.CurrentEncoding = EncodingHelper.GetEncodingByIndex(ConvertHelper.ToInt(mfi.Tag));
                 UpdateEncodingInfobar();
             }
-        }
-
-        private async void CompactOverlay_Click(object sender, RoutedEventArgs e)
-        {
-            await ApplicationView.GetForCurrentView().TryEnterViewModeAsync(
-              ApplicationView.GetForCurrentView().ViewMode == ApplicationViewMode.Default ? ApplicationViewMode.CompactOverlay : ApplicationViewMode.Default);
-        }
-
-        private void Fullscreen_Click(object sender, RoutedEventArgs e)
-        {
-            if (!ApplicationView.GetForCurrentView().IsFullScreenMode)
-                ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
-            else
-                ApplicationView.GetForCurrentView().ExitFullScreenMode();
         }
     }
 }

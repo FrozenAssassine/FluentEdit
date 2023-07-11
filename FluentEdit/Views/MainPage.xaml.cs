@@ -32,6 +32,7 @@ using FluentEdit.Core;
 using FluentEdit.Dialogs;
 using FluentEdit.Storage;
 using FluentEdit.Controls;
+using Windows.ApplicationModel;
 
 namespace TextControlBox_DemoApp.Views
 {
@@ -57,6 +58,7 @@ namespace TextControlBox_DemoApp.Views
             UpdateTitle();
             CustomTitleBar();
             CheckFirstStart();
+            CheckNewVersion();
 
             //Update the infobar
             textbox_ZoomChanged(textbox, 100);
@@ -69,6 +71,16 @@ namespace TextControlBox_DemoApp.Views
             if (AppSettings.GetSettings("FirstStart") == "")
             {
                 AppSettings.SaveSettings("FirstStart", "1");
+            }
+        }
+        private void CheckNewVersion()
+        {
+            string version = Package.Current.Id.Version.Major + "." + Package.Current.Id.Version.Minor + "." + Package.Current.Id.Version.Build;
+            if (!((AppSettings.GetSettings("Version") ?? "").Equals(version)))
+            {
+                AppSettings.SaveSettings("Version", version);
+                NewVersionInfobar = FindName("NewVersionInfobar") as NewVersionInfobar;
+                NewVersionInfobar.Show(version);
             }
         }
         public void ShowInfobar(InfoBarSeverity severity, string message, string title)
@@ -402,7 +414,7 @@ namespace TextControlBox_DemoApp.Views
             Infobar_Zoom.Content = ZoomFactor + "%";
             ZoomSlider_ValueChanged(null, null);
         }
-        private void textbox_SelectionChanged(TextControlBox.TextControlBox sender, TextControlBox.Text.SelectionChangedEventHandler args)
+        private void textbox_SelectionChanged(TextControlBox.TextControlBox sender, TextControlBox.SelectionChangedEventHandler args)
         {
             SetPositionInInfobar(args.LineNumber, args.CharacterPositionInLine);
         }

@@ -16,9 +16,10 @@
 </div>
 
 ### Features:
-- Syntaxhighlighting for C#, C++, Html, Batch, GCode and Json
-- Linenumbering
-- Linehighlighting
+- Syntax highlighting for Batch, Config file, C++, C#, CSV, CSS, GCode, Hex, Html, Java, Javascript, JSON, Markdown, LaTex, PHP, Python, QSharp, Toml, and XML
+- Line numbering
+- Line highlighting
+- Auto bracket and quotation mark completion
 - Outstanding performance
 - Packed with useful features
 

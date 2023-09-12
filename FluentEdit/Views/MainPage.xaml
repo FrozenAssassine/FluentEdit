@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals" xmlns:textcontrolbox="using:TextControlBox" xmlns:controls="using:FluentEdit.Controls" xmlns:dialogs="using:FluentEdit.Dialogs"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals" xmlns:textcontrolbox="using:TextControlBox" xmlns:controls="using:FluentEdit.Controls" xmlns:dialogs="using:FluentEdit.Dialogs" xmlns:models="using:FluentEdit.Models"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
@@ -133,6 +133,12 @@
                         <KeyboardAccelerator Key="I" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Quick Access" Click="ShowQuickAccess_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="B" Modifiers="Control"/>
+                        <KeyboardAccelerator Key="P" Modifiers="Control,Shift"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
             </muxc:MenuBarItem>
             <muxc:MenuBarItem Title="View">
                 <MenuFlyoutItem Text="Compact overlay" Click="CompactOverlay_Click">
@@ -221,6 +227,29 @@
 
         <muxc:InfoBar Grid.Row="2" x:Name="InfoDisplay" Title="Test" Message="Hello World" Severity="Warning" IsOpen="False" IsClosable="True" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"/>
 
-        <dialogs:NewVersionInfobar  HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Margin="0,0,10,0" x:Load="False" x:Name="NewVersionInfobar"/>
+        <dialogs:NewVersionInfobar Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" x:Load="False" x:Name="NewVersionInfobar"/>
+        <controls:QuickAccess Grid.Row="2" x:Name="QuickAccess" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0">
+            <controls:QuickAccess.Items>
+                <models:QuickAccessSubItem Command="Syntaxhighlighting" x:Name="RunCommandWindowItem_CodeLanguages"/>
+                <models:QuickAccessItem Command="Copy" Shortcut="Ctrl + C" RunCommandWindowItemClicked="Copy_Click"/>
+                <models:QuickAccessItem Command="Paste" Shortcut="Ctrl + V" RunCommandWindowItemClicked="Paste_Click"/>
+                <models:QuickAccessItem Command="Cut" Shortcut="Ctrl + X" RunCommandWindowItemClicked="Cut_Click"/>
+                <models:QuickAccessItem Command="Duplicate line" Shortcut="Ctrl + D" RunCommandWindowItemClicked="DuplicateLine_Click"/>
+                <models:QuickAccessItem Command="File info" Shortcut="Ctrl + I" RunCommandWindowItemClicked="ShowFileInfo_Click"/>
+                <models:QuickAccessItem Command="Open file" Shortcut="Ctrl + O" RunCommandWindowItemClicked="OpenFile_Click"/>
+                <models:QuickAccessItem Command="Redo" Shortcut="Ctrl + Y" RunCommandWindowItemClicked="Redo_Click"/>
+                <models:QuickAccessItem Command="Undo" Shortcut="Ctrl + Z" RunCommandWindowItemClicked="Undo_Click"/>
+                <models:QuickAccessItem Command="Zoom in" Shortcut="Ctrl + +" RunCommandWindowItemClicked="ZoomIn_Click"/>
+                <models:QuickAccessItem Command="Zoom out" Shortcut="Ctrl + -" RunCommandWindowItemClicked="ZoomOut_Click"/>
+                <models:QuickAccessItem Command="Save as" Shortcut="Ctrl + Shift + S" RunCommandWindowItemClicked="SaveFileAs_Click"/>
+                <models:QuickAccessItem Command="Save" Shortcut="Ctrl + S" RunCommandWindowItemClicked="SaveFile_Click"/>
+                <models:QuickAccessItem Command="Select all" Shortcut="Ctrl + A" RunCommandWindowItemClicked="SelectAll_Click"/>
+                <models:QuickAccessItem Command="Settings" Shortcut="F1" RunCommandWindowItemClicked="Settings_Click"/>
+                <models:QuickAccessItem Command="Fullscreen" Shortcut="F11" RunCommandWindowItemClicked="Fullscreen_Click"/>
+                <models:QuickAccessItem Command="Compact overlay" Shortcut="Ctrl + K" RunCommandWindowItemClicked="CompactOverlay_Click"/>
+                <models:QuickAccessItem Command="Search" Shortcut="Ctrl + F" RunCommandWindowItemClicked="Search_Click"/>
+                <models:QuickAccessItem Command="Replace" Shortcut="Ctrl + R" RunCommandWindowItemClicked="Replace_Click"/>
+            </controls:QuickAccess.Items>
+        </controls:QuickAccess>
     </Grid>
 </Page>

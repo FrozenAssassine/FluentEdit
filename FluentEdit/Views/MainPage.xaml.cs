@@ -1,38 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.ViewManagement;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Storage;
-using Windows.UI.Core;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Core.Preview;
 using Windows.Storage.AccessCache;
 using Fastedit2.Helper;
 using FluentEdit.Helper;
-using Windows.UI.WindowManagement;
-using Windows.UI.Xaml.Hosting;
-using System.Diagnostics;
 using FluentEdit.Core;
 using FluentEdit.Dialogs;
 using FluentEdit.Storage;
 using FluentEdit.Controls;
 using Windows.ApplicationModel;
+using FluentEdit.Models;
 
 namespace TextControlBox_DemoApp.Views
 {
@@ -125,7 +115,22 @@ namespace TextControlBox_DemoApp.Views
                 };
                 menuItem.Click += Language_Click;
                 LanguagesMenubarItem.Items.Add(menuItem);
+
+                var runCommandWindowItem = new QuickAccessItem
+                {
+                    Command = item.Value.Name,
+                    Tag = item.Key,
+                };
+                runCommandWindowItem.RunCommandWindowItemClicked += Language_Click;
+                RunCommandWindowItem_CodeLanguages.Items.Add(runCommandWindowItem);
             }
+            var noneCmdWindowItem = new QuickAccessItem
+            {
+                Command = "None",
+                Tag = "",
+            };
+            noneCmdWindowItem.RunCommandWindowItemClicked += Language_Click;
+            RunCommandWindowItem_CodeLanguages.Items.Add(noneCmdWindowItem);
         }
         private void ApplySettings()
         {
@@ -352,6 +357,16 @@ namespace TextControlBox_DemoApp.Views
 
                 textbox.Focus(FocusState.Programmatic);
             }
+            else if (sender is QuickAccessItem rcwitem)
+            {
+                if (rcwitem != null && rcwitem.Tag != null)
+                {
+                    if (rcwitem.Tag.ToString().Length == 0)
+                        textbox.CodeLanguage = null;
+
+                    textbox.CodeLanguage = TextControlBox.TextControlBox.GetCodeLanguageFromId(rcwitem.Tag.ToString());
+                }
+            }
         }
         private void DuplicateLine_Click(object sender, RoutedEventArgs e)
         {
@@ -403,6 +418,11 @@ namespace TextControlBox_DemoApp.Views
         {
             await FileInfoDialog.Show(document, textbox);
         }
+        private void ShowQuickAccess_Click(object sender, RoutedEventArgs e)
+        {
+            QuickAccess.Show();
+        }
+
 
         private void textbox_TextChanged(TextControlBox.TextControlBox sender)
         {

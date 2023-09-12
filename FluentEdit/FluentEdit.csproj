@@ -130,6 +130,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="Controls\QuickAccess.xaml.cs">
+      <DependentUpon>QuickAccess.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SearchControl.xaml.cs">
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,9 @@
     <Compile Include="Helper\FileExtensions.cs" />
     <Compile Include="Helper\SizeCalculationHelper.cs" />
     <Compile Include="Helper\ThemeHelper.cs" />
+    <Compile Include="Models\IQuickAccessItem.cs" />
+    <Compile Include="Models\QuickAccessItem.cs" />
+    <Compile Include="Models\QuickAccessSubItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\OpenFileHelper.cs" />
     <Compile Include="Storage\SaveFileHelper.cs" />
@@ -222,6 +228,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\QuickAccess.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\SearchControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

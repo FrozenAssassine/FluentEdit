@@ -1,25 +1,18 @@
 ﻿using Microsoft.Graphics.Canvas.Text;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.ViewManagement;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.UI.Core;
 using Windows.ApplicationModel;
 using Windows.UI.Core.Preview;
 using FluentEdit.Helper;
+using static System.Net.WebRequestMethods;
 
 namespace TextControlBox_DemoApp.Views
 {
@@ -33,7 +26,8 @@ namespace TextControlBox_DemoApp.Views
             }
         }
         private CoreApplicationViewTitleBar coreTitleBar;
-
+        public Uri donoURL = new Uri("https://www.paypal.com/donate?business=julius@frozenassassine.de&no_recurring=0&item_name=Support+FrozenAssassines+Work&currency_code=EUR");
+        
         public SettingsPage()
         {
             this.InitializeComponent();

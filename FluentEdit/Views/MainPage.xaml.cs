@@ -162,6 +162,13 @@ namespace TextControlBox_DemoApp.Views
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
         }
 
+        public void UpdateWordCharacterCount()
+        {
+            int charCount = textbox.CharacterCount;
+
+            Infobar_WordCount.Text = "W: " + (charCount < 5_000_000 ? CountWordsHelper.CountWordsSpan(textbox.Lines).ToString() : "");
+            Infobar_CharacterCount.Text = "C: " + textbox.CharacterCount;
+        }
         public void UpdateLineEndings()
         {
             Infobar_LineEnding.Text = textbox.LineEnding.ToString();
@@ -181,45 +188,43 @@ namespace TextControlBox_DemoApp.Views
         }
         private async void Renamefile(string newName)
         {
-            string newFileName = Infobar_FileNameInput.Text;
-
-            Infobar_RenameFile.IsEnabled = newFileName.Length > 0;
-            if (newFileName.Length < 1)
+            if (document.FileToken.Length == 0)
+            {
+                document.FileName = newName;
+                UpdateTitle();
                 return;
+            }
 
             //File has been saved or opened
-            if (document.FileToken.Length > 0)
+            var currentFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(document.FileToken);
+            if (currentFile != null)
             {
-                var currentFile = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(document.FileToken);
-                if (currentFile != null)
+                //Nothing to rename
+                if (currentFile.Name == newName)
+                    return;
+
+                //Check if the file already exists
+                bool FileAlreadyExists = Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newName));
+
+                if (FileAlreadyExists)
                 {
-                    //Nothing to rename
-                    if (currentFile.Name == newFileName)
-                        return;
+                    ShowInfobar(InfoBarSeverity.Error, "A file with this name already exists\nor there is no access to the path", "File exists/no access");
+                    return;
+                }
 
-                    //Check if the file already exists
-                    bool FileAlreadyExists = Infobar_RenameFile.IsEnabled = !Directory.Exists(Path.Combine(Path.GetDirectoryName(currentFile.Path), newFileName));
-
-                    if (FileAlreadyExists)
-                    {
-                        ShowInfobar(InfoBarSeverity.Error, "A file with this name already exists\nor there is no access to the path", "File exists/no access");
-                        return;
-                    }
-
-                    try
-                    {
-                        await currentFile.RenameAsync(newFileName, NameCollisionOption.FailIfExists);
-                        document.FileToken = StorageApplicationPermissions.FutureAccessList.Add(currentFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        ShowInfobar(InfoBarSeverity.Error, ex.Message, "Exception");
-                        return;
-                    }
-
+                try
+                {
+                    await currentFile.RenameAsync(newName, NameCollisionOption.FailIfExists);
+                    document.FileToken = StorageApplicationPermissions.FutureAccessList.Add(currentFile);
+                }
+                catch (Exception ex)
+                {
+                    ShowInfobar(InfoBarSeverity.Error, ex.Message, "Exception");
+                    return;
                 }
             }
-            document.FileName = newFileName;
+
+            document.FileName = newName;
             UpdateTitle();
         }
 
@@ -401,6 +406,14 @@ namespace TextControlBox_DemoApp.Views
         {
             SearchBox.ShowReplace(textbox);
         }
+        private async void Rename_Click(object sender, RoutedEventArgs e)
+        {
+            var res = await RenameDialog.ShowAsync(document.FileName);
+            if (!res.res)
+                return;
+
+            Renamefile(res.newName);
+        }
 
         private async void CompactOverlay_Click(object sender, RoutedEventArgs e)
         {
@@ -428,6 +441,7 @@ namespace TextControlBox_DemoApp.Views
         {
             document.UnsavedChanges = true;
             UpdateTitle();
+            UpdateWordCharacterCount();
         }
         private void textbox_ZoomChanged(TextControlBox.TextControlBox sender, int ZoomFactor)
         {

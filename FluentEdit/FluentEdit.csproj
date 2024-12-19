@@ -19,7 +19,7 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <PackageCertificateThumbprint>31005D76C01117397C1391884CCCB2CD42D16455</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>2BBA8FE7C631E99E9787AC559A1461196BAB43CE</PackageCertificateThumbprint>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
@@ -140,7 +140,9 @@
     <Compile Include="Dialogs\AskSaveDialog.cs" />
     <Compile Include="Dialogs\FileInfoDialog.cs" />
     <Compile Include="Dialogs\NewVersionInfobar.cs" />
+    <Compile Include="Dialogs\RenameDialog.cs" />
     <Compile Include="Helper\ConvertHelper.cs" />
+    <Compile Include="Helper\CountWordsHelper.cs" />
     <Compile Include="Helper\DialogHelper.cs" />
     <Compile Include="Helper\EncodingHelper.cs" />
     <Compile Include="Helper\FileExtensions.cs" />

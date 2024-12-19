@@ -49,7 +49,7 @@ namespace FluentEdit.Dialogs
             if (textbox.CodeLanguage != null)
                 content.AppendLine("Code language: " + textbox.CodeLanguage.Name);
 
-            content.AppendLine("Words: " + CountWords(textbox.Lines));
+            content.AppendLine("Words: " + CountWordsHelper.CountWordsSpan(textbox.Lines));
             content.AppendLine("Lines: " + textbox.NumberOfLines);
             content.AppendLine("Characters: " + textbox.CharacterCount);
             content.AppendLine("Encoding: " + EncodingHelper.GetEncodingName(document.CurrentEncoding));
@@ -63,18 +63,6 @@ namespace FluentEdit.Dialogs
                 RequestedTheme = DialogHelper.DialogTheme,
             };
             await dialog.ShowAsync();
-        }
-
-        public static int CountWords(IEnumerable<string> lines)
-        {
-            int words = 0;
-            IEnumerator enumerator = lines.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                object currentItem = enumerator.Current;
-                words += currentItem.ToString().Count(x => x == '\n' || x == '\r' || x == ' ') + 1;
-            }
-            return words;
         }
     }
 }

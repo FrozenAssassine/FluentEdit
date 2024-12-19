@@ -72,6 +72,8 @@ namespace FluentEdit.Controls
         }
         public void Hide()
         {
+            itemHostListView.SelectedItem = null;
+            currentPage = null;
             hideControlAnimation.Begin();
         }
 
@@ -144,7 +146,6 @@ namespace FluentEdit.Controls
             }
             else if (e.Key == Windows.System.VirtualKey.Enter)
             {
-                ItemClicked(itemHostListView.SelectedItem ?? itemHostListView.Items[0]);
                 if (itemHostListView.SelectedItem == null)
                     return;
 

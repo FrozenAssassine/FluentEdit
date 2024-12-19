@@ -133,6 +133,11 @@
                         <KeyboardAccelerator Key="I" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
+                <MenuFlyoutItem Text="Rename" Click="Rename_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F2" Modifiers="None"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
                 <MenuFlyoutItem Text="Quick Access" Click="ShowQuickAccess_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="B" Modifiers="Control"/>
@@ -191,6 +196,9 @@
                 </Button.Content>
             </Button>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+                <TextBlock ToolTipService.ToolTip="Word count" x:Name="Infobar_WordCount" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Center" MinWidth="80"></TextBlock>
+                <TextBlock ToolTipService.ToolTip="Character count" x:Name="Infobar_CharacterCount" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Center" MinWidth="80"></TextBlock>
+
                 <Button Background="Transparent" BorderThickness="0" BorderBrush="Transparent" x:Name="Infobar_Cursor" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="80">
                     <Button.Flyout>
                         <Flyout x:Name="Infobar_GoToLineFlyout" Closed="Flyout_Closed" Opened="Infobar_GoToLineFlyout_Opened">
@@ -201,7 +209,7 @@
                         </Flyout>
                     </Button.Flyout>                    
                 </Button>
-                <Button PointerWheelChanged="Infobar_Zoom_PointerWheelChanged" DoubleTapped="ZoomSlider_DoubleTapped" Background="Transparent" BorderThickness="0" x:Name="Infobar_Zoom" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,0,5,0" MinWidth="110">
+                <Button PointerWheelChanged="Infobar_Zoom_PointerWheelChanged" DoubleTapped="ZoomSlider_DoubleTapped" Background="Transparent" BorderThickness="0" x:Name="Infobar_Zoom" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,0,5,0" MinWidth="60">
                     <Button.Flyout>
                         <Flyout Closed="Flyout_Closed">
                             <Slider TickFrequency="5" TickPlacement="Outside" StepFrequency="5" DoubleTapped="ZoomSlider_DoubleTapped" Header="Zoom: " x:Name="ZoomSlider" ValueChanged="ZoomSlider_ValueChanged" Width="150" Value="100" Maximum="400" Minimum="20"/>
@@ -209,7 +217,7 @@
                     </Button.Flyout>
                 </Button>
 
-                <Button Background="Transparent" BorderThickness="0"  x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="80">
+                <Button Background="Transparent" BorderThickness="0"  x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="60">
                     <Button.Flyout>
                         <MenuFlyout Closed="Flyout_Closed">
                             <MenuFlyoutItem Text="UTF-8" Tag="1" Click="Infobar_Encoding_Click"/>
@@ -221,7 +229,7 @@
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>
-                <TextBlock x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="80"></TextBlock>
+                <TextBlock x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="40"></TextBlock>
             </StackPanel>
         </Grid>
 
@@ -248,6 +256,7 @@
                 <models:QuickAccessItem Command="Fullscreen" Shortcut="F11" RunCommandWindowItemClicked="Fullscreen_Click"/>
                 <models:QuickAccessItem Command="Compact overlay" Shortcut="Ctrl + K" RunCommandWindowItemClicked="CompactOverlay_Click"/>
                 <models:QuickAccessItem Command="Search" Shortcut="Ctrl + F" RunCommandWindowItemClicked="Search_Click"/>
+                <models:QuickAccessItem Command="Rename" Shortcut="F2" RunCommandWindowItemClicked="Rename_Click"/>
                 <models:QuickAccessItem Command="Replace" Shortcut="Ctrl + R" RunCommandWindowItemClicked="Replace_Click"/>
             </controls:QuickAccess.Items>
         </controls:QuickAccess>

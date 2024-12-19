@@ -40,7 +40,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock FontWeight="SemiBold" FontSize="36" Grid.Row="1" Text="Settings"/>
                 <StackPanel Grid.Row="2" VerticalAlignment="Top">
-                    <muxc:Expander HorizontalAlignment="Stretch" Margin="0,0,20,0" HorizontalContentAlignment="Stretch">
+                    <muxc:Expander HorizontalAlignment="Stretch" Margin="0,5,20,0" HorizontalContentAlignment="Stretch">
                         <muxc:Expander.Header>
                             <Grid Height="70">
                                 <TextBlock VerticalAlignment="Center" FontSize="18" Text="Font:"/>
@@ -68,7 +68,7 @@
                         </muxc:Expander.Content>
                     </muxc:Expander>
 
-                    <muxc:Expander HorizontalAlignment="Stretch" Margin="0,0,20,0" HorizontalContentAlignment="Stretch">
+                    <muxc:Expander HorizontalAlignment="Stretch" Margin="0,5,20,0" HorizontalContentAlignment="Stretch">
                         <muxc:Expander.Header>
                             <Grid Height="70">
                                 <Grid.ColumnDefinitions>

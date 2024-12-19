@@ -135,7 +135,7 @@ namespace TextControlBox_DemoApp.Views
         }
         private void ApplySettings()
         {
-            textbox.FontFamily = new FontFamily(AppSettings.GetSettings("fontFamily") ?? "Consolas");
+            textbox.FontFamily = new FontFamily(AppSettings.GetSettings("fontFamily", "Consolas"));
             textbox.FontSize = AppSettings.GetSettingsAsInt("fontSize", 18);
 
             textbox.RequestedTheme = ThemeHelper.CurrentTheme = (ElementTheme)Enum.Parse(typeof(ElementTheme), AppSettings.GetSettingsAsInt("theme", 0).ToString());
@@ -159,24 +159,17 @@ namespace TextControlBox_DemoApp.Views
 
         private void CustomTitleBar()
         {
-            // Hide default title bar.
             coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
             coreTitleBar.ExtendViewIntoTitleBar = true;
 
-            // Set caption buttons background to transparent.
             ApplicationViewTitleBar titleBar =
                 ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
-            // Set XAML element as a drag region.
             Window.Current.SetTitleBar(Titlebar);
 
-            // Register a handler for when the size of the overlaid caption control changes.
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-
-            // Register a handler for when the title bar visibility changes.
-            // For example, when the title bar is invoked in full screen mode.
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
         }
 

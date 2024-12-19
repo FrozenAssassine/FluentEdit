@@ -256,6 +256,7 @@ namespace TextControlBox_DemoApp.Views
             ApplySettings();
             CustomTitleBar();
             CreateMenubarFromLanguage();
+            UpdateWordCharacterCount();
 
             if (e.Parameter is IReadOnlyList<IStorageItem> files)
             {

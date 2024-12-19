@@ -46,6 +46,7 @@ namespace FluentEdit.Storage
 
                     mainpage.SelectCodeLanguageByFile(file);
                     mainpage.UpdateEncodingInfobar();
+                    mainpage.UpdateWordCharacterCount();
 
                     textbox.LoadText(res.text);
                     textbox.ScrollLineIntoView(0);

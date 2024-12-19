@@ -196,10 +196,10 @@
                 </Button.Content>
             </Button>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
-                <TextBlock ToolTipService.ToolTip="Word count" x:Name="Infobar_WordCount" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Center" MinWidth="80"></TextBlock>
-                <TextBlock ToolTipService.ToolTip="Character count" x:Name="Infobar_CharacterCount" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Center" MinWidth="80"></TextBlock>
+                <TextBlock Margin="2" ToolTipService.ToolTip="Word count" x:Name="Infobar_WordCount" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Center" MinWidth="45"></TextBlock>
+                <TextBlock Margin="2" ToolTipService.ToolTip="Character count" x:Name="Infobar_CharacterCount" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Center" MinWidth="45"></TextBlock>
 
-                <Button Background="Transparent" BorderThickness="0" BorderBrush="Transparent" x:Name="Infobar_Cursor" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="80">
+                <Button Background="Transparent" BorderThickness="0" BorderBrush="Transparent" x:Name="Infobar_Cursor" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="45">
                     <Button.Flyout>
                         <Flyout x:Name="Infobar_GoToLineFlyout" Closed="Flyout_Closed" Opened="Infobar_GoToLineFlyout_Opened">
                             <StackPanel Orientation="Horizontal">
@@ -209,7 +209,7 @@
                         </Flyout>
                     </Button.Flyout>                    
                 </Button>
-                <Button PointerWheelChanged="Infobar_Zoom_PointerWheelChanged" DoubleTapped="ZoomSlider_DoubleTapped" Background="Transparent" BorderThickness="0" x:Name="Infobar_Zoom" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,0,5,0" MinWidth="60">
+                <Button PointerWheelChanged="Infobar_Zoom_PointerWheelChanged" DoubleTapped="ZoomSlider_DoubleTapped" Background="Transparent" BorderThickness="0" x:Name="Infobar_Zoom" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2,0,2,0" MinWidth="40">
                     <Button.Flyout>
                         <Flyout Closed="Flyout_Closed">
                             <Slider TickFrequency="5" TickPlacement="Outside" StepFrequency="5" DoubleTapped="ZoomSlider_DoubleTapped" Header="Zoom: " x:Name="ZoomSlider" ValueChanged="ZoomSlider_ValueChanged" Width="150" Value="100" Maximum="400" Minimum="20"/>
@@ -217,7 +217,7 @@
                     </Button.Flyout>
                 </Button>
 
-                <Button Background="Transparent" BorderThickness="0"  x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="60">
+                <Button Background="Transparent" BorderThickness="0"  x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="40">
                     <Button.Flyout>
                         <MenuFlyout Closed="Flyout_Closed">
                             <MenuFlyoutItem Text="UTF-8" Tag="1" Click="Infobar_Encoding_Click"/>

@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:FluentEdit.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" KeyDown="Page_KeyDown">
@@ -68,17 +68,39 @@
                         </muxc:Expander.Content>
                     </muxc:Expander>
 
-                    <Grid Margin="0,5,20,0" Height="70" CornerRadius="5" Padding="{StaticResource ExpanderHeaderPadding}" HorizontalAlignment="Stretch" Background="{ThemeResource ExpanderHeaderBackground}" BorderThickness="{ThemeResource ExpanderHeaderBorderThickness}" BorderBrush="{ThemeResource ExpanderHeaderBorderBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Theme:"/>
-                        </StackPanel>
-                        <ComboBox HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Center"  x:Name="themeCombobox" SelectionChanged="themeCombobox_SelectionChanged" Width="150">
-                            <ComboBoxItem Content="System default" Tag="0"/>
-                            <ComboBoxItem Content="Light" Tag="1"/>
-                            <ComboBoxItem Content="Dark" Tag="2"/>
-                        </ComboBox>
-                    </Grid>
-
+                    <muxc:Expander HorizontalAlignment="Stretch" Margin="0,0,20,0" HorizontalContentAlignment="Stretch">
+                        <muxc:Expander.Header>
+                            <Grid Height="70">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="18" Text="Background:"/>
+                                <ComboBox VerticalAlignment="Center" x:Name="appBackgroundCombobox" Grid.Column="1" SelectionChanged="AppBackground_SelectionChanged">
+                                    <ComboBoxItem Content="Mica"/>
+                                    <ComboBoxItem Content="Acrylic"/>
+                                    <ComboBoxItem Content="Static"/>
+                                </ComboBox>
+                            </Grid>
+                        </muxc:Expander.Header>
+                        <muxc:Expander.Content>
+                            <Grid Margin="0,20,0,0">
+                                <Grid x:Name="micaGrid" HorizontalAlignment="Right">
+                                    <ComboBox HorizontalAlignment="Right" Margin="10" x:Name="themeCombobox" SelectionChanged="themeCombobox_SelectionChanged" Width="150">
+                                        <ComboBoxItem Content="System default" Tag="0"/>
+                                        <ComboBoxItem Content="Light" Tag="1"/>
+                                        <ComboBoxItem Content="Dark" Tag="2"/>
+                                    </ComboBox>
+                                </Grid>
+                                <Grid x:Name="acrylicGrid" HorizontalAlignment="Right">
+                                    <controls:ColorPickerButton HorizontalAlignment="Right" IsAlphaEnabled="True" Margin="10" x:Name="acrylicColorPicker" ColorChanged="acrylicColorPicker_ColorChanged"/>
+                                </Grid>
+                                <Grid x:Name="staticGrid" HorizontalAlignment="Right">
+                                    <controls:ColorPickerButton HorizontalAlignment="Right" IsAlphaEnabled="False" x:Name="staticColorPicker" Margin="10" ColorChanged="staticColorPicker_ColorChanged"/>
+                                </Grid>
+                            </Grid>
+                        </muxc:Expander.Content>
+                    </muxc:Expander>
                 </StackPanel>
                 <StackPanel Grid.Row="3" Margin="0,80,0,0">
                     <TextBlock Grid.Column="0" FontWeight="SemiBold" FontSize="36" Text="About"/>

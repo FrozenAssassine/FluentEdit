@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="FluentEdit.Controls.ColorPickerButton"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FluentEdit.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Border Margin="0,0,0,0" BorderThickness="1" Width="150" Height="30" BorderBrush="White" CornerRadius="5" Tapped="Rectangle_Tapped" x:Name="Colordisplay">
+            <Border.Background>
+                <SolidColorBrush Color="{x:Bind ColorPickerFlyout.Color, Mode=OneWay}"/>
+            </Border.Background>
+            <FlyoutBase.AttachedFlyout>
+                <Flyout x:Name="flyout" Closed="PickerFlyout_Closed">
+                    <muxc:ColorPicker Margin="0,0,0,0" IsMoreButtonVisible="True" x:Name="ColorPickerFlyout" IsAlphaEnabled="True" ColorSpectrumShape="Ring" HorizontalAlignment="Left"/>
+                </Flyout>
+            </FlyoutBase.AttachedFlyout>
+        </Border>
+    </Grid>
+</UserControl>

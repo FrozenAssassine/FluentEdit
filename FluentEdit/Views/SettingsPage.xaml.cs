@@ -12,7 +12,6 @@ using Windows.UI.Core;
 using Windows.ApplicationModel;
 using Windows.UI.Core.Preview;
 using FluentEdit.Helper;
-using static System.Net.WebRequestMethods;
 
 namespace TextControlBox_DemoApp.Views
 {
@@ -35,9 +34,13 @@ namespace TextControlBox_DemoApp.Views
             FillVersionDisplay();
             SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += SettingsPage_CloseRequested;
 
-            themeCombobox.SelectedIndex = AppSettings.GetSettingsAsInt("theme");
+            themeCombobox.SelectedIndex = AppSettings.GetSettingsAsInt("theme", 0);
             fontFamilyCombobox.SelectedIndex = AppSettings.GetSettingsAsInt("fontFamilyIndex", Fonts.IndexOf("Consolas"));
             fontSizeNumberBox.Value = AppSettings.GetSettingsAsInt("fontSize", 18);
+            appBackgroundCombobox.SelectedIndex = AppSettings.GetSettingsAsInt("BackgroundType", 0);
+
+            acrylicColorPicker.Color = FluentEdit.Helper.ColorConverter.ToColorWithAlpha(AppSettings.GetSettings("AcrylicBackground"), Color.FromArgb(150, 25, 25, 25));
+            staticColorPicker.Color = FluentEdit.Helper.ColorConverter.ToColor(AppSettings.GetSettings("StaticBackground"), Color.FromArgb(255, 25, 25, 25));
         }
 
         private void SettingsPage_CloseRequested(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
@@ -118,6 +121,46 @@ namespace TextControlBox_DemoApp.Views
         {
             if (e.Key == Windows.System.VirtualKey.Escape)
                 App.TryGoBack();
+        }
+
+        private void AppBackground_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (appBackgroundCombobox.SelectedIndex == -1)
+                return;
+
+            if(appBackgroundCombobox.SelectedIndex == 0)
+            {
+                micaGrid.Visibility = Visibility.Visible;  
+                staticGrid.Visibility = acrylicGrid.Visibility = Visibility.Collapsed;
+            }
+            else if(appBackgroundCombobox.SelectedIndex == 1)
+            {
+                acrylicGrid.Visibility = Visibility.Visible;
+                staticGrid.Visibility = micaGrid.Visibility = Visibility.Collapsed;
+            }
+            else if (appBackgroundCombobox.SelectedIndex == 2)
+            {
+                staticGrid.Visibility = Visibility.Visible;
+                acrylicGrid.Visibility = micaGrid.Visibility = Visibility.Collapsed;
+            }
+
+            AppSettings.SaveSettings("BackgroundType", appBackgroundCombobox.SelectedIndex);
+        }
+
+        private void acrylicColorPicker_ColorChanged(Microsoft.UI.Xaml.Controls.ColorPicker args)
+        {
+            if (!acrylicColorPicker.Color.HasValue)
+                return;
+
+            AppSettings.SaveSettings("AcrylicBackground", FluentEdit.Helper.ColorConverter.ToStringWithAlpha(acrylicColorPicker.Color.Value));
+        }
+
+        private void staticColorPicker_ColorChanged(Microsoft.UI.Xaml.Controls.ColorPicker args)
+        {
+            if (!staticColorPicker.Color.HasValue)
+                return;
+
+            AppSettings.SaveSettings("StaticBackground", FluentEdit.Helper.ColorConverter.ToString(staticColorPicker.Color.Value));
         }
     }
 }

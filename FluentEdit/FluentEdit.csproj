@@ -130,6 +130,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="Controls\ColorPickerButton.xaml.cs">
+      <DependentUpon>ColorPickerButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\QuickAccess.xaml.cs">
       <DependentUpon>QuickAccess.xaml</DependentUpon>
     </Compile>
@@ -141,6 +144,8 @@
     <Compile Include="Dialogs\FileInfoDialog.cs" />
     <Compile Include="Dialogs\NewVersionInfobar.cs" />
     <Compile Include="Dialogs\RenameDialog.cs" />
+    <Compile Include="Helper\BackgroundHelper.cs" />
+    <Compile Include="Helper\ColorConverter.cs" />
     <Compile Include="Helper\ConvertHelper.cs" />
     <Compile Include="Helper\CountWordsHelper.cs" />
     <Compile Include="Helper\DialogHelper.cs" />
@@ -230,6 +235,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\ColorPickerButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\QuickAccess.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -23,6 +23,7 @@ using FluentEdit.Storage;
 using FluentEdit.Controls;
 using Windows.ApplicationModel;
 using FluentEdit.Models;
+using System.Runtime.ConstrainedExecution;
 
 namespace TextControlBox_DemoApp.Views
 {
@@ -138,7 +139,24 @@ namespace TextControlBox_DemoApp.Views
             textbox.FontSize = AppSettings.GetSettingsAsInt("fontSize", 18);
 
             textbox.RequestedTheme = ThemeHelper.CurrentTheme = (ElementTheme)Enum.Parse(typeof(ElementTheme), AppSettings.GetSettingsAsInt("theme", 0).ToString());
+
+            int backgroundIndex = AppSettings.GetSettingsAsInt("BackgroundType");
+            if(backgroundIndex == 0)
+            {
+                BackgroundHelper.SetBackground(this, null, 0);
+            }
+            else if(backgroundIndex == 1)
+            {
+                var color = ColorConverter.ToColorWithAlpha(AppSettings.GetSettings("AcrylicBackground"), Color.FromArgb(150, 25,25,25));
+                BackgroundHelper.SetBackground(this, color, 1);
+            }
+            else if(backgroundIndex == 2)
+            {
+                var color = ColorConverter.ToColor(AppSettings.GetSettings("StaticBackground"), Color.FromArgb(255, 25, 25, 25));
+                BackgroundHelper.SetBackground(this, color, 2);
+            }
         }
+
         private void CustomTitleBar()
         {
             // Hide default title bar.

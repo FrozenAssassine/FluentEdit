@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("FluentEdit")]
-[assembly: AssemblyDescription("A simple but powerful texteditor")]
+[assembly: AssemblyDescription("A modern, easy-to-use text editor packed with powerful features for coding and everyday tasks.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("FluentEdit")]

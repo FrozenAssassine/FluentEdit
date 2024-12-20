@@ -139,6 +139,8 @@
     <Compile Include="Controls\SearchControl.xaml.cs">
       <DependentUpon>SearchControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\StringToVisibilityConverter.cs" />
+    <Compile Include="Converters\StringToVisibilityConverter_Inverted.cs" />
     <Compile Include="Core\TextDocument.cs" />
     <Compile Include="Dialogs\AskSaveDialog.cs" />
     <Compile Include="Dialogs\FileInfoDialog.cs" />

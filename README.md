@@ -27,5 +27,6 @@
 
 ### A little replacement for the Windows Editor I tried my very best to match the design of it
 
-<img src="images/DarkMode.png">
-<img src="images/LightMode.png">
+<img src="images/new/image3.png"/>
+<img src="images/new/image2.png"/>
+<img src="images/new/image7.png"/>

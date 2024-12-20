@@ -6,7 +6,6 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 
 namespace FluentEdit.Controls
 {
@@ -21,31 +20,6 @@ namespace FluentEdit.Controls
         }
         public void UpdateColors()
         {
-            UpdateColors(Items);
-        }
-
-        private Brush GetTextColor()
-        {
-            var DefaultTheme = new Windows.UI.ViewManagement.UISettings();
-            var uiTheme = DefaultTheme.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background).ToString();
-            if (uiTheme == "#FF000000")
-                return new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
-            else if (uiTheme == "#FFFFFFFF")
-                return new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
-            return null;
-        }
-
-        public void UpdateColors(List<IQuickAccessItem> items)
-        {
-            var textcolor = GetTextColor();
-            foreach (var item in items)
-            {
-                if (item is QuickAccessSubItem sub_item)
-                {
-                    UpdateColors(sub_item.Items);
-                }
-                item.TextColor = textcolor;
-            }
             grid.RequestedTheme = DialogHelper.DialogTheme;
         }
 
@@ -155,6 +129,11 @@ namespace FluentEdit.Controls
         private void hideControlAnimation_Completed(object sender, object e)
         {
             this.Visibility = Visibility.Collapsed;
+        }
+
+        private void usercontrol_LostFocus(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
         }
     }
 }

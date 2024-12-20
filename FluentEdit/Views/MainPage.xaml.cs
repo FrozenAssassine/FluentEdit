@@ -15,7 +15,6 @@ using Windows.Storage;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Core.Preview;
 using Windows.Storage.AccessCache;
-using Fastedit2.Helper;
 using FluentEdit.Helper;
 using FluentEdit.Core;
 using FluentEdit.Dialogs;
@@ -23,7 +22,6 @@ using FluentEdit.Storage;
 using FluentEdit.Controls;
 using Windows.ApplicationModel;
 using FluentEdit.Models;
-using System.Runtime.ConstrainedExecution;
 
 namespace TextControlBox_DemoApp.Views
 {

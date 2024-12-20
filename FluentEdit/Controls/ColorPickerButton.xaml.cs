@@ -1,4 +1,3 @@
-using Fastedit2.Helper;
 using FluentEdit.Helper;
 using Microsoft.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;

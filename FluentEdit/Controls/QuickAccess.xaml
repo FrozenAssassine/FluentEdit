@@ -4,14 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:models="using:FluentEdit.Models"
+    xmlns:models="using:FluentEdit.Models" xmlns:converter="using:FluentEdit.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400" 
-    KeyDown="UserControl_KeyDown" x:Name="usercontrol" Visibility="Collapsed">
+    KeyDown="UserControl_KeyDown" x:Name="usercontrol" Visibility="Collapsed" LostFocus="usercontrol_LostFocus">
 
     <UserControl.Resources>
         <ResourceDictionary>
+            <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+            <converter:StringToVisibilityConverter_Inverted x:Key="StringToVisibilityConverter_Inverted"/>
+
             <Storyboard x:Name="showControlAnimation" Storyboard.TargetName="usercontrol">
                 <DoubleAnimation EnableDependentAnimation="True" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.15" />
             </Storyboard>
@@ -26,10 +29,12 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Foreground="{x:Bind TextColor}"  VerticalAlignment="Bottom" Grid.Column="0" Text="{x:Bind Command}" x:Phase="1"/>
-                    <Grid VerticalAlignment="Bottom" Grid.Column="1" BorderBrush="#555555" BorderThickness="1" CornerRadius="4">
-                        <TextBlock Foreground="{x:Bind TextColor}" Padding="2" Text="{x:Bind Shortcut}" x:Phase="1" />
+                    <TextBlock Foreground="{ThemeResource TextFillColorPrimaryBrush}"  VerticalAlignment="Bottom" Grid.Column="0" Text="{x:Bind Command}" x:Phase="1"/>
+                    <Grid Visibility="{Binding Path=Shortcut, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter}}"  VerticalAlignment="Bottom" Grid.Column="1" BorderBrush="#555555" BorderThickness="1" CornerRadius="4">
+                        <TextBlock Foreground="{ThemeResource TextFillColorPrimaryBrush}" Padding="2" Text="{x:Bind Shortcut}" x:Phase="1" />
                     </Grid>
+                    <TextBlock Visibility="{Binding Path=Shortcut, Mode=OneWay, Converter={StaticResource StringToVisibilityConverter_Inverted}}" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Padding="2" Text="{x:Bind InfoText}" x:Phase="1" VerticalAlignment="Bottom" Grid.Column="1"/>
+
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>

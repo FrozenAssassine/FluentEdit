@@ -22,6 +22,8 @@
 - Auto bracket and quotation mark completion
 - Outstanding performance
 - Packed with useful features
+- Quick access panel (Ctrl + Shift + P)
+- Background customization (Mica, Acrylic, Static)
 
 ### A little replacement for the Windows Editor I tried my very best to match the design of it
 

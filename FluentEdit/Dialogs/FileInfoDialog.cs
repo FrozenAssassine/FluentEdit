@@ -1,23 +1,20 @@
 ﻿using FluentEdit.Core;
 using FluentEdit.Helper;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
+using TextControlBoxNS;
+using Windows.Storage;
 
 namespace FluentEdit.Dialogs
 {
     internal class FileInfoDialog
     {
-        public static async Task Show(TextDocument document, TextControlBox.TextControlBox textbox)
+        public static async Task Show(TextDocument document, TextControlBox textbox)
         {
             StringBuilder content = new StringBuilder();
 
@@ -28,12 +25,11 @@ namespace FluentEdit.Dialogs
                 content.AppendLine("Extension: " + fileExtension + " (" + ectension.ExtensionName + ")"); ;
 
             //only if the tab is based on a file
-            if (document.FileToken.Length > 0)
+            if (document.SavedOnDisk)
             {
                 try
                 {
-                    var file = await StorageApplicationPermissions.FutureAccessList.GetFileAsync(document.FileToken);
-
+                    StorageFile file = await StorageFile.GetFileFromPathAsync(document.FilePath);
                     BasicProperties fileProperties = await file.GetBasicPropertiesAsync();
                     //calculate the filesize and extension
 
@@ -46,12 +42,12 @@ namespace FluentEdit.Dialogs
                 catch (FileNotFoundException) { }
             }
 
-            if (textbox.CodeLanguage != null)
-                content.AppendLine("Code language: " + textbox.CodeLanguage.Name);
+            if (textbox.SyntaxHighlighting != null)
+                content.AppendLine("Code language: " + textbox.SyntaxHighlighting.Name);
 
-            content.AppendLine("Words: " + CountWordsHelper.CountWordsSpan(textbox.Lines));
+            content.AppendLine("Words: " + textbox.WordCount());
             content.AppendLine("Lines: " + textbox.NumberOfLines);
-            content.AppendLine("Characters: " + textbox.CharacterCount);
+            content.AppendLine("Characters: " + textbox.CharacterCount());
             content.AppendLine("Encoding: " + EncodingHelper.GetEncodingName(document.CurrentEncoding));
 
             var dialog = new ContentDialog
@@ -61,6 +57,7 @@ namespace FluentEdit.Dialogs
                 CloseButtonText = "Ok",
                 DefaultButton = ContentDialogButton.Close,
                 RequestedTheme = DialogHelper.DialogTheme,
+                XamlRoot = App.m_window.XamlRoot
             };
             await dialog.ShowAsync();
         }

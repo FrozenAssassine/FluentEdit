@@ -1,95 +1,97 @@
 ﻿using FluentEdit.Core;
 using FluentEdit.Dialogs;
 using FluentEdit.Helper;
-using Microsoft.UI.Xaml.Controls;
 using System;
 using System.IO;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using TextControlBox_DemoApp.Views;
-using Windows.Storage;
-using Windows.Storage.AccessCache;
-using Windows.UI.Xaml.Controls;
+using FluentEdit.Views;
+using TextControlBoxNS;
+using Windows.Storage.Pickers;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace FluentEdit.Storage
+namespace FluentEdit.Storage;
+
+internal class OpenFileHelper
 {
-    internal class OpenFileHelper
+    public static async Task OpenFile(MainPage mainpage, TextDocument document, TextControlBox textbox)
     {
-        public static async Task OpenFile(MainPage mainpage, TextDocument document, TextControlBox.TextControlBox textbox)
+        if (await AskSaveDialog.CheckUnsavedChanges(mainpage, document, textbox))
+            return;
+
+        var picker = new FileOpenPicker();
+        picker.ViewMode = PickerViewMode.Thumbnail;
+        picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+        picker.FileTypeFilter.Add("*");
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, App.m_window.WindowHandle);
+
+        var file = await picker.PickSingleFileAsync();
+        if (file != null)
+            OpenFile(mainpage, document, textbox, file.Path);
+    }
+
+    public static void OpenFile(MainPage mainpage, TextDocument document, TextControlBox textbox, string filePath)
+    {
+        if (filePath == null || filePath.Length == 0)
+            return;
+
+        document.FileName = Path.GetFileName(filePath);
+
+        var res = ReadLinesFromFile(filePath);
+        if (res.succeeded)
         {
-            if (await AskSaveDialog.CheckUnsavedChanges(mainpage, document, textbox))
-                return;
+            document.CurrentEncoding = res.encoding;
+            document.UnsavedChanges = false;
 
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-            picker.FileTypeFilter.Add("*");
-            
-            mainpage.FileIsDragDropped = false;
-            
-            await OpenFile(mainpage, document, textbox, await picker.PickSingleFileAsync());
+            mainpage.SelectSyntaxHighlightingByFile(filePath);
+            mainpage.StatusBar.UpdateEncodingInfobar();
+            mainpage.StatusBar.UpdateWordCharacterCount();
+
+            textbox.LoadLines(res.lines);
+            textbox.ScrollLineIntoView(0);
+            mainpage.StatusBar.UpdateLineEndings();
+            mainpage.StatusBar.SetPosition(1, 0);
+
+            WindowTitleHelper.UpdateTitle(document);
         }
+    }
 
-        public static async Task OpenFile(MainPage mainpage, TextDocument document, TextControlBox.TextControlBox textbox, StorageFile file)
+    private static IEnumerable<string> GetLines(StreamReader reader)
+    {
+        string line;
+        while ((line = reader.ReadLine()) != null)
         {
-            if (file != null)
-            {
-                document.FileName = file.Name;
-                document.FileToken = StorageApplicationPermissions.FutureAccessList.Add(file);
-
-                var res = await ReadTextFromFileAsync(mainpage, file);
-                if (res.Succed)
-                {
-                    document.CurrentEncoding = res.encoding;
-                    document.UnsavedChanges = false;
-
-                    mainpage.SelectCodeLanguageByFile(file);
-                    mainpage.UpdateEncodingInfobar();
-                    mainpage.UpdateWordCharacterCount();
-
-                    textbox.LoadText(res.text);
-                    textbox.ScrollLineIntoView(0);
-                    mainpage.UpdateLineEndings();
-                    mainpage.SetPositionInInfobar(0, 0);
-
-                    mainpage.UpdateTitle();
-                }
-            }
+            yield return line;
         }
+    }
 
-        public static async Task<(string text, Encoding encoding, bool Succed)> ReadTextFromFileAsync(MainPage mainpage, StorageFile file, Encoding encoding = null)
+    public static (string[] lines, Encoding encoding, bool succeeded) ReadLinesFromFile(string path, Encoding encoding = null)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+            return (null, null, false);
+
+        try
         {
-            try
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true);
+            using (var reader = new StreamReader(stream, encoding ?? Encoding.Default, detectEncodingFromByteOrderMarks: true))
             {
-                if (file == null)
-                    return (null, Encoding.Default, false);
+                var lines = GetLines(reader).ToArray();
 
-                using (var stream = (await file.OpenReadAsync()).AsStreamForRead())
-                {
-                    using (var reader = new StreamReader(stream, true))
-                    {
-                        //Detect the encoding:
-                        byte[] buffer = new byte[stream.Length];
-                        stream.Read(buffer, 0, buffer.Length);
-                        encoding = EncodingHelper.DetectTextEncoding(buffer, out string text);
+                encoding ??= reader.CurrentEncoding;
 
-                        //read the text with the encoding:
-                        return (text, encoding, true);
-                    }
-                }
+                return (lines, encoding, true);
             }
-            catch (UnauthorizedAccessException)
-            {
-                mainpage.ShowInfobar(InfoBarSeverity.Error, "No access to read from file", "No access");
-
-            }
-            catch (Exception ex)
-            {
-                mainpage.ShowInfobar(InfoBarSeverity.Error, ex.Message, "Read file exception");
-            }
-            return (null, Encoding.Default, false);
         }
-
+        catch (UnauthorizedAccessException)
+        {
+            InfoMessages.NoAccessToReadFile();
+            return (null, null, false);
+        }
+        catch (Exception ex)
+        {
+            InfoMessages.UnhandledException(ex.Message);
+        }
+        return (null, null, false);
     }
 }

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="FluentEdit.Views.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FluentEdit.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:FluentEdit.Controls"
+    mc:Ignorable="d">
+    <ScrollViewer>
+        <Grid Margin="60,0,40,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" FontWeight="SemiBold" FontSize="36" Text="About"/>
+            <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,20,0,0">
+                <Grid VerticalAlignment="Stretch" MinWidth="{ThemeResource FlyoutThemeMinWidth}" Margin="0,5,0,0" CornerRadius="5" Padding="{StaticResource ExpanderHeaderPadding}" HorizontalAlignment="Stretch" Background="{ThemeResource ExpanderHeaderBackground}" BorderThickness="{ThemeResource ExpanderHeaderBorderThickness}" BorderBrush="{ThemeResource ExpanderHeaderBorderBrush}">
+                    <StackPanel Height="70" Padding="0" Orientation="Horizontal">
+                        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Width="50" Height="50" Source="ms-appx:///Assets/StoreLogo.scale-400.png"/>
+                        <TextBlock Text="FluentEdit" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <Grid Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <FontIcon Margin="0,0,5,0" Grid.Column="0" Glyph="&#xE946;" VerticalAlignment="Center" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock FontSize="16" TextAlignment="Center" Text="Version"/>
+                            <TextBlock TextAlignment="Center" Text="{x:Bind AppVersion}"/>
+                        </StackPanel>
+
+                        <FontIcon Margin="0,0,5,0" Grid.Column="3" Glyph="&#xE77B;" VerticalAlignment="Center" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
+                        <StackPanel Grid.Column="4">
+                            <TextBlock FontSize="16" TextAlignment="Center" Text="Developer"/>
+                            <TextBlock TextAlignment="Center" >
+                                <Hyperlink NavigateUri="https://frozenassassine.de/?ref=fluentedit">Julius Kirsch</Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <controls:SettingsControl Foreground="White" FontWeight="Bold" Background="#ff6433" Tag="https://ko-fi.com/K3K819KSLG" Clickable="True" Clicked="NavigateToLink_Click" Glyph="&#xE716;" Header="Support me on Ko-fi" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <controls:SettingsControl.Content>
+                        <TextBlock Text="&#xe8a7;"  FontFamily="{StaticResource SymbolThemeFontFamily}" />
+                    </controls:SettingsControl.Content>
+                </controls:SettingsControl>
+
+                <controls:SettingsControl Tag="https://github.com/FrozenAssassine/FluentEdit/" Clickable="True" Clicked="NavigateToLink_Click" Glyph="&#xE946;" Header="Github" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <controls:SettingsControl.Content>
+                        <TextBlock Text="&#xe8a7;" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
+                    </controls:SettingsControl.Content>
+                </controls:SettingsControl>
+
+                <Grid VerticalAlignment="Stretch" MinWidth="{ThemeResource FlyoutThemeMinWidth}" Margin="0,5,0,0" CornerRadius="5" Padding="{StaticResource ExpanderHeaderPadding}" HorizontalAlignment="Stretch" Background="{ThemeResource ExpanderHeaderBackground}" BorderThickness="{ThemeResource ExpanderHeaderBorderThickness}" BorderBrush="{ThemeResource ExpanderHeaderBorderBrush}">
+                    <StackPanel Height="70" Padding="0" Orientation="Horizontal">
+                        <SymbolIcon Margin="0,4,10,0" Symbol="People"/>
+                        <TextBlock Text="Contribute" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <HyperlinkButton NavigateUri="https://github.com/FrozenAssassine/FluentEdit/issues/new" Margin="5" Content="Report Bug"></HyperlinkButton>
+                        <HyperlinkButton NavigateUri="https://github.com/FrozenAssassine/FluentEdit/issues/new" Margin="5" Content="Request Feature"></HyperlinkButton>
+                    </StackPanel>
+                </Grid>
+
+                <Expander HorizontalContentAlignment="Left" Margin="0,5,0,0" HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal" Height="70">
+                            <TextBlock Margin="0,4,10,0" FontSize="20" VerticalAlignment="Center" Text="&#xf6fa;" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
+                            <TextBlock VerticalAlignment="Center" FontSize="20" Text="Additional dependencies used"/>
+                        </StackPanel>
+                    </Expander.Header>
+                    <Expander.Content>
+                        <StackPanel>
+                            <HyperlinkButton FontSize="16" NavigateUri="https://github.com/FrozenAssassine/TextControlBox-Winui" Content="TextControlBox"/>
+                            <HyperlinkButton FontSize="16" NavigateUri="https://github.com/Microsoft/WindowsAppSdk" Content="Windows App Sdk"/>
+                        </StackPanel>
+                    </Expander.Content>
+                </Expander>
+                <Expander HorizontalContentAlignment="Stretch" Margin="0,5,0,0" HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal" Height="70">
+                            <TextBlock Margin="0,4,10,0" FontSize="20" VerticalAlignment="Center" Text="&#xECA7;" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
+                            <TextBlock VerticalAlignment="Center" FontSize="20" Text="Legal"/>
+                        </StackPanel>
+                    </Expander.Header>
+                    <Expander.Content>
+                        <StackPanel Grid.Column="1" Grid.Row="1">
+                            <TextBlock FontSize="18" Text="Legal"/>
+                            <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                                <HyperlinkButton FontSize="20" Grid.Row="0" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/blob/master/PrivacyPolicy.md"  Content="Privacy Policy"/>
+                                <HyperlinkButton FontSize="20" Grid.Row="1" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/blob/master/Disclaimer.md"  Content="Disclaimer"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander.Content>
+                </Expander>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

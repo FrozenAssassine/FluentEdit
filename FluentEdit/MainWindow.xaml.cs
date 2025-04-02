@@ -59,7 +59,11 @@ public sealed partial class MainWindow : Window
         ShowBackArrow = true;
         this.mainFrame.Navigate(typeof(SettingsPage));
     }
-
+    public void ShowAbout()
+    {
+        ShowBackArrow = true;
+        this.mainFrame.Navigate(typeof(AboutPage));
+    }
     private void NavigateBack_Click(object sender, RoutedEventArgs e)
     {
         ShowBackArrow = false;

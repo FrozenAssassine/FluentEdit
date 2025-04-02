@@ -15,7 +15,10 @@
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Controls\SettingsControl.xaml" />
+	  <None Remove="Controls\SettingsItemSeparator.xaml" />
 	  <None Remove="Controls\StatusBar.xaml" />
+	  <None Remove="Views\AboutPage.xaml" />
 	</ItemGroup>
 	
   <ItemGroup>
@@ -32,6 +35,21 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\AboutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\SettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\SettingsItemSeparator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\StatusBar.xaml">

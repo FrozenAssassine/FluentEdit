@@ -1,11 +1,9 @@
 ﻿using Microsoft.Graphics.Canvas.Text;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Windows.ApplicationModel;
 using FluentEdit.Helper;
 using FluentEdit.Core.Settings;
 using FluentEdit.Models;
@@ -20,7 +18,6 @@ namespace FluentEdit.Views
         {
             this.InitializeComponent();
 
-            FillVersionDisplay();
 
             themeCombobox.SelectedIndex = AppSettings.Theme.GetHashCode();
             var ff = AppSettings.FontFamily;
@@ -32,13 +29,6 @@ namespace FluentEdit.Views
             staticColorPicker.Color = AppSettings.StaticBackground;
         }
 
-        private void FillVersionDisplay()
-        {
-            VersionDisplay.Text = "Version: " + Package.Current.Id.Version.Major + "." +
-                    Package.Current.Id.Version.Minor + "." +
-                    Package.Current.Id.Version.Build;
-        }
-      
         private void themeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ThemeHelper.CurrentTheme = AppSettings.Theme = (ElementTheme)themeCombobox.SelectedIndex;

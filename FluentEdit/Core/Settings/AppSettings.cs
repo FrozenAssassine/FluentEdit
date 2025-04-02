@@ -40,11 +40,11 @@ public class AppSettings
     }
     public static Color AcrylicBackground
     {
-        get => ColorConverter.ToColor(
+        get => ColorConverter.ToColorWithAlpha(
             SettingsManager.GetSettings(AppSettingsValues.AcrylicBackground),
             DefaultValues.DefaultAcrylicBackground
             );
-        set => SettingsManager.SaveSettings(AppSettingsValues.AcrylicBackground, value);
+        set => SettingsManager.SaveSettings(AppSettingsValues.AcrylicBackground, ColorConverter.ToStringWithAlpha(value));
     }
     public static Color StaticBackground
     {
@@ -52,6 +52,6 @@ public class AppSettings
             SettingsManager.GetSettings(AppSettingsValues.StaticBackground),
             DefaultValues.DefaultStaticBackground
             );
-        set => SettingsManager.SaveSettings(AppSettingsValues.StaticBackground, ColorConverter.ToStringWithAlpha(value));
+        set => SettingsManager.SaveSettings(AppSettingsValues.StaticBackground, ColorConverter.ToString(value));
     }
 }

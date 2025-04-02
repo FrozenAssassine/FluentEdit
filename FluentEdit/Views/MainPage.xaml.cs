@@ -60,12 +60,11 @@ public sealed partial class MainPage : Page
     private void CheckNewVersion()
     {
         string version = Package.Current.Id.Version.Major + "." + Package.Current.Id.Version.Minor + "." + Package.Current.Id.Version.Build;
-        if (!(AppSettings.AppVersion).Equals(version))
+        if (!AppSettings.AppVersion.Equals(version))
         {
             AppSettings.AppVersion = version;
-            //TODO!
-            //NewVersionInfobar = FindName("NewVersionInfobar") as NewVersionInfobar;
-            //NewVersionInfobar.Show(version);
+            NewVersionInfobar = FindName("NewVersionInfobar") as NewVersionInfobar;
+            NewVersionInfobar.Show(version);
         }
     }
 
@@ -328,5 +327,10 @@ public sealed partial class MainPage : Page
     private void QuickAccess_Closed()
     {
         this.textbox.Focus(FocusState.Programmatic);
+    }
+
+    private void About_Click(object sender, RoutedEventArgs e)
+    {
+        App.m_window.ShowAbout();
     }
 }

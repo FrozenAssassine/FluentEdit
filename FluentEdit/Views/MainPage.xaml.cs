@@ -121,36 +121,13 @@ public sealed partial class MainPage : Page
         if (checkUnsaved && await AskSaveDialog.CheckUnsavedChanges(this, textDocument, textbox))
             return;
 
-        statusBar.SetZoom(textbox.ZoomFactor);
-        statusBar.UpdateLineEndings();
-
-        textDocument.FileName = UntitledFileName;
-        textDocument.FilePath = "";
-        textDocument.UnsavedChanges = false;
-        WindowTitleHelper.UpdateTitle(textDocument);
+        textDocument.New(UntitledFileName);
         textbox.LoadText("");
+
+        WindowTitleHelper.UpdateTitle(textDocument);
+        statusBar.UpdateAll();
     }
 
-    public void SelectSyntaxHighlightingByFile(string filePath)
-    {
-        if (string.IsNullOrEmpty(filePath))
-            return;
-
-        string extension = Path.GetExtension(filePath).ToLower();
-
-        //search through the dictionary of syntax highlights in the textbox
-        foreach (var item in TextControlBox.SyntaxHighlightings)
-        {
-            for (int i = 0; i < item.Value?.Filter.Length; i++)
-            {
-                if (item.Value.Filter[i].Equals(extension, StringComparison.OrdinalIgnoreCase))
-                {
-                    textbox.SyntaxHighlighting = item.Value;
-                    return;
-                }
-            }
-        }
-    }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
@@ -185,7 +162,7 @@ public sealed partial class MainPage : Page
     }
     private async void NewFile_Click(object sender, RoutedEventArgs e)
     {
-        NewFile();
+        await NewFile();
     }
     private async void SaveFile_Click(object sender, RoutedEventArgs e)
     {
@@ -299,9 +276,12 @@ public sealed partial class MainPage : Page
     }
     private void ShowQuickAccess_Click(object sender, RoutedEventArgs e)
     {
-        //QuickAccess.Show();
+        QuickAccess.Show();
     }
-
+    private void RunCommandWindowItem_CodeLanguages_SelectedChanged(IQuickAccessItem item)
+    {
+        SyntaxHighlighting_Clicked(item, null);
+    }
 
     private void textbox_TextChanged(TextControlBox sender)
     {
@@ -343,5 +323,10 @@ public sealed partial class MainPage : Page
     private void Page_DragEnter(object sender, DragEventArgs e)
     {
         e.AcceptedOperation = DataPackageOperation.Copy;
+    }
+
+    private void QuickAccess_Closed()
+    {
+        this.textbox.Focus(FocusState.Programmatic);
     }
 }

@@ -27,6 +27,22 @@ public sealed partial class StatusBar : UserControl
         this.textDocument = textDocument;
     }
 
+
+    public void UpdateAll()
+    {
+        this.UpdateCursor();
+        this.UpdateZoom();
+        this.UpdateFileName();
+        this.UpdateLineEndings();
+        this.UpdateWordCharacterCount();
+        this.UpdateEncodingInfobar();
+    }
+
+    public void UpdateCursor()
+    {
+        this.SetPosition(textbox.CursorPosition.LineNumber, textbox.CursorPosition.CharacterPosition);
+    }
+
     public void UpdateZoom()
     {
         if (textbox == null)

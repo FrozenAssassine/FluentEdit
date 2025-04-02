@@ -13,6 +13,9 @@ namespace FluentEdit.Controls
         public List<IQuickAccessItem> Items { get; set; } = new List<IQuickAccessItem>();
         QuickAccessSubItem currentPage = null;
 
+        public delegate void ClosedEvent();
+        public event ClosedEvent Closed;
+
         public QuickAccess()
         {
             this.InitializeComponent();
@@ -29,6 +32,7 @@ namespace FluentEdit.Controls
             else
                 Show();
         }
+
         public void Show()
         {
             if (itemHostListView == null)
@@ -43,11 +47,13 @@ namespace FluentEdit.Controls
             searchbox.Focus(FocusState.Programmatic);
             searchbox_TextChanged(null, null);
         }
+
         public void Hide()
         {
             itemHostListView.SelectedItem = null;
             currentPage = null;
             hideControlAnimation.Begin();
+            Closed?.Invoke();
         }
 
         private void searchbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -81,9 +87,21 @@ namespace FluentEdit.Controls
                 currentPage = subItem;
                 searchbox.Text = "";
                 itemHostListView.ItemsSource = subItem.Items;
-                itemHostListView.SelectedIndex = 1;
+                itemHostListView.LayoutUpdated += (sender, e) =>
+                {
+                    if (itemHostListView.SelectedItem == null)
+                        itemHostListView.SelectedIndex = 0;
+                };
             }
         }
+
+        private void CheckLiveChange()
+        {
+            //for live change on up/down arrow (syntax highlighting)
+            if (currentPage != null && currentPage.TriggerOnSelecting && itemHostListView.SelectedIndex != -1)
+                currentPage.CallChangedEvent(itemHostListView.SelectedItem as IQuickAccessItem);
+        }
+
         private void UserControl_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Escape)
@@ -103,9 +121,10 @@ namespace FluentEdit.Controls
                 {
                     itemHostListView.SelectedIndex++;
                     itemHostListView.ScrollIntoView(itemHostListView.Items[itemHostListView.SelectedIndex]);
+                    CheckLiveChange();
                 }
 
-                if(itemHostListView.SelectedItem != null)
+                if (itemHostListView.SelectedItem != null)
                     itemHostListView.ScrollIntoView(itemHostListView.Items[itemHostListView.SelectedIndex]);
             }
             else if (e.Key == Windows.System.VirtualKey.Up)
@@ -114,6 +133,7 @@ namespace FluentEdit.Controls
                 {
                     itemHostListView.SelectedIndex--;
                     itemHostListView.ScrollIntoView(itemHostListView.Items[itemHostListView.SelectedIndex]);
+                    CheckLiveChange();
                 }
 
             }

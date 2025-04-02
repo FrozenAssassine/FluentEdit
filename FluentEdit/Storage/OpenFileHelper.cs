@@ -22,7 +22,7 @@ internal class OpenFileHelper
 
         var picker = new FileOpenPicker();
         picker.ViewMode = PickerViewMode.Thumbnail;
-        picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+        picker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
         picker.FileTypeFilter.Add("*");
         WinRT.Interop.InitializeWithWindow.Initialize(picker, App.m_window.WindowHandle);
 
@@ -41,18 +41,13 @@ internal class OpenFileHelper
         var res = ReadLinesFromFile(filePath);
         if (res.succeeded)
         {
-            document.CurrentEncoding = res.encoding;
-            document.UnsavedChanges = false;
-
-            mainpage.SelectSyntaxHighlightingByFile(filePath);
-            mainpage.StatusBar.UpdateEncodingInfobar();
-            mainpage.StatusBar.UpdateWordCharacterCount();
+            document.Open(res.encoding);
+            FileExtensions.SelectSyntaxHighlightingByFile(filePath, textbox);
 
             textbox.LoadLines(res.lines);
             textbox.ScrollLineIntoView(0);
-            mainpage.StatusBar.UpdateLineEndings();
-            mainpage.StatusBar.SetPosition(1, 0);
-
+            
+            mainpage.StatusBar.UpdateAll();
             WindowTitleHelper.UpdateTitle(document);
         }
     }

@@ -17,5 +17,6 @@ namespace FluentEdit.Models
         public string Shortcut { get; set; }
         public Brush TextColor { get; set; }
         public string InfoText { get; set; } = null;
+        public bool TriggerOnSelecting { get; set; }
     }
 }

@@ -1,9 +1,5 @@
 ﻿using FluentEdit.Core;
 using FluentEdit.Dialogs;
-using FluentEdit.Extensions;
-using FluentEdit.Helper;
-using FluentEdit.Views;
-using Microsoft.UI.Xaml.Controls;
 using System;
 using System.IO;
 

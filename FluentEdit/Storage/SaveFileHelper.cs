@@ -7,6 +7,7 @@ using System.IO;
 using FluentEdit.Views;
 using FluentEdit.Helper;
 using TextControlBoxNS;
+using FluentEdit.Dialogs;
 
 namespace FluentEdit.Storage;
 
@@ -35,9 +36,7 @@ internal class SaveFileHelper
 
             if (await WriteLinesToFile(file.Path, textbox.Lines, document.CurrentEncoding))
             {
-                document.FileName = file.Name;
-                document.FilePath = file.Path;
-                document.UnsavedChanges = false;
+                document.SaveAs(file);
                 WindowTitleHelper.UpdateTitle(document);
                 return true;
             }
@@ -48,7 +47,7 @@ internal class SaveFileHelper
         var res = await WriteLinesToFile(document.FilePath, textbox.Lines, document.CurrentEncoding);
         if (res == true)
         {
-            document.UnsavedChanges = false;
+            document.Save();
             WindowTitleHelper.UpdateTitle(document);
         }
         return res;
@@ -60,23 +59,23 @@ internal class SaveFileHelper
 
         try
         {
-            // Open the file stream with async enabled
             using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true))
             using (var writer = new StreamWriter(stream, encoding))
             {
-                foreach(var line in lines)
-                // Write the text asynchronously
-                await writer.WriteLineAsync(line);
+                foreach (var line in lines)
+                {
+                    await writer.WriteLineAsync(line);
+                }
             }
             return true;
         }
         catch (UnauthorizedAccessException)
         {
-            //InfoMessages.NoAccessToSaveFile();
+            InfoMessages.NoAccessToSaveFile();
         }
         catch (Exception ex)
         {
-            //InfoMessages.UnhandledException(ex.Message);
+            InfoMessages.UnhandledException(ex.Message);
         }
 
         return false;

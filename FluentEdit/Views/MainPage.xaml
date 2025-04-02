@@ -168,12 +168,10 @@
 
         <controls:StatusBar x:Name="statusBar" Grid.Row="2"/>
 
-        <InfoBar Grid.Row="1" x:Name="InfoDisplay" Title="Test" Message="Hello World" Severity="Warning" IsOpen="False" IsClosable="True" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5"/>
-
         <dialogs:NewVersionInfobar Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0" x:Load="False" x:Name="NewVersionInfobar"/>
-        <controls:QuickAccess Grid.Row="1" x:Name="QuickAccess" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0">
+        <controls:QuickAccess Closed="QuickAccess_Closed" Grid.Row="1" x:Name="QuickAccess" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0">
             <controls:QuickAccess.Items>
-                <models:QuickAccessSubItem Command="Syntaxhighlighting" x:Name="RunCommandWindowItem_CodeLanguages"/>
+                <models:QuickAccessSubItem TriggerOnSelecting="True" SelectedChanged="RunCommandWindowItem_CodeLanguages_SelectedChanged" Command="Syntaxhighlighting" x:Name="RunCommandWindowItem_CodeLanguages"/>
                 <models:QuickAccessItem Command="Copy" Shortcut="Ctrl + C" RunCommandWindowItemClicked="Copy_Click"/>
                 <models:QuickAccessItem Command="Paste" Shortcut="Ctrl + V" RunCommandWindowItemClicked="Paste_Click"/>
                 <models:QuickAccessItem Command="Cut" Shortcut="Ctrl + X" RunCommandWindowItemClicked="Cut_Click"/>

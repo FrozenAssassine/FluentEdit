@@ -16,7 +16,7 @@ internal class AskSaveDialog
         if (!document.UnsavedChanges)
             return false;
 
-        var SaveDialog = new ContentDialog
+        var saveDialog = new ContentDialog
         {
             Title = "Save file?",
             Content = "Would you like to save the file?",
@@ -27,7 +27,7 @@ internal class AskSaveDialog
             RequestedTheme = DialogHelper.DialogTheme,
             XamlRoot = App.m_window.XamlRoot
         };
-        var res = await SaveDialog.ShowAsync();
+        var res = await saveDialog.ShowAsync();
         if (res == ContentDialogResult.Primary)
             return !await SaveFileHelper.SaveFile(mainpage, document, textbox);
         else if (res == ContentDialogResult.None)

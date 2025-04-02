@@ -15,6 +15,7 @@ using FluentEdit.Models;
 using TextControlBoxNS;
 using System.Threading.Tasks;
 using FluentEdit.Core.Settings;
+using System.Reflection.Metadata;
 
 namespace FluentEdit.Views;
 
@@ -151,8 +152,16 @@ public sealed partial class MainPage : Page
             return;
         }
 
-        if (await AskSaveDialog.CheckUnsavedChanges(this, textDocument, textbox))
-            args.Cancel = true;
+        if (!textDocument.UnsavedChanges)
+            return;
+
+        args.Cancel = true;
+
+        bool shouldCancel = await AskSaveDialog.CheckUnsavedChanges(this, textDocument, textbox);
+        if (!shouldCancel)
+        {
+            App.m_window.Close();
+        }
     }
 
     private async void OpenFile_Click(object sender, RoutedEventArgs e)

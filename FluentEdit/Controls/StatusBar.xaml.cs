@@ -1,7 +1,7 @@
 using FluentEdit.Core;
 using FluentEdit.Dialogs;
 using FluentEdit.Helper;
-using FluentEdit.Storage;
+using FluentEdit.Core.Storage;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -74,7 +74,7 @@ public sealed partial class StatusBar : UserControl
 
     public void SetPosition(int line, int charPos)
     {
-        Infobar_Cursor.Content = "Ln: " + line + ", Col:" + charPos;
+        Infobar_Cursor.Content = "Ln: " + line + ", Col: " + charPos;
     }
 
     public void SetZoom(int zoom)

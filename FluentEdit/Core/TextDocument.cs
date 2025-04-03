@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using Windows.Storage;
 
 namespace FluentEdit.Core;
@@ -23,10 +24,12 @@ public class TextDocument
         this.UnsavedChanges = false;
     }
 
-    public void Open(Encoding encoding)
+    public void Open(Encoding encoding, string path)
     {
         this.CurrentEncoding = encoding;
         this.UnsavedChanges = false;
+        this.FilePath = path;
+        this.FileName = Path.GetFileName(path);
     }
     public void New(string untitledFileName)
     {

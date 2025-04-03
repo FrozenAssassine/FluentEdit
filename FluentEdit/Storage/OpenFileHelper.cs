@@ -36,12 +36,10 @@ internal class OpenFileHelper
         if (filePath == null || filePath.Length == 0)
             return;
 
-        document.FileName = Path.GetFileName(filePath);
-
         var res = ReadLinesFromFile(filePath);
         if (res.succeeded)
         {
-            document.Open(res.encoding);
+            document.Open(res.encoding, filePath);
             FileExtensions.SelectSyntaxHighlightingByFile(filePath, textbox);
 
             textbox.LoadLines(res.lines);

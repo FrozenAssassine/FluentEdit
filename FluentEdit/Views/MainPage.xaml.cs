@@ -280,7 +280,7 @@ public sealed partial class MainPage : Page
     }
     private async void ShowFileInfo_Click(object sender, RoutedEventArgs e)
     {
-        await FileInfoDialog.Show(textDocument, textbox);
+        await new FileInfoDialog(textDocument, textbox).ShowAsync();
     }
     private void ShowQuickAccess_Click(object sender, RoutedEventArgs e)
     {

@@ -2,11 +2,7 @@
 using FluentEdit.Helper;
 using FluentEdit.Storage;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using FluentEdit.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 

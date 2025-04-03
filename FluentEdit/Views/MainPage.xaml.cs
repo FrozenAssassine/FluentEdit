@@ -8,7 +8,7 @@ using Windows.ApplicationModel.DataTransfer;
 using FluentEdit.Helper;
 using FluentEdit.Core;
 using FluentEdit.Dialogs;
-using FluentEdit.Storage;
+using FluentEdit.Core.Storage;
 using FluentEdit.Controls;
 using Windows.ApplicationModel;
 using FluentEdit.Models;

@@ -9,7 +9,7 @@ using FluentEdit.Helper;
 using TextControlBoxNS;
 using FluentEdit.Dialogs;
 
-namespace FluentEdit.Storage;
+namespace FluentEdit.Core.Storage;
 
 internal class SaveFileHelper
 {

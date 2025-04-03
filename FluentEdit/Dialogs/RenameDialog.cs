@@ -1,6 +1,6 @@
 ﻿using FluentEdit.Core;
 using FluentEdit.Helper;
-using FluentEdit.Storage;
+using FluentEdit.Core.Storage;
 using System;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;

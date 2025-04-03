@@ -3,7 +3,7 @@ using FluentEdit.Dialogs;
 using System;
 using System.IO;
 
-namespace FluentEdit.Storage;
+namespace FluentEdit.Core.Storage;
 
 internal class RenameFileHelper
 {

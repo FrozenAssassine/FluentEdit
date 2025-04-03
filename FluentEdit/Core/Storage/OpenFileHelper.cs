@@ -11,7 +11,7 @@ using Windows.Storage.Pickers;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FluentEdit.Storage;
+namespace FluentEdit.Core.Storage;
 
 internal class OpenFileHelper
 {

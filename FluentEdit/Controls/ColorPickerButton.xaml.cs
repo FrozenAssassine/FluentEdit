@@ -1,12 +1,13 @@
 using FluentEdit.Helper;
 using Microsoft.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml;
 using Windows.UI;
+using Microsoft.UI;
 
 namespace FluentEdit.Controls
 {
-    public sealed partial class ColorPickerButton : Windows.UI.Xaml.Controls.UserControl
+    public sealed partial class ColorPickerButton : Microsoft.UI.Xaml.Controls.UserControl
     {
         private bool _IsCompact;
         private readonly Color buttonbordercolor;
@@ -51,7 +52,7 @@ namespace FluentEdit.Controls
 
 
         //private events
-        private void Rectangle_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void Rectangle_Tapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             if (!IsUsedAsDisplay)
             {

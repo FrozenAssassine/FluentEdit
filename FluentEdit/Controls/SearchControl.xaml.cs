@@ -1,18 +1,19 @@
 ﻿using FluentEdit.Helper;
-using TextControlBox.Helper;
 using Windows.System;
-using Windows.UI;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using TextControlBoxNS;
+using Microsoft.UI;
+using TextControlBox_TestApp.Helper;
 
 namespace FluentEdit.Controls
 {
     public sealed partial class SearchControl : UserControl
     {
-        private TextControlBox.TextControlBox currentTextbox = null;
+        private TextControlBox currentTextbox = null;
         private SearchWindowState searchWindowState = SearchWindowState.Hidden;
 
         public SearchControl()
@@ -67,7 +68,7 @@ namespace FluentEdit.Controls
             searchWindowState = SearchWindowState.Default;
         }
 
-        public void ShowSearch(TextControlBox.TextControlBox textbox)
+        public void ShowSearch(TextControlBox textbox)
         {
             if (textbox == null)
                 return;
@@ -84,14 +85,13 @@ namespace FluentEdit.Controls
                 collapseReplace();
             }
 
-
-            if (textbox.SelectionLength > 0 && textbox.SelectionLength < 200)
+            if (textbox.HasSelection && textbox.CalculateSelectionPosition().Length < 200)
                 textToFindTextbox.Text = textbox.SelectedText;
 
             textToFindTextbox.Focus(FocusState.Keyboard);
             textToFindTextbox.SelectAll();
         }
-        public void ShowReplace(TextControlBox.TextControlBox textbox)
+        public void ShowReplace(TextControlBox textbox)
         {
             if (textbox == null)
                 return;
@@ -108,7 +108,7 @@ namespace FluentEdit.Controls
                 expandReplace();
             }
 
-            if (textbox.SelectionLength > 0 && textbox.SelectionLength < 200)
+            if (textbox.HasSelection && textbox.CalculateSelectionPosition().Length < 200)
                 textToFindTextbox.Text = textbox.SelectedText;
 
             textToReplaceTextBox.Focus(FocusState.Keyboard);
@@ -132,52 +132,26 @@ namespace FluentEdit.Controls
         }
         private void SearchTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
         {
+            if (currentTextbox == null)
+                return;
+
             //Search down on Enter and up on Shift + Enter//
-            var shift = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
+            var shift = KeyHelper.IsKeyPressed(VirtualKey.Shift);
             if (e.Key == VirtualKey.Enter)
             {
-                if (currentTextbox == null)
-                    return;
-
-                try
-                {
-                    if (shift)
-                        currentTextbox.FindPrevious();
-                    else
-                        currentTextbox.FindNext();
-                }
-                catch
-                {
-                    //Due to bug in TextControlBox
-                }
+                if (shift)
+                    currentTextbox.FindPrevious();
+                else
+                    currentTextbox.FindNext();
             }
         }
         private void SearchUpButton_Click(object sender, RoutedEventArgs e)
         {
-            if (currentTextbox == null)
-                return;
-
-            try
-            {
-                currentTextbox.FindPrevious();
-            }
-            catch
-            {
-                //Due to bug in TextControlBox
-            }
+            currentTextbox?.FindPrevious();
         }
         private void SearchDownButton_Click(object sender, RoutedEventArgs e)
         {
-            if (currentTextbox == null)
-                return;
-            try
-            {
-                currentTextbox.FindNext();
-            }
-            catch
-            {
-                //Due to bug in TextControlBox
-            }
+            currentTextbox?.FindNext();
         }
         private void FindMatchCaseButton_Click(object sender, RoutedEventArgs e)
         {
@@ -205,6 +179,8 @@ namespace FluentEdit.Controls
         {
             if (currentTextbox == null)
                 return;
+
+            currentTextbox.ReplaceNext(textToReplaceTextBox.Text);
         }
         private void SearchWindow_CloseButtonClick(object sender, RoutedEventArgs e)
         {

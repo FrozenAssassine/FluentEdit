@@ -1,24 +1,23 @@
 ﻿using System;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml;
 
-namespace FluentEdit.Converters
+namespace FluentEdit.Converters;
+
+internal class StringToVisibilityConverter_Inverted : IValueConverter
 {
-    internal class StringToVisibilityConverter_Inverted : IValueConverter
+    public object Convert(object value, Type targetType,
+        object parameter, string language)
     {
-        public object Convert(object value, Type targetType,
-            object parameter, string language)
-        {
-            if (value == null)
-                return Visibility.Visible;
+        if (value == null)
+            return Visibility.Visible;
 
-            return (value as string).Length == 0 ? Visibility.Visible : Visibility.Collapsed;
-        }
+        return (value as string).Length == 0 ? Visibility.Visible : Visibility.Collapsed;
+    }
 
-        public object ConvertBack(object value, Type targetType,
-            object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
+    public object ConvertBack(object value, Type targetType,
+        object parameter, string language)
+    {
+        throw new NotImplementedException();
     }
 }

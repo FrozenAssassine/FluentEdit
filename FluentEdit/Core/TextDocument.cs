@@ -1,17 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
+using Windows.Storage;
 
-namespace FluentEdit.Core
+namespace FluentEdit.Core;
+
+public class TextDocument
 {
-    internal class TextDocument
-    {
-        public Encoding CurrentEncoding { get; set; } =  Encoding.UTF8;
-        public string FileToken { get; set; } = "";
-        public string FileName { get; set; } = "";
-        public bool UnsavedChanges { get; set; } = false;
+    public Encoding CurrentEncoding { get; set; } =  Encoding.UTF8;
+    public string FileName { get; set; } = "";
+    public string FilePath { get; set; } = "";
+    public bool SavedOnDisk => FilePath.Length > 0;
 
+    public bool UnsavedChanges { get; set; } = false;
+
+    public void SaveAs(StorageFile file)
+    {
+        this.FileName = file.Name;
+        this.FilePath = file.Path;
+        this.UnsavedChanges = false;
+    }
+    public void Save()
+    {
+        this.UnsavedChanges = false;
+    }
+
+    public void Open(Encoding encoding, string path)
+    {
+        this.CurrentEncoding = encoding;
+        this.UnsavedChanges = false;
+        this.FilePath = path;
+        this.FileName = Path.GetFileName(path);
+    }
+    public void New(string untitledFileName)
+    {
+        this.FileName = untitledFileName;
+        this.FilePath = "";
+        this.UnsavedChanges = false;
     }
 }

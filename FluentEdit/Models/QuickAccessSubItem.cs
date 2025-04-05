@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Windows.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media;
 
 namespace FluentEdit.Models
 {
@@ -11,5 +11,14 @@ namespace FluentEdit.Models
         public object Tag { get; set; }
         public Brush TextColor { get; set; }
         public string InfoText { get; set; } = null;
+        public bool TriggerOnSelecting { get; set; }
+
+        public delegate void SelectedChangedEvent(IQuickAccessItem item);
+        public event SelectedChangedEvent SelectedChanged;
+
+        public void CallChangedEvent(IQuickAccessItem item)
+        {
+            SelectedChanged?.Invoke(item);
+        }
     }
 }

@@ -1,13 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TextControlBoxNS;
 
 namespace FluentEdit.Helper
 {
     internal class FileExtensions
     {
+        public static void SelectSyntaxHighlightingByFile(string filePath, TextControlBox textbox)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                return;
+
+            string extension = Path.GetExtension(filePath).ToLower();
+            if (string.IsNullOrEmpty(extension))
+                return;
+
+            //search through the dictionary of syntax highlights in the textbox
+            foreach (var item in TextControlBox.SyntaxHighlightings)
+            {
+                for (int i = 0; i < item.Value?.Filter.Length; i++)
+                {
+                    if (item.Value.Filter[i].Equals(extension, StringComparison.OrdinalIgnoreCase))
+                    {
+                        textbox.SyntaxHighlighting = item.Value;
+                        return;
+                    }
+                }
+            }
+        }
+
         public static ExtensionItem FindByExtension(string extension)
         {
             var res = FileExtentionList.Where(x => x.HasExtension(extension));
@@ -126,7 +151,7 @@ namespace FluentEdit.Helper
             },
             new ExtensionItem()
             {
-                Extension = { ".ini", ".config", ".inf" },
+                Extension = { ".ini", ".config", ".inf", ".cfg" },
                 ExtensionName = "Configuration file",
                 ExtensionLongName = "Configuration file"
             },

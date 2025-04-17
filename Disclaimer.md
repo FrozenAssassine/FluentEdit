@@ -1,6 +1,6 @@
 <h2>Disclaimer for FluentEdit</h2>
 
-<p>We are doing our best to prepare the content of this app. However, FluentEdit cannot warranty the expressions and suggestions of the contents, as well as its accuracy. In addition, to the extent permitted by the law, FluentEdit shall not be responsible for any losses and/or damages due to the usage of the information on our app. Our Disclaimer was generated with the help of the App Disclaimer Generator from App-Privacy-Policy.com</p>
+<p>We are doing our best to prepare the content of this app. However, FluentEdit cannot warranty the expressions and suggestions of the contents, as well as its accuracy. In addition, to the extent permitted by the law, FluentEdit shall not be responsible for any losses and/or damages due to the usage of the information on our app. </p>
 
 <p>By using our app, you hereby consent to our disclaimer and agree to its terms.</p>
 

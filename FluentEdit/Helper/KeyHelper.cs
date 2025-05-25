@@ -1,7 +1,7 @@
 ﻿using Windows.System;
 using Windows.UI.Core;
 
-namespace TextControlBox_TestApp.Helper;
+namespace FluentEdit.Helper;
 
 internal class KeyHelper
 {

@@ -37,6 +37,7 @@ internal class RenameFileHelper
             {
                 Directory.Move(sourceFile, destFile);
                 textDocument.FileName = newName;
+                textDocument.FilePath = destFile;
             }
             catch (Exception ex)
             {

@@ -31,10 +31,10 @@ internal class OpenFileHelper
             OpenFile(mainpage, document, textbox, file.Path);
     }
 
-    public static void OpenFile(MainPage mainpage, TextDocument document, TextControlBox textbox, string filePath)
+    public static bool OpenFile(MainPage mainpage, TextDocument document, TextControlBox textbox, string filePath)
     {
         if (filePath == null || filePath.Length == 0)
-            return;
+            return false;
 
         var res = ReadLinesFromFile(filePath);
         if (res.succeeded)
@@ -47,7 +47,10 @@ internal class OpenFileHelper
             
             mainpage.StatusBar.UpdateAll();
             WindowTitleHelper.UpdateTitle(document);
+
+            return true;
         }
+        return false;
     }
 
     private static IEnumerable<string> GetLines(StreamReader reader)

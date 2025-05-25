@@ -23,10 +23,11 @@ namespace FluentEdit.Dialogs
                 RequestedTheme = DialogHelper.DialogTheme,
                 XamlRoot = App.m_window.XamlRoot
             };
-            var res = await dialog.ShowAsync();
 
             renameTextbox.Select(0, document.FileName.LastIndexOf("."));
+            renameTextbox.Focus(FocusState.Programmatic);
 
+            var res = await dialog.ShowAsync();
 
             if (res == ContentDialogResult.Primary)
                 return RenameFileHelper.RenameFile(document, renameTextbox.Text);

@@ -11,7 +11,7 @@ public sealed partial class AboutPage : Page
         this.InitializeComponent();
     }
 
-    public string AppVersion => "Version: " + Package.Current.Id.Version.Major + "." +
+    public string AppVersion => Package.Current.Id.Version.Major + "." +
             Package.Current.Id.Version.Minor + "." +
             Package.Current.Id.Version.Build;
 

@@ -15,7 +15,6 @@ using FluentEdit.Models;
 using TextControlBoxNS;
 using System.Threading.Tasks;
 using FluentEdit.Core.Settings;
-using System.Reflection.Metadata;
 
 namespace FluentEdit.Views;
 
@@ -33,22 +32,17 @@ public sealed partial class MainPage : Page
         this.Loaded += MainPage_Loaded;
     }
 
-    private async void textbox_Loaded(TextControlBox sender)
+    private bool CheckFileActivation()
     {
-        await NewFile(false);
+        //args[0] is always a dll path!
+        string[] args = App.m_window.ActivationArguments;
+        if (args.Length <= 1)
+            return false;
 
-        sender.Focus(FocusState.Programmatic);
-    }
+        if (string.IsNullOrEmpty(args[1]))
+            return false;
 
-    private void MainPage_Loaded(object sender, RoutedEventArgs e)
-    {
-        App.m_window.AppWindow.Closing += AppWindow_Closing;
-
-        WindowTitleHelper.UpdateTitle(textDocument);
-        CheckFirstStart();
-        CheckNewVersion();
-
-        textDocument.FileName = UntitledFileName;
+        return OpenFileHelper.OpenFile(this, textDocument, textbox, args[1]);
     }
 
     private void CheckFirstStart()
@@ -112,7 +106,7 @@ public sealed partial class MainPage : Page
         textbox.FontSize = AppSettings.FontSize;
 
         textbox.RequestedTheme = ThemeHelper.CurrentTheme = AppSettings.Theme;
-
+        
         App.m_window.backdropManager.SetBackdrop(AppSettings.BackgroundType);
     }
 
@@ -129,19 +123,35 @@ public sealed partial class MainPage : Page
     }
 
 
+    private async void textbox_Loaded(TextControlBox sender)
+    {
+        if (!CheckFileActivation())
+        {
+            await NewFile(false);
+        }
+
+        sender.Focus(FocusState.Programmatic);
+    }
+    
+    private void MainPage_Loaded(object sender, RoutedEventArgs e)
+    {
+        App.m_window.AppWindow.Closing += AppWindow_Closing;
+
+        CheckFirstStart();
+        CheckNewVersion();
+
+        ApplySettings();
+    }
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
 
-        ApplySettings();
-        CreateMenubarFromLanguage();
-        statusBar.UpdateWordCharacterCount();
+        if(e.SourcePageType == typeof(SettingsPage))
+        {
+            ApplySettings();
+        }
 
-        //if (e.Parameter is IReadOnlyList<IStorageItem> files)
-        //{
-        //    if(files.Count >= 1)
-        //        await OpenFileHelper.OpenFile(this, textDocument, textbox, files[0]);
-        //}
+        CreateMenubarFromLanguage();
     }
 
     private async void AppWindow_Closing(Microsoft.UI.Windowing.AppWindow sender, Microsoft.UI.Windowing.AppWindowClosingEventArgs args)

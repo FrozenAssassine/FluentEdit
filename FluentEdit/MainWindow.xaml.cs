@@ -11,7 +11,7 @@ namespace FluentEdit;
 
 public sealed partial class MainWindow : Window
 {
-
+    public string[] ActivationArguments;
     public DispatcherQueue UIDispatcherQueue = null;
     public XamlRoot XamlRoot = null;
 
@@ -68,11 +68,11 @@ public sealed partial class MainWindow : Window
     private void NavigateBack_Click(object sender, RoutedEventArgs e)
     {
         ShowBackArrow = false;
-        mainFrame.GoBack();
+        this.mainFrame.GoBack();
     }
 
-    public void SendLaunchArguments()
+    public void SendLaunchArguments(string[] args)
     {
-        //TODO! mainPage.TriggerAppActivationAfterStart();
+        this.ActivationArguments = args;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
+using System;
 
 namespace FluentEdit;
 
@@ -14,6 +15,10 @@ public partial class App : Application
     protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
         m_window = new MainWindow();
+
+        var arguments = Environment.GetCommandLineArgs();
+        m_window.SendLaunchArguments(arguments);
+
         m_window.Activate();
     }
 }

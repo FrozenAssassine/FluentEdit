@@ -13,6 +13,7 @@
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<PackageCertificateThumbprint>2BBA8FE7C631E99E9787AC559A1461196BAB43CE</PackageCertificateThumbprint>
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="Controls\SettingsControl.xaml" />

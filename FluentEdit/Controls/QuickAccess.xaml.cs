@@ -60,12 +60,12 @@ namespace FluentEdit.Controls
         {
             if (currentPage != null)
             {
-                var source = currentPage.Items.Where(x => x.Command.ToLower().Contains(searchbox.Text.ToLower()));
+                var source = currentPage.Items.Where(x => x.Command.ToLower().Contains(searchbox.Text.Trim().ToLower()));
                 itemHostListView.ItemsSource = source.OrderBy(x => x.Command);
                 return;
             }
 
-            var newsource = Items.Where(x => x.Command.ToLower().Contains(searchbox.Text.ToLower()));
+            var newsource = Items.Where(x => x.Command.ToLower().Contains(searchbox.Text.Trim().ToLower()));
 
             itemHostListView.ItemsSource = newsource.OrderBy(x => x.Command);
             itemHostListView.SelectedIndex = 0;

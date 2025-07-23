@@ -60,12 +60,6 @@ public sealed partial class SearchControl : UserControl
 
     public void ShowSearch(TextControlBox textbox)
     {
-        //if (currentTextbox != null && currentTextbox != textbox)
-        //{
-        //    currentTextbox.EndSearch();
-        //    this.searchWindowState = SearchWindowState.Hidden;
-        //}
-
         currentTextbox = textbox;
         searchOpen = true;
 
@@ -90,6 +84,7 @@ public sealed partial class SearchControl : UserControl
 
     public void ShowReplace(TextControlBox textbox)
     {
+        searchOpen = true;
         currentTextbox = textbox;
 
         if (searchWindowState == SearchWindowState.Default)

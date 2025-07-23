@@ -352,4 +352,12 @@ public sealed partial class MainPage : Page
     {
         App.m_window.ShowAbout();
     }
+
+    private void Page_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if(e.Key == Windows.System.VirtualKey.Escape && SearchBox.searchOpen)
+        {
+            SearchBox.Close();
+        }
+    }
 }

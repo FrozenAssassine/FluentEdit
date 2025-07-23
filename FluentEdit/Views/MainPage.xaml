@@ -13,7 +13,7 @@
     NavigationCacheMode="Enabled" ActualThemeChanged="Page_ActualThemeChanged"
     AllowDrop="True" 
     Drop="Page_Drop" 
-    DragEnter="Page_DragEnter">
+    DragEnter="Page_DragEnter" KeyDown="Page_KeyDown">
 
     <Grid>
         <Grid.RowDefinitions>

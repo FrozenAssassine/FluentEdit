@@ -55,18 +55,17 @@ namespace FluentEdit.Views
 
             if(appBackgroundCombobox.SelectedIndex == 0)
             {
-                micaGrid.Visibility = Visibility.Visible;  
                 staticGrid.Visibility = acrylicGrid.Visibility = Visibility.Collapsed;
             }
             else if(appBackgroundCombobox.SelectedIndex == 1)
             {
                 acrylicGrid.Visibility = Visibility.Visible;
-                staticGrid.Visibility = micaGrid.Visibility = Visibility.Collapsed;
+                staticGrid.Visibility = Visibility.Collapsed;
             }
             else if (appBackgroundCombobox.SelectedIndex == 2)
             {
                 staticGrid.Visibility = Visibility.Visible;
-                acrylicGrid.Visibility = micaGrid.Visibility = Visibility.Collapsed;
+                acrylicGrid.Visibility = Visibility.Collapsed;
             }
 
             AppSettings.BackgroundType = (BackgroundType)appBackgroundCombobox.SelectedIndex;

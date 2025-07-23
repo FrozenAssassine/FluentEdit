@@ -61,17 +61,20 @@
                     </Expander.Header>
                     <Expander.Content>
                         <Grid Margin="0,20,0,0">
-                            <Grid x:Name="micaGrid" HorizontalAlignment="Right">
-                                <ComboBox HorizontalAlignment="Right" Margin="10" x:Name="themeCombobox" SelectionChanged="themeCombobox_SelectionChanged" Width="150">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <ComboBox Grid.Row="0" HorizontalAlignment="Right" Margin="10" x:Name="themeCombobox" SelectionChanged="themeCombobox_SelectionChanged" Width="150">
                                     <ComboBoxItem Content="System default" Tag="0"/>
                                     <ComboBoxItem Content="Light" Tag="1"/>
                                     <ComboBoxItem Content="Dark" Tag="2"/>
                                 </ComboBox>
-                            </Grid>
-                            <Grid x:Name="acrylicGrid" HorizontalAlignment="Right">
+
+                            <Grid Grid.Row="1" x:Name="acrylicGrid" HorizontalAlignment="Right">
                                 <controls:ColorPickerButton HorizontalAlignment="Right" IsAlphaEnabled="True" Margin="10" x:Name="acrylicColorPicker" ColorChanged="acrylicColorPicker_ColorChanged"/>
                             </Grid>
-                            <Grid x:Name="staticGrid" HorizontalAlignment="Right">
+                            <Grid Grid.Row="1" x:Name="staticGrid" HorizontalAlignment="Right">
                                 <controls:ColorPickerButton HorizontalAlignment="Right" IsAlphaEnabled="False" x:Name="staticColorPicker" Margin="10" ColorChanged="staticColorPicker_ColorChanged"/>
                             </Grid>
                         </Grid>

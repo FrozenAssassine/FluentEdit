@@ -65,7 +65,7 @@ public sealed partial class MainPage : Page
 
     private bool IsContentDialogOpen()
     {
-        var openedpopups = VisualTreeHelper.GetOpenPopups(App.m_window);
+        var openedpopups = VisualTreeHelper.GetOpenPopupsForXamlRoot(App.m_window.XamlRoot);
         for (int i = 0; i < openedpopups.Count; i++)
         {
             if (openedpopups[i].Child is ContentDialog)

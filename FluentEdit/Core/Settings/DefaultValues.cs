@@ -10,4 +10,9 @@ public class DefaultValues
     public const int BackgroundType = 0; //BackroundType.Mica
     public static readonly Color DefaultStaticBackground = Color.FromArgb(255, 25, 25, 25);
     public static readonly Color DefaultAcrylicBackground = Color.FromArgb(150, 25, 25, 25);
+
+    public const int windowWidth = 1100;
+    public const int windowHeight = 700;
+    public const int windowLeft = -1;
+    public const int windowTop = -1;
 }

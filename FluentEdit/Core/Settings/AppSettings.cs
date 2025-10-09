@@ -1,5 +1,6 @@
 ﻿using FluentEdit.Helper;
 using FluentEdit.Models;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Windows.UI;
 
@@ -59,5 +60,31 @@ public class AppSettings
     {
         get => SettingsManager.GetSettingsAsInt(AppSettingsValues.HideDonationInfo, 0) == 1;
         set => SettingsManager.SaveSettings(AppSettingsValues.HideDonationInfo, value == true ? 1 : 0);
+    }
+
+    public static int WindowWidth
+    {
+        get => SettingsManager.GetSettingsAsInt(AppSettingsValues.windowWidth, DefaultValues.windowWidth);
+        set => SettingsManager.SaveSettings(AppSettingsValues.windowWidth, value);
+    }
+    public static int WindowHeight
+    {
+        get => SettingsManager.GetSettingsAsInt(AppSettingsValues.windowHeight, DefaultValues.windowHeight);
+        set => SettingsManager.SaveSettings(AppSettingsValues.windowHeight, value);
+    }
+    public static int WindowLeft
+    {
+        get => SettingsManager.GetSettingsAsInt(AppSettingsValues.windowLeft, DefaultValues.windowLeft);
+        set => SettingsManager.SaveSettings(AppSettingsValues.windowLeft, value);
+    }
+    public static int WindowTop
+    {
+        get => SettingsManager.GetSettingsAsInt(AppSettingsValues.windowTop, DefaultValues.windowTop);
+        set => SettingsManager.SaveSettings(AppSettingsValues.windowTop, value);
+    }
+    public static OverlappedPresenterState WindowState
+    {
+        get => (OverlappedPresenterState)SettingsManager.GetSettingsAsInt(AppSettingsValues.windowState, 2);
+        set => SettingsManager.SaveSettings(AppSettingsValues.windowState, value.GetHashCode());
     }
 }

@@ -19,7 +19,7 @@
                 <Expander HorizontalAlignment="Stretch" Margin="0,5,20,0" HorizontalContentAlignment="Stretch">
                     <Expander.Header>
                         <Grid Height="70">
-                            <TextBlock VerticalAlignment="Center" FontSize="18" Text="Font"/>
+                            <TextBlock VerticalAlignment="Center" FontSize="20" Text="Font"/>
                         </Grid>
                     </Expander.Header>
                     <Expander.Content>
@@ -29,7 +29,7 @@
                                 <RowDefinition Height="auto"></RowDefinition>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" HorizontalAlignment="Left" Text="Fontfamily"/>
+                            <TextBlock FontSize="20" Grid.Row="0" HorizontalAlignment="Left" Text="Font Family"/>
                             <ComboBox ItemsSource="{x:Bind Fonts}" SelectionChanged="fontFamilyCombobox_SelectionChanged" x:Name="fontFamilyCombobox" Grid.Row="0" HorizontalAlignment="Right" Width="150" VerticalAlignment="Center">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate x:DataType="x:String">
@@ -38,7 +38,7 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
 
-                            <TextBlock Grid.Row="1" Margin="0,20,0,0" Text="Fontsize:" HorizontalAlignment="Left"/>
+                            <TextBlock FontSize="20" Grid.Row="1" Margin="0,20,0,0" Text="Font Size" HorizontalAlignment="Left"/>
                             <NumberBox x:Name="fontSizeNumberBox" ValueChanged="fontSizeNumberBox_ValueChanged" Grid.Row="1" Margin="0,20,0,0" HorizontalAlignment="Right" SpinButtonPlacementMode="Inline" Maximum="48" Minimum="10" SmallChange="1" LargeChange="4" Width="150"/>
                         </Grid>
                     </Expander.Content>
@@ -51,7 +51,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="18" Text="Background"/>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="Background"/>
                             <ComboBox VerticalAlignment="Center" x:Name="appBackgroundCombobox" Grid.Column="1" SelectionChanged="AppBackground_SelectionChanged">
                                 <ComboBoxItem Content="Mica"/>
                                 <ComboBoxItem Content="Acrylic"/>

@@ -13,4 +13,9 @@ internal class AppSettingsValues
     public const string AcrylicBackground = "acrylicBackground";
     public const string StaticBackground = "staticBackground";
     public const string HideDonationInfo = "hideDonationInfo";
+    public const string windowWidth = "windowWidth";
+    public const string windowHeight = "windowHeight";
+    public const string windowLeft = "windowLeft";
+    public const string windowTop = "windowTop";
+    public const string windowState = "windowState";
 }

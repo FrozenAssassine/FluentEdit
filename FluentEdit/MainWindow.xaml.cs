@@ -16,6 +16,7 @@ public sealed partial class MainWindow : Window
     public XamlRoot XamlRoot = null;
 
     public StackPanel InfoMessagesPanel;
+    public readonly RestoreWindowManager restoreWindowManager;
 
     public IntPtr WindowHandle;
 
@@ -28,6 +29,10 @@ public sealed partial class MainWindow : Window
         this.InitializeComponent();
 
         backdropManager = new BackdropWindowManager(this);
+
+        restoreWindowManager = new RestoreWindowManager(this);
+        restoreWindowManager.RestoreSettings();
+
         this.WindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
         UIDispatcherQueue = DispatcherQueue.GetForCurrentThread();
         InfoMessagesPanel = this.infoMessagesPanel;

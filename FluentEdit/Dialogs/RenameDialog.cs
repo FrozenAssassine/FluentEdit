@@ -1,35 +1,37 @@
 ﻿using FluentEdit.Core;
 using FluentEdit.Helper;
-using FluentEdit.Storage;
+using FluentEdit.Core.Storage;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TextControlBox_DemoApp.Views;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace FluentEdit.Dialogs
 {
     internal class RenameDialog
     {
-        public static async Task<(bool res, string newName)> ShowAsync(string currentName)
+        public static async Task<bool> ShowAsync(TextDocument document)
         {
-            TextBox tb;
+            TextBox renameTextbox;
             var dialog = new ContentDialog
             {
                 Title = "Rename File",
-                Content = tb = new TextBox { Text = currentName, HorizontalAlignment = HorizontalAlignment.Stretch},
+                Content = renameTextbox = new TextBox { Text = document.FileName, HorizontalAlignment = HorizontalAlignment.Stretch},
                 PrimaryButtonText = "Rename",
                 CloseButtonText = "Cancel",
                 DefaultButton = ContentDialogButton.Primary,
-                RequestedTheme = DialogHelper.DialogTheme
+                RequestedTheme = DialogHelper.DialogTheme,
+                XamlRoot = App.m_window.XamlRoot
             };
+
+            renameTextbox.Select(0, document.FileName.LastIndexOf("."));
+            renameTextbox.Focus(FocusState.Programmatic);
+
             var res = await dialog.ShowAsync();
+
             if (res == ContentDialogResult.Primary)
-                return (true, tb.Text);
-            return (false, "");
+                return RenameFileHelper.RenameFile(document, renameTextbox.Text);
+            return false;
         }
     }
 }

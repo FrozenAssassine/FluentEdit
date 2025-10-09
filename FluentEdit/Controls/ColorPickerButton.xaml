@@ -16,7 +16,7 @@
             </Border.Background>
             <FlyoutBase.AttachedFlyout>
                 <Flyout x:Name="flyout" Closed="PickerFlyout_Closed">
-                    <muxc:ColorPicker Margin="0,0,0,0" IsMoreButtonVisible="True" x:Name="ColorPickerFlyout" IsAlphaEnabled="True" ColorSpectrumShape="Ring" HorizontalAlignment="Left"/>
+                    <ColorPicker Margin="0,0,0,0" IsMoreButtonVisible="True" x:Name="ColorPickerFlyout" IsAlphaEnabled="True" ColorSpectrumShape="Ring" HorizontalAlignment="Left"/>
                 </Flyout>
             </FlyoutBase.AttachedFlyout>
         </Border>

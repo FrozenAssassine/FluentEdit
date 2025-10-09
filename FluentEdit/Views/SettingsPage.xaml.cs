@@ -27,6 +27,8 @@ namespace FluentEdit.Views
 
             acrylicColorPicker.Color = AppSettings.AcrylicBackground;
             staticColorPicker.Color = AppSettings.StaticBackground;
+
+            hideDonationInfosButton.IsOn = AppSettings.HideDonationInfo;
         }
 
         private void themeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -85,6 +87,11 @@ namespace FluentEdit.Views
                 return;
 
             AppSettings.StaticBackground = staticColorPicker.Color.Value;
+        }
+
+        private void hideDonationInfosButton_Toggled(object sender, RoutedEventArgs e)
+        {
+            AppSettings.HideDonationInfo = hideDonationInfosButton.IsOn;
         }
     }
 }

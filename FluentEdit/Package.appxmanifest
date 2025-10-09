@@ -12,10 +12,8 @@
 
   <Identity
     Name="52804JuliusKirsch.TextControlBoxDemo"
-    Publisher="CN=juliu"
+    Publisher="CN=131520D9-7303-41D1-808C-53CCB4ADFB34"
     Version="1.5.0.0" />
-
-  <mp:PhoneIdentity PhoneProductId="92159b7f-0bbc-4b6c-9a74-7402e1857346" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>FluentEdit</DisplayName>
@@ -267,8 +265,9 @@
 			  </uap:Extension>
 		  </Extensions>
 	  </Application>
-</Applications>
-<Capabilities>
-	<rescap:Capability Name="runFullTrust" />
-</Capabilities>
+	</Applications>
+	<Capabilities>
+		<rescap:Capability Name="runFullTrust" />
+	</Capabilities>
+	<mp:PhoneIdentity PhoneProductId="92159b7f-0bbc-4b6c-9a74-7402e1857346" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 </Package>

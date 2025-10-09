@@ -30,7 +30,7 @@
 
     <Grid
         x:Name="SearchWindow"
-        BorderBrush="Gray"
+        BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
         BorderThickness="2"
         VerticalAlignment="Top"
         Margin="0,0,0,5"

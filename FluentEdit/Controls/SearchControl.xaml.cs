@@ -138,6 +138,10 @@ public sealed partial class SearchControl : UserControl
         {
             ReplaceCurrentButton_Click(null, null);
         }
+        else if (e.Key == VirtualKey.Escape)
+        {
+            Close();
+        }
     }
     private void SearchTextBox_KeyDown(object sender, KeyRoutedEventArgs e)
     {
@@ -152,6 +156,10 @@ public sealed partial class SearchControl : UserControl
                 currentTextbox.FindPrevious();
             else
                 currentTextbox.FindNext();
+        }
+        else if (e.Key == VirtualKey.Escape)
+        {
+            Close();
         }
     }
     private void SearchUpButton_Click(object sender, RoutedEventArgs e)

@@ -35,7 +35,7 @@ public sealed partial class MainWindow : Window
 
         SetTitleBar(titleBarGrid);
         SetAppTitle("FluentEdit");
-        //TODO! Icon Path
+        
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\Icon.ico"));
     }
 

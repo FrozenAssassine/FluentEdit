@@ -108,6 +108,8 @@ public sealed partial class MainPage : Page
         textbox.RequestedTheme = ThemeHelper.CurrentTheme = AppSettings.Theme;
         
         App.m_window.backdropManager.SetBackdrop(AppSettings.BackgroundType);
+
+        supportDevelopmentMenuItemSeparator.Visibility = supportDevelopmentMenuItem.Visibility = ConvertHelper.BoolToVisibility(!AppSettings.HideDonationInfo);
     }
 
     private async Task NewFile(bool checkUnsaved = true)
@@ -351,5 +353,10 @@ public sealed partial class MainPage : Page
     private void About_Click(object sender, RoutedEventArgs e)
     {
         App.m_window.ShowAbout();
+    }
+
+    private async void SupportDevelopment_Click(object sender, RoutedEventArgs e)
+    {
+        await Windows.System.Launcher.LaunchUriAsync(new Uri("https://www.paypal.com/donate/?hosted_button_id=Q7YWPMBV6YNCQ"));
     }
 }

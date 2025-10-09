@@ -54,4 +54,10 @@ public class AppSettings
             );
         set => SettingsManager.SaveSettings(AppSettingsValues.StaticBackground, ColorConverter.ToString(value));
     }
+
+    public static bool HideDonationInfo
+    {
+        get => SettingsManager.GetSettingsAsInt(AppSettingsValues.HideDonationInfo, 0) == 1;
+        set => SettingsManager.SaveSettings(AppSettingsValues.HideDonationInfo, value == true ? 1 : 0);
+    }
 }

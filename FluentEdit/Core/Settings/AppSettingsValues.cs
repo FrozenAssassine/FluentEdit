@@ -12,4 +12,5 @@ internal class AppSettingsValues
     public const string AppVersion = "appVersion";
     public const string AcrylicBackground = "acrylicBackground";
     public const string StaticBackground = "staticBackground";
+    public const string HideDonationInfo = "hideDonationInfo";
 }

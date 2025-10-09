@@ -19,7 +19,7 @@
                 <Expander HorizontalAlignment="Stretch" Margin="0,5,20,0" HorizontalContentAlignment="Stretch">
                     <Expander.Header>
                         <Grid Height="70">
-                            <TextBlock VerticalAlignment="Center" FontSize="18" Text="Font:"/>
+                            <TextBlock VerticalAlignment="Center" FontSize="18" Text="Font"/>
                         </Grid>
                     </Expander.Header>
                     <Expander.Content>
@@ -51,7 +51,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="18" Text="Background:"/>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="18" Text="Background"/>
                             <ComboBox VerticalAlignment="Center" x:Name="appBackgroundCombobox" Grid.Column="1" SelectionChanged="AppBackground_SelectionChanged">
                                 <ComboBoxItem Content="Mica"/>
                                 <ComboBoxItem Content="Acrylic"/>
@@ -80,6 +80,12 @@
                         </Grid>
                     </Expander.Content>
                 </Expander>
+
+                <controls:SettingsControl Header="Hide Donation Information" HorizontalAlignment="Stretch" Margin="0,0,20,0" HorizontalContentAlignment="Stretch">
+                    <controls:SettingsControl.Content>
+                        <ToggleSwitch Style="{StaticResource LeftSideToggleSwitch}"  HorizontalAlignment="Right" Margin="0" x:Name="hideDonationInfosButton" IsOn="False" Toggled="hideDonationInfosButton_Toggled"/>
+                    </controls:SettingsControl.Content>
+                </controls:SettingsControl>
             </StackPanel>
         </Grid>
     </ScrollViewer>

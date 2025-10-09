@@ -359,4 +359,12 @@ public sealed partial class MainPage : Page
     {
         await Windows.System.Launcher.LaunchUriAsync(new Uri("https://www.paypal.com/donate/?hosted_button_id=Q7YWPMBV6YNCQ"));
     }
+
+    private void Page_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if(e.Key == Windows.System.VirtualKey.Escape && SearchBox.searchOpen)
+        {
+            SearchBox.Close();
+        }
+    }
 }

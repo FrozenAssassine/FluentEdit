@@ -23,6 +23,9 @@
 - Quick access panel (`Ctrl + Shift + P`).
 - Customizable backgrounds (Mica, Acrylic, Static).
 
+## Support my work  
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=PPME7KF7KF7QS)
+
 ## 🚀 Building the project:
 To build FluentEdit you need Visual Studio and UWP installed. Then you can clone the repository and open the .sln file with Visual Studio.
 

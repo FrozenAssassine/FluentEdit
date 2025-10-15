@@ -33,7 +33,7 @@ namespace FluentEdit.Views
 
         private void themeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ThemeHelper.CurrentTheme = AppSettings.Theme = (ElementTheme)themeCombobox.SelectedIndex;
+            this.RequestedTheme = ThemeHelper.CurrentTheme = AppSettings.Theme = (ElementTheme)themeCombobox.SelectedIndex;
         }
         private void fontFamilyCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

@@ -32,7 +32,7 @@ public sealed partial class MainPage : Page
         this.Loaded += MainPage_Loaded;
     }
 
-    private bool CheckFileActivation()
+    private async Task<bool> CheckFileActivation()
     {
         //args[0] is always a dll path!
         string[] args = App.m_window.ActivationArguments;
@@ -42,7 +42,7 @@ public sealed partial class MainPage : Page
         if (string.IsNullOrEmpty(args[1]))
             return false;
 
-        return OpenFileHelper.OpenFile(this, textDocument, textbox, args[1]);
+        return await OpenFileHelper.OpenFileAsync(this, textDocument, textbox, args[1]);
     }
 
     private void CheckFirstStart()
@@ -127,7 +127,7 @@ public sealed partial class MainPage : Page
 
     private async void textbox_Loaded(TextControlBox sender)
     {
-        if (!CheckFileActivation())
+        if (!await CheckFileActivation())
         {
             await NewFile(false);
         }
@@ -336,7 +336,7 @@ public sealed partial class MainPage : Page
                 if (await AskSaveDialog.CheckUnsavedChanges(this, textDocument, textbox))
                     return;
 
-                OpenFileHelper.OpenFile(this, textDocument, textbox, files[0].Path);
+                await OpenFileHelper.OpenFileAsync(this, textDocument, textbox, files[0].Path);
             }
         }
     }

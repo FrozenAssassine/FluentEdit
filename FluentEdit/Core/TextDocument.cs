@@ -10,7 +10,6 @@ public class TextDocument
     public string FileName { get; set; } = "";
     public string FilePath { get; set; } = "";
     public bool SavedOnDisk => FilePath.Length > 0;
-
     public bool UnsavedChanges { get; set; } = false;
 
     public void SaveAs(StorageFile file)

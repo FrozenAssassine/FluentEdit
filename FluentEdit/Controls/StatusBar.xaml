@@ -53,7 +53,12 @@
                     </MenuFlyout>
                 </Button.Flyout>
             </Button>
-            <TextBlock x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" TextAlignment="Right" MinWidth="40"></TextBlock>
+            <Button Background="Transparent" BorderThickness="0"  x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="40">
+                <Button.Flyout>
+                    <MenuFlyout x:Name="Infobar_LineEndingFlyout">
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using FluentEdit.Core;
 using System.IO;
 using FluentEdit.Views;
 using FluentEdit.Helper;
@@ -34,7 +33,7 @@ internal class SaveFileHelper
             if (file == null)
                 return false;
 
-            if (await WriteLinesToFile(file.Path, textbox.Lines, document.CurrentEncoding))
+            if (await WriteLinesToFile(file.Path, textbox.Lines, document.CurrentEncoding, textbox.LineEnding))
             {
                 document.SaveAs(file);
                 WindowTitleHelper.UpdateTitle(document);
@@ -44,7 +43,7 @@ internal class SaveFileHelper
         }
 
         //just save it:
-        var res = await WriteLinesToFile(document.FilePath, textbox.Lines, document.CurrentEncoding);
+        var res = await WriteLinesToFile(document.FilePath, textbox.Lines, document.CurrentEncoding, textbox.LineEnding);
         if (res == true)
         {
             document.Save();
@@ -52,21 +51,27 @@ internal class SaveFileHelper
         }
         return res;
     }
-    public static async Task<bool> WriteLinesToFile(string path, IEnumerable<string> lines, Encoding encoding)
+    public static async Task<bool> WriteLinesToFile(string path, IEnumerable<string> lines, Encoding encoding, LineEnding lineEnding)
     {
         if (string.IsNullOrWhiteSpace(path) || lines == null || encoding == null)
             return false;
 
+        string lineEndingStr = LineEndingHelper.GetLineEndingString(lineEnding);
+
         try
         {
-            using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true))
+            using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 65536, useAsync: true))
             using (var writer = new StreamWriter(stream, encoding))
             {
                 foreach (var line in lines)
                 {
-                    await writer.WriteLineAsync(line);
+                    await writer.WriteAsync(line.AsMemory());
+                    await writer.WriteAsync(lineEndingStr.AsMemory());
                 }
+
+                await writer.FlushAsync();
             }
+
             return true;
         }
         catch (UnauthorizedAccessException)

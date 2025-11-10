@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using System.IO;
 using TextControlBoxNS;
+using System;
 
 namespace FluentEdit.Controls;
 
@@ -19,6 +20,30 @@ public sealed partial class StatusBar : UserControl
     public StatusBar()
     {
         this.InitializeComponent();
+
+        LoadLineEndings();
+    }
+
+    private void LoadLineEndings()
+    {
+        int lineEndingIndex = 0;
+        foreach (var lineEnding in Enum.GetValues(typeof(TextControlBoxNS.LineEnding)))
+        {
+            var item = new MenuFlyoutItem { Text = lineEnding.ToString(), Tag = lineEndingIndex++ };
+            item.Click += ChangeLineEnding_Click;
+            Infobar_LineEndingFlyout.Items.Add(item);
+        }
+    }
+
+
+    private void ChangeLineEnding_Click(object sender, RoutedEventArgs e)
+    {
+        if (textbox == null)
+            return;
+
+        textDocument.UnsavedChanges = true;
+        textbox.LineEnding = (LineEnding)(int)(sender as MenuFlyoutItem).Tag;
+        UpdateLineEndings();
     }
 
     public void Init(TextControlBox textbox, TextDocument textDocument)
@@ -60,7 +85,7 @@ public sealed partial class StatusBar : UserControl
     }
     public void UpdateLineEndings()
     {
-        Infobar_LineEnding.Text = textbox.LineEnding.ToString();
+        Infobar_LineEnding.Content = textbox.LineEnding.ToString();
     }
     public void UpdateEncodingInfobar()
     {
@@ -81,12 +106,6 @@ public sealed partial class StatusBar : UserControl
     {
         Infobar_Zoom.Content = zoom + "%";
     }
-
-    public void SetLineEnding()
-    {
-        Infobar_LineEnding.Text = textbox.LineEnding.ToString();
-    }
-
 
     private void Flyout_Closed(object sender, object e)
     {

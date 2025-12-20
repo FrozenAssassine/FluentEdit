@@ -17,6 +17,7 @@ public sealed partial class MainWindow : Window
 
     public StackPanel InfoMessagesPanel;
     public readonly RestoreWindowManager restoreWindowManager;
+    public readonly WindowStateManager windowStateManager;
 
     public IntPtr WindowHandle;
 
@@ -29,8 +30,9 @@ public sealed partial class MainWindow : Window
         this.InitializeComponent();
 
         backdropManager = new BackdropWindowManager(this);
+        windowStateManager = new WindowStateManager(this);
+        restoreWindowManager = new RestoreWindowManager(this, windowStateManager);
 
-        restoreWindowManager = new RestoreWindowManager(this);
         restoreWindowManager.RestoreSettings();
 
         this.WindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);

@@ -2,11 +2,6 @@
 using FluentEdit.Helper;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Graphics;
 
 namespace FluentEdit.Core;
@@ -14,10 +9,12 @@ namespace FluentEdit.Core;
 public class RestoreWindowManager
 {
     private Window window;
-    public RestoreWindowManager(Window window)
+    private WindowStateManager windowStateManager;
+
+    public RestoreWindowManager(Window window, WindowStateManager windowStateManager)
     {
         this.window = window;
-
+        this.windowStateManager = windowStateManager;
         window.AppWindow.Closing += AppWindow_Closing;
     }
 
@@ -41,18 +38,17 @@ public class RestoreWindowManager
         RectInt32 restoreBounds = new RectInt32(left, top, width, height);
 
         window.AppWindow.MoveAndResize(restoreBounds);
-        window.AppWindow.Resize(new SizeInt32(width, height));
-
         WindowStateHelper.SetWindowState(window, AppSettings.WindowState);
     }
 
     private void SaveSettings()
     {
-        AppSettings.WindowWidth = window.AppWindow.Size.Width;
-        AppSettings.WindowHeight = window.AppWindow.Size.Height;
-        AppSettings.WindowLeft = window.AppWindow.Position.X;
-        AppSettings.WindowTop = window.AppWindow.Position.Y;
-        var state = WindowStateHelper.GetWindowState(window);
-        AppSettings.WindowState = state;
+        var windowPosSize = windowStateManager.GetWindowSizePosStateIndependent();
+
+        AppSettings.WindowWidth = windowPosSize.size.Width;
+        AppSettings.WindowHeight = windowPosSize.size.Height;
+        AppSettings.WindowLeft = windowPosSize.position.X;
+        AppSettings.WindowTop = windowPosSize.position.Y;
+        AppSettings.WindowState = windowPosSize.state;
     }
 }

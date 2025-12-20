@@ -145,7 +145,7 @@ internal class OpenFileHelper
             document.Open(res.encoding, filePath);
             FileExtensions.SelectSyntaxHighlightingByFile(filePath, textbox);
 
-            textbox.LoadLines(res.lines, lineEnding);
+            textbox.LoadLines(res.lines, true, lineEnding);
             textbox.ScrollLineIntoView(0);
             
             mainpage.StatusBar.UpdateAll();

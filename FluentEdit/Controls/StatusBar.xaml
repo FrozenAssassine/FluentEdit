@@ -41,7 +41,7 @@
                 </Button.Flyout>
             </Button>
 
-            <Button Background="Transparent" BorderThickness="0"  x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="40">
+            <Button Background="Transparent" BorderThickness="0" x:Name="Infobar_Encoding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="40">
                 <Button.Flyout>
                     <MenuFlyout Closed="Flyout_Closed">
                         <MenuFlyoutItem Text="UTF-8" Tag="1" Click="Encoding_Click"/>
@@ -53,9 +53,36 @@
                     </MenuFlyout>
                 </Button.Flyout>
             </Button>
-            <Button Background="Transparent" BorderThickness="0"  x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="40">
+            <Button Background="Transparent" BorderThickness="0" x:Name="Infobar_LineEnding" HorizontalAlignment="Right" VerticalAlignment="Center" MinWidth="40">
                 <Button.Flyout>
                     <MenuFlyout x:Name="Infobar_LineEndingFlyout">
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+            <Button Background="Transparent" BorderThickness="0" Grid.Column="6" HorizontalAlignment="Left" x:Name="ItemTabsSpaces">
+                <Button.Flyout>
+                    <MenuFlyout Opening="ItemTabsSpaces_FlyoutOpening">
+                        <!-- Tab key behavior -->
+                        <MenuFlyoutSubItem Text="Tab Key" x:Name="ItemTabKeyBehaviour">
+                            <MenuFlyoutSubItem.Items>
+                                <ToggleMenuFlyoutItem Text="Use Tab (\t)" Click="TabSpaces_Click" Tag="-1"/>
+                                <MenuFlyoutSeparator/>
+                                <ToggleMenuFlyoutItem Text="2 Spaces" Click="TabSpaces_Click" Tag="2"/>
+                                <ToggleMenuFlyoutItem Text="4 Spaces" Click="TabSpaces_Click" Tag="4"/>
+                                <ToggleMenuFlyoutItem Text="8 Spaces" Click="TabSpaces_Click" Tag="8"/>
+                            </MenuFlyoutSubItem.Items>
+                        </MenuFlyoutSubItem>
+
+                        <!-- Reformat entire text -->
+                        <MenuFlyoutSubItem Text="Reformat Document">
+                            <MenuFlyoutSubItem.Items>
+                                <MenuFlyoutItem Text="Use Tab (\t)" Click="ReformatTabsInDocument_Click" Tag="-1"/>
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutItem Text="2 Spaces" Click="ReformatTabsInDocument_Click" Tag="2"/>
+                                <MenuFlyoutItem Text="4 Spaces" Click="ReformatTabsInDocument_Click" Tag="4"/>
+                                <MenuFlyoutItem Text="8 Spaces" Click="ReformatTabsInDocument_Click" Tag="8"/>
+                            </MenuFlyoutSubItem.Items>
+                        </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </Button.Flyout>
             </Button>

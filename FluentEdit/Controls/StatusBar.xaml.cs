@@ -61,6 +61,7 @@ public sealed partial class StatusBar : UserControl
         this.UpdateLineEndings();
         this.UpdateWordCharacterCount();
         this.UpdateEncodingInfobar();
+        this.UpdateTabsSpaces();
     }
 
     public void UpdateCursor()
@@ -94,6 +95,16 @@ public sealed partial class StatusBar : UserControl
     public void UpdateFileName()
     {
         fileNameDisplay.Content = textDocument.FileName;
+    }
+
+    public void UpdateTabsSpaces()
+    {
+        string content;
+        if (textbox.UseSpacesInsteadTabs)
+            content = $"Spaces: {textbox.NumberOfSpacesForTab}";
+        else
+            content = $"Tabs";
+        ItemTabsSpaces.Content = content;
     }
 
 
@@ -181,5 +192,25 @@ public sealed partial class StatusBar : UserControl
     private void StatusBarZoomFlyout_Opening(object sender, object e)
     {
         ZoomSlider.Value = textbox.ZoomFactor;
+    }
+
+    private void ReformatTabsInDocument_Click(object sender, RoutedEventArgs e)
+    {
+        TabsSpacesHelper.RewriteTabsSpaces(textbox, sender);
+        UpdateTabsSpaces();
+    }
+
+    private void ItemTabsSpaces_FlyoutOpening(object sender, object e)
+    {
+        TabsSpacesHelper.SelectToggleMenuItemsFromMenu(ItemTabKeyBehaviour, textbox);
+    }
+
+    private void TabSpaces_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is ToggleMenuFlyoutItem item)
+        {
+            TabsSpacesHelper.SetTabsSpaces(textbox, ConvertHelper.ToInt(item.Tag, -1));
+
+        }
     }
 }

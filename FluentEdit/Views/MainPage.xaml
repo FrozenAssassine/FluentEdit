@@ -99,21 +99,7 @@
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
             </MenuBarItem>
-
-            <MenuBarItem Title="Advanced">
-                <MenuFlyoutItem Text="Duplicate line" Click="DuplicateLine_Click">
-                    <MenuFlyoutItem.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="D" Modifiers="Control"/>
-                    </MenuFlyoutItem.KeyboardAccelerators>
-                </MenuFlyoutItem>
-                <MenuFlyoutSubItem Text="Language" x:Name="LanguagesMenubarItem">
-                    <MenuFlyoutItem Text="None" Tag="" Click="SyntaxHighlighting_Clicked"/>
-                </MenuFlyoutSubItem>
-                <MenuFlyoutSubItem Text="Tab-mode">
-                    <MenuFlyoutItem Text="Spaces" Tag="0" Click="TabMode_Click"/>
-                    <MenuFlyoutItem Text="Tabs" Tag="1"  Click="TabMode_Click"/>
-                </MenuFlyoutSubItem>
-                <MenuFlyoutSeparator/>
+            <MenuBarItem Title="Document">
                 <MenuFlyoutItem Text="Fileinfo" Click="ShowFileInfo_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="I" Modifiers="Control"/>
@@ -124,6 +110,36 @@
                         <KeyboardAccelerator Key="F2" Modifiers="None"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
+            </MenuBarItem>
+            <MenuBarItem Title="Advanced">
+                <MenuFlyoutItem Text="Duplicate line" Click="DuplicateLine_Click">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="D" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutSubItem Text="Syntax Highlighting" x:Name="LanguagesMenubarItem"/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutSubItem Text="Tab Behaviour (Tabs/Spaces)" x:Name="TabKeyBehaviourFlyout">
+                    <MenuFlyoutSubItem.Items>
+                        <MenuFlyoutItem Text="Auto Detect" Click="AutodetectTabsSpaces_Click"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem Text="Use Tab (\t)" Click="TabSpaces_Click" Tag="-1"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem Text="2 Spaces" Click="TabSpaces_Click" Tag="2" />
+                        <MenuFlyoutItem Text="4 Spaces" Click="TabSpaces_Click" Tag="4"/>
+                        <MenuFlyoutItem Text="8 Spaces" Click="TabSpaces_Click" Tag="8"/>
+                    </MenuFlyoutSubItem.Items>
+                </MenuFlyoutSubItem>
+                <MenuFlyoutSubItem Text="Reformat Tabs/Spaces">
+                    <MenuFlyoutSubItem.Items>
+                        <MenuFlyoutItem Text="Use Tab (\t)" Click="ReformatTabsInDocument_Click" Tag="-1"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem Text="2 Spaces" Click="ReformatTabsInDocument_Click" Tag="2"/>
+                        <MenuFlyoutItem Text="4 Spaces" Click="ReformatTabsInDocument_Click" Tag="4"/>
+                        <MenuFlyoutItem Text="8 Spaces" Click="ReformatTabsInDocument_Click" Tag="8"/>
+                    </MenuFlyoutSubItem.Items>
+                </MenuFlyoutSubItem>
+                <MenuFlyoutSeparator/>
                 <MenuFlyoutItem Text="Quick Access" Click="ShowQuickAccess_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="B" Modifiers="Control"/>
@@ -149,7 +165,7 @@
         </MenuBar>
 
         <textcontrolbox:TextControlBox Loaded="textbox_Loaded" LineEnding="CRLF" x:Name="textbox" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-            TextChanged="textbox_TextChanged" SelectionChanged="textbox_SelectionChanged" ZoomChanged="textbox_ZoomChanged"                               
+            TextChanged="textbox_TextChanged" SelectionChanged="textbox_SelectionChanged" ZoomChanged="textbox_ZoomChanged"  TabsSpacesChanged="textbox_TabsSpacesChanged"                             
         />
 
         <controls:SearchControl Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,35,0,0" x:Name="SearchBox" BorderThickness="1" Visibility="Collapsed" BorderBrush="{ThemeResource SystemAccentColorDark1}" CornerRadius="5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>

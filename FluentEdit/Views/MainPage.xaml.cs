@@ -367,4 +367,29 @@ public sealed partial class MainPage : Page
             SearchBox.Close();
         }
     }
+
+    private void textbox_TabsSpacesChanged(TextControlBox sender, bool spacesInsteadTabs, int spaces)
+    {
+        statusBar.UpdateTabsSpaces();
+    }
+
+    private void ReformatTabsInDocument_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuFlyoutItem item)
+            TabsSpacesHelper.RewriteTabsSpaces(textbox, ConvertHelper.ToInt(item.Tag, -1));
+    }
+
+    private void TabSpaces_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is ToggleMenuFlyoutItem item)
+        {
+            TabsSpacesHelper.SetTabsSpaces(textbox, ConvertHelper.ToInt(item.Tag, -1));
+        }
+    }
+
+    private void AutodetectTabsSpaces_Click(object sender, RoutedEventArgs e)
+    {
+        (bool useSpacesInstead, int tabs) = textbox.DetectTabsSpaces();
+        TabsSpacesHelper.SetTabsSpaces(textbox, useSpacesInstead ? tabs : -1);
+    }
 }

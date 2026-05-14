@@ -129,6 +129,7 @@ namespace FluentEdit.Core
             m_acrylicController.FallbackColor = color;
             m_acrylicController.AddSystemBackdropTarget(window.As<Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop>());
             m_acrylicController.SetSystemBackdropConfiguration(m_configurationSource);
+            m_configurationSource.IsInputActive = true;
             return true;
         }
 
@@ -146,7 +147,10 @@ namespace FluentEdit.Core
 
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
-            m_configurationSource.IsInputActive = args.WindowActivationState != WindowActivationState.Deactivated;
+            if(AppSettings.KeepAcrylicOnFocusLost && m_acrylicController != null)
+                m_configurationSource.IsInputActive = true;
+            else
+                m_configurationSource.IsInputActive = args.WindowActivationState != WindowActivationState.Deactivated;
         }
 
         private void Window_Closed(object sender, WindowEventArgs args)

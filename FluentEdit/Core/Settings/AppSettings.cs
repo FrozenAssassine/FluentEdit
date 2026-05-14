@@ -87,4 +87,10 @@ public class AppSettings
         get => (OverlappedPresenterState)SettingsManager.GetSettingsAsInt(AppSettingsValues.windowState, 2);
         set => SettingsManager.SaveSettings(AppSettingsValues.windowState, value.GetHashCode());
     }
+
+    public static bool KeepAcrylicOnFocusLost
+    {
+        get => SettingsManager.GetSettingsAsInt(AppSettingsValues.KeepAcrylicOnFocusLost, 0) == 1;
+        set => SettingsManager.SaveSettings(AppSettingsValues.KeepAcrylicOnFocusLost, value == true ? 1 : 0);
+    }
 }

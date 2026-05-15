@@ -196,8 +196,11 @@ public sealed partial class StatusBar : UserControl
 
     private void ReformatTabsInDocument_Click(object sender, RoutedEventArgs e)
     {
-        TabsSpacesHelper.RewriteTabsSpaces(textbox, sender);
-        UpdateTabsSpaces();
+        if (sender is MenuFlyoutItem item)
+        {
+            TabsSpacesHelper.RewriteTabsSpaces(textbox, ConvertHelper.ToInt(item.Tag, -1));
+            UpdateTabsSpaces();
+        }
     }
 
     private void ItemTabsSpaces_FlyoutOpening(object sender, object e)

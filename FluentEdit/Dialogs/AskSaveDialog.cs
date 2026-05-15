@@ -27,7 +27,16 @@ internal class AskSaveDialog
             RequestedTheme = DialogHelper.DialogTheme,
             XamlRoot = App.m_window.XamlRoot
         };
-        var res = await saveDialog.ShowAsync();
+        ContentDialogResult res = ContentDialogResult.None;
+        try
+        {
+            res = await saveDialog.ShowAsync();
+        }
+        catch (System.Runtime.InteropServices.COMException)
+        {
+            return true;
+        }
+
         if (res == ContentDialogResult.Primary)
             return !await SaveFileHelper.SaveFile(mainpage, document, textbox);
         else if (res == ContentDialogResult.None)

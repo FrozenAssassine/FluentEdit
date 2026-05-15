@@ -20,15 +20,13 @@ internal class TabsSpacesHelper
         {
             if (item is ToggleMenuFlyoutItem radioItem)
             {
-                radioItem.IsChecked = radioItem.Tag.ToString().Equals(tag);
+                radioItem.IsChecked = radioItem.Tag?.ToString().Equals(tag) ?? false;
             }
         }
     }
 
-    public static void RewriteTabsSpaces(TextControlBox textbox, object sender)
+    public static void RewriteTabsSpaces(TextControlBox textbox, int spaces)
     {
-        int spaces = ConvertHelper.ToInt((sender as MenuFlyoutItem).Tag, -1);
-
         bool useSpaces = spaces != -1;
         textbox.RewriteTabsSpaces(spaces == -1 ? 4 : spaces, useSpaces);
     }

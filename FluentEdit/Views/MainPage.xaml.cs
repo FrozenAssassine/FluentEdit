@@ -156,9 +156,10 @@ public sealed partial class MainPage : Page
         CreateMenubarFromLanguage();
     }
 
+    private bool _isClosing = false;
     private async void AppWindow_Closing(Microsoft.UI.Windowing.AppWindow sender, Microsoft.UI.Windowing.AppWindowClosingEventArgs args)
     {
-        if (IsContentDialogOpen())
+        if (_isClosing || IsContentDialogOpen())
         {
             args.Cancel = true;
             return;
@@ -168,11 +169,18 @@ public sealed partial class MainPage : Page
             return;
 
         args.Cancel = true;
+        _isClosing = true;
 
         bool shouldCancel = await AskSaveDialog.CheckUnsavedChanges(this, textDocument, textbox);
         if (!shouldCancel)
         {
+            textDocument.UnsavedChanges = false;
+            _isClosing = false;
             App.m_window.Close();
+        }
+        else
+        {
+            _isClosing = false;
         }
     }
 

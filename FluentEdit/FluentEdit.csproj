@@ -4,6 +4,7 @@
 		<TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
 		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+		<RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
 		<Platforms>x86;x64;ARM64</Platforms>
 		<RootNamespace>FluentEdit</RootNamespace>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
@@ -17,11 +18,26 @@
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
 		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-		<AppxPackageDir>F:\Published\FluentEdit_ms-store\builder\v1.5.0</AppxPackageDir>
+		<AppxPackageDir>F:\Published\FluentEdit_ms-store\builder\v1.6.0\</AppxPackageDir>
 		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<AppxBundle>Never</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<WindowsAppSdkSelfContained>true</WindowsAppSdkSelfContained>
+		<SelfContained>true</SelfContained>
+		<WindowsPackageType>MSIX</WindowsPackageType>
+		<Version>1.6.0</Version>
+		<Authors>Julius Kirsch</Authors>
+		<Copyright>Copyright © 2022-2026</Copyright>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Platform)' == 'x86'">
+		<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Platform)' == 'x64'">
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Platform)' == 'ARM64'">
+		<RuntimeIdentifier>win-arm64</RuntimeIdentifier>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="Controls\SettingsControl.xaml" />

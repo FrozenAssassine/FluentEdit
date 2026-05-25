@@ -6,7 +6,7 @@ namespace FluentEdit.Core;
 
 public class TextDocument
 {
-    public Encoding CurrentEncoding { get; set; } =  Encoding.UTF8;
+    public Encoding CurrentEncoding { get; set; } = new UTF8Encoding(false);
     public string FileName { get; set; } = "";
     public string FilePath { get; set; } = "";
     public bool SavedOnDisk => FilePath.Length > 0;

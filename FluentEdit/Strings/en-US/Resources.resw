@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutPage_Title.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutPage_AppName.Text" xml:space="preserve">
+    <value>FluentEdit</value>
+  </data>
+  <data name="AboutPage_VersionLabel.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="AboutPage_DeveloperLabel.Text" xml:space="preserve">
+    <value>Developer</value>
+  </data>
+  <data name="AboutPage_PaypalSupport.Header" xml:space="preserve">
+    <value>Support my development on Paypal</value>
+  </data>
+  <data name="AboutPage_GitHub.Header" xml:space="preserve">
+    <value>Github</value>
+  </data>
+  <data name="AboutPage_ContributeHeader.Text" xml:space="preserve">
+    <value>Contribute</value>
+  </data>
+  <data name="AboutPage_ReportBug.Content" xml:space="preserve">
+    <value>Report Bug</value>
+  </data>
+  <data name="AboutPage_RequestFeature.Content" xml:space="preserve">
+    <value>Request Feature</value>
+  </data>
+  <data name="AboutPage_DependenciesHeader.Text" xml:space="preserve">
+    <value>Additional dependencies used</value>
+  </data>
+  <data name="AboutPage_TextControlBox.Content" xml:space="preserve">
+    <value>TextControlBox</value>
+  </data>
+  <data name="AboutPage_WindowsAppSdk.Content" xml:space="preserve">
+    <value>Windows App Sdk</value>
+  </data>
+  <data name="AboutPage_LegalHeader.Text" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="AboutPage_LegalTitle.Text" xml:space="preserve">
+    <value>Legal</value>
+  </data>
+  <data name="AboutPage_PrivacyPolicy.Content" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
+  <data name="AboutPage_Disclaimer.Content" xml:space="preserve">
+    <value>Disclaimer</value>
+  </data>
+  <data name="MainPage_MenuFile.Title" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="MainPage_FileNew.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="MainPage_FileOpen.Text" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="MainPage_FileSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="MainPage_FileSaveAs.Text" xml:space="preserve">
+    <value>Save as</value>
+  </data>
+  <data name="MainPage_FileExit.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="MainPage_FileSupportDevelopment.Text" xml:space="preserve">
+    <value>Support Development</value>
+  </data>
+  <data name="MainPage_MenuEdit.Title" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="MainPage_EditUndo.Text" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="MainPage_EditRedo.Text" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="MainPage_EditCut.Text" xml:space="preserve">
+    <value>Cut</value>
+  </data>
+  <data name="MainPage_EditCopy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="MainPage_EditPaste.Text" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="MainPage_EditSearch.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="MainPage_EditReplace.Text" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="MainPage_EditSelectAll.Text" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="MainPage_MenuDocument.Title" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="MainPage_DocumentFileInfo.Text" xml:space="preserve">
+    <value>Fileinfo</value>
+  </data>
+  <data name="MainPage_DocumentRename.Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="MainPage_MenuAdvanced.Title" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="MainPage_AdvancedDuplicateLine.Text" xml:space="preserve">
+    <value>Duplicate line</value>
+  </data>
+  <data name="MainPage_AdvancedSyntaxHighlighting.Text" xml:space="preserve">
+    <value>Syntax Highlighting</value>
+  </data>
+  <data name="MainPage_AdvancedTabBehavior.Text" xml:space="preserve">
+    <value>Tab Behaviour (Tabs/Spaces)</value>
+  </data>
+  <data name="MainPage_AdvancedAutoDetectTabsSpaces.Text" xml:space="preserve">
+    <value>Auto Detect</value>
+  </data>
+  <data name="MainPage_AdvancedUseTab.Text" xml:space="preserve">
+    <value>Use Tab (\t)</value>
+  </data>
+  <data name="MainPage_Advanced2Spaces.Text" xml:space="preserve">
+    <value>2 Spaces</value>
+  </data>
+  <data name="MainPage_Advanced4Spaces.Text" xml:space="preserve">
+    <value>4 Spaces</value>
+  </data>
+  <data name="MainPage_Advanced8Spaces.Text" xml:space="preserve">
+    <value>8 Spaces</value>
+  </data>
+  <data name="MainPage_AdvancedReformatTabsSpaces.Text" xml:space="preserve">
+    <value>Reformat Tabs/Spaces</value>
+  </data>
+  <data name="MainPage_AdvancedReformatUseTab.Text" xml:space="preserve">
+    <value>Use Tab (\t)</value>
+  </data>
+  <data name="MainPage_AdvancedReformat2Spaces.Text" xml:space="preserve">
+    <value>2 Spaces</value>
+  </data>
+  <data name="MainPage_AdvancedReformat4Spaces.Text" xml:space="preserve">
+    <value>4 Spaces</value>
+  </data>
+  <data name="MainPage_AdvancedReformat8Spaces.Text" xml:space="preserve">
+    <value>8 Spaces</value>
+  </data>
+  <data name="MainPage_AdvancedQuickAccess.Text" xml:space="preserve">
+    <value>Quick Access</value>
+  </data>
+  <data name="MainPage_MenuView.Title" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="MainPage_ViewCompactOverlay.Text" xml:space="preserve">
+    <value>Compact overlay</value>
+  </data>
+  <data name="MainPage_ViewFullscreen.Text" xml:space="preserve">
+    <value>Fullscreen</value>
+  </data>
+  <data name="MainPage_ViewZoomIn.Text" xml:space="preserve">
+    <value>Zoom in</value>
+  </data>
+  <data name="MainPage_ViewZoomOut.Text" xml:space="preserve">
+    <value>Zoom out</value>
+  </data>
+  <data name="SettingsPage_Title.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsPage_AppearanceHeader.Text" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="SettingsPage_FontCustomizationHeader.Text" xml:space="preserve">
+    <value>Font Customization</value>
+  </data>
+  <data name="SettingsPage_FontCustomizationDescription.Text" xml:space="preserve">
+    <value>Change family and size of the editor text</value>
+  </data>
+  <data name="SettingsPage_FontFamilyLabel.Text" xml:space="preserve">
+    <value>Font Family</value>
+  </data>
+  <data name="SettingsPage_FontSizeLabel.Text" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="SettingsPage_BackgroundThemeHeader.Text" xml:space="preserve">
+    <value>Background &amp; Theme</value>
+  </data>
+  <data name="SettingsPage_BackgroundThemeDescription.Text" xml:space="preserve">
+    <value>Personalize your workspace materials and colors</value>
+  </data>
+  <data name="SettingsPage_AppThemeLabel.Text" xml:space="preserve">
+    <value>App Theme</value>
+  </data>
+  <data name="SettingsPage_ThemeSystemDefault.Content" xml:space="preserve">
+    <value>System default</value>
+  </data>
+  <data name="SettingsPage_ThemeLight.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="SettingsPage_ThemeDark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="SettingsPage_BackgroundMaterialLabel.Text" xml:space="preserve">
+    <value>Background Material</value>
+  </data>
+  <data name="SettingsPage_BackgroundMica.Content" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="SettingsPage_BackgroundAcrylic.Content" xml:space="preserve">
+    <value>Acrylic</value>
+  </data>
+  <data name="SettingsPage_BackgroundStatic.Content" xml:space="preserve">
+    <value>Static</value>
+  </data>
+  <data name="SettingsPage_AcrylicTintColorLabel.Text" xml:space="preserve">
+    <value>Acrylic Tint Color</value>
+  </data>
+  <data name="SettingsPage_PersistentAcrylicLabel.Text" xml:space="preserve">
+    <value>Persistent Acrylic</value>
+  </data>
+  <data name="SettingsPage_PersistentAcrylicToggle.OnContent" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SettingsPage_PersistentAcrylicToggle.OffContent" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SettingsPage_StaticBackgroundColorLabel.Text" xml:space="preserve">
+    <value>Static Background Color</value>
+  </data>
+  <data name="SettingsPage_GeneralHeader.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SettingsPage_LanguageHeader.Header" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="SettingsPage_LanguageSystemDefault.Content" xml:space="preserve">
+    <value>System default</value>
+  </data>
+  <data name="SettingsPage_LanguageEnglish.Content" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="SettingsPage_LanguageGerman.Content" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="SettingsPage_HideDonationHeader.Header" xml:space="preserve">
+    <value>Hide Donation Information</value>
+  </data>
+  <data name="MixedLineEndingWarningDialogPage_Message1.Text" xml:space="preserve">
+    <value>This file contains a mix of different line endings.</value>
+  </data>
+  <data name="MixedLineEndingWarningDialogPage_Message2.Text" xml:space="preserve">
+    <value>Please select one format to make them consistent.</value>
+  </data>
+  <data name="Dialog_SaveFile_Headline/Text" xml:space="preserve">
+    <value>Save file?</value>
+  </data>
+  <data name="Dialog_SaveFile_Message/Text" xml:space="preserve">
+    <value>Would you like to save the file?</value>
+  </data>
+  <data name="Dialog_Button_Save/Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Dialog_Button_DontSave/Text" xml:space="preserve">
+    <value>Don't save</value>
+  </data>
+  <data name="Dialog_Button_Cancel/Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Dialog_MixedLineEndings_Headline/Text" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Dialog_MixedLineEndings_Primary/Text" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Dialog_RenameFile_Headline/Text" xml:space="preserve">
+    <value>Rename File</value>
+  </data>
+  <data name="Dialog_RenameFile_Primary/Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="Dialog_FileInfo_Close/Text" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Dialog_FileInfo_Extension/Text" xml:space="preserve">
+    <value>Extension: </value>
+  </data>
+  <data name="Dialog_FileInfo_Path/Text" xml:space="preserve">
+    <value>Path: </value>
+  </data>
+  <data name="Dialog_FileInfo_Created/Text" xml:space="preserve">
+    <value>Created: </value>
+  </data>
+  <data name="Dialog_FileInfo_LastModified/Text" xml:space="preserve">
+    <value>Last Modified: </value>
+  </data>
+  <data name="Dialog_FileInfo_Size/Text" xml:space="preserve">
+    <value>Size: </value>
+  </data>
+  <data name="Dialog_FileInfo_SyntaxHighlighting/Text" xml:space="preserve">
+    <value>Syntax Highlighting: </value>
+  </data>
+  <data name="Dialog_FileInfo_Words/Text" xml:space="preserve">
+    <value>Words: </value>
+  </data>
+  <data name="Dialog_FileInfo_Lines/Text" xml:space="preserve">
+    <value>Lines: </value>
+  </data>
+  <data name="Dialog_FileInfo_Characters/Text" xml:space="preserve">
+    <value>Characters: </value>
+  </data>
+  <data name="Dialog_FileInfo_Encoding/Text" xml:space="preserve">
+    <value>Encoding: </value>
+  </data>
+  <data name="InfoBar_Update_Title/Text" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="InfoBar_Update_Message/Text" xml:space="preserve">
+    <value>Welcome to version {0}</value>
+  </data>
+  <data name="InfoBar_Update_Action/Text" xml:space="preserve">
+    <value>Release Notes</value>
+  </data>
+  <data name="InfoBar_RenameError_Title/Text" xml:space="preserve">
+    <value>File exists/no access</value>
+  </data>
+  <data name="InfoBar_RenameError_Message/Text" xml:space="preserve">
+    <value>A file with this name already exists\nor there is no access to the path</value>
+  </data>
+  <data name="InfoBar_UnhandledException_Title/Text" xml:space="preserve">
+    <value>Exception!</value>
+  </data>
+  <data name="InfoBar_NoAccess_Title/Text" xml:space="preserve">
+    <value>No access</value>
+  </data>
+  <data name="InfoBar_NoAccessRead_Message/Text" xml:space="preserve">
+    <value>No access to read from the file</value>
+  </data>
+  <data name="InfoBar_RenameExists_Message/Text" xml:space="preserve">
+    <value>Could not rename the file because a file with the same name already exists</value>
+  </data>
+  <data name="InfoBar_RenameException_Message/Text" xml:space="preserve">
+    <value>An exception occurred while renaming the file:\n{0}</value>
+  </data>
+  <data name="InfoBar_NoAccessWrite_Message/Text" xml:space="preserve">
+    <value>No access to write to the file</value>
+  </data>
+  <data name="SearchControl_FindTextBox.PlaceholderText" xml:space="preserve">
+    <value>Find...</value>
+  </data>
+  <data name="SearchControl_WholeWord.Content" xml:space="preserve">
+    <value>Whole word</value>
+  </data>
+  <data name="SearchControl_MatchCase.Content" xml:space="preserve">
+    <value>Match case</value>
+  </data>
+  <data name="SearchControl_ReplaceTextBox.PlaceholderText" xml:space="preserve">
+    <value>Replace...</value>
+  </data>
+  <data name="SearchControl_Replace.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Replace</value>
+  </data>
+  <data name="SearchControl_ReplaceAll.Content" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="SearchControl_ReplaceAll.ToolTipService.ToolTip" xml:space="preserve">
+    <value>Replace all</value>
+  </data>
+</root>

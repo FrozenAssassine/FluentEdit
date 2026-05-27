@@ -23,144 +23,144 @@
         </Grid.RowDefinitions>
 
         <MenuBar Margin="0,2,0,0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <MenuBarItem Title="File">
-                <MenuFlyoutItem Text="New" Click="NewFile_Click">
+            <MenuBarItem x:Uid="MainPage_MenuFile" Title="File">
+                <MenuFlyoutItem x:Uid="MainPage_FileNew" Text="New" Click="NewFile_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="N" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Open" Click="OpenFile_Click">
+                <MenuFlyoutItem x:Uid="MainPage_FileOpen" Text="Open" Click="OpenFile_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="O" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Save" Click="SaveFile_Click">
+                <MenuFlyoutItem x:Uid="MainPage_FileSave" Text="Save" Click="SaveFile_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="S" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Save as" Click="SaveFileAs_Click">
+                <MenuFlyoutItem x:Uid="MainPage_FileSaveAs" Text="Save as" Click="SaveFileAs_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="S" Modifiers="Control, Shift"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Exit" Click="ExitApp_Click">
+                <MenuFlyoutItem x:Uid="MainPage_FileExit" Text="Exit" Click="ExitApp_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="F4" Modifiers="Menu"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator x:Name="supportDevelopmentMenuItemSeparator"/>
-                <MenuFlyoutItem x:Name="supportDevelopmentMenuItem" Text="Support Development" Click="SupportDevelopment_Click"/>
+                <MenuFlyoutItem x:Uid="MainPage_FileSupportDevelopment" x:Name="supportDevelopmentMenuItem" Text="Support Development" Click="SupportDevelopment_Click"/>
             </MenuBarItem>
 
-            <MenuBarItem Title="Edit">
-                <MenuFlyoutItem Text="Undo" Click="Undo_Click">
+            <MenuBarItem x:Uid="MainPage_MenuEdit" Title="Edit">
+                <MenuFlyoutItem x:Uid="MainPage_EditUndo" Text="Undo" Click="Undo_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="Z" IsEnabled="False" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Redo" Click="Redo_Click">
+                <MenuFlyoutItem x:Uid="MainPage_EditRedo" Text="Redo" Click="Redo_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="Y" IsEnabled="False" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Cut" Click="Cut_Click">
+                <MenuFlyoutItem x:Uid="MainPage_EditCut" Text="Cut" Click="Cut_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="X" IsEnabled="False" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Copy" Click="Copy_Click">
+                <MenuFlyoutItem x:Uid="MainPage_EditCopy" Text="Copy" Click="Copy_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="C" IsEnabled="False" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Paste" Click="Paste_Click">
+                <MenuFlyoutItem x:Uid="MainPage_EditPaste" Text="Paste" Click="Paste_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="V" IsEnabled="False" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Search" Click="Search_Click">
+                <MenuFlyoutItem x:Uid="MainPage_EditSearch" Text="Search" Click="Search_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="F" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Replace" Click="Replace_Click">
+                <MenuFlyoutItem x:Uid="MainPage_EditReplace" Text="Replace" Click="Replace_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="R" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Select All" Click="SelectAll_Click">
+                <MenuFlyoutItem x:Uid="MainPage_EditSelectAll" Text="Select All" Click="SelectAll_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="A" IsEnabled="False" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
             </MenuBarItem>
-            <MenuBarItem Title="Document">
-                <MenuFlyoutItem Text="Fileinfo" Click="ShowFileInfo_Click">
+            <MenuBarItem x:Uid="MainPage_MenuDocument" Title="Document">
+                <MenuFlyoutItem x:Uid="MainPage_DocumentFileInfo" Text="Fileinfo" Click="ShowFileInfo_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="I" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Rename" Click="Rename_Click">
+                <MenuFlyoutItem x:Uid="MainPage_DocumentRename" Text="Rename" Click="Rename_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="F2" Modifiers="None"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
             </MenuBarItem>
-            <MenuBarItem Title="Advanced">
-                <MenuFlyoutItem Text="Duplicate line" Click="DuplicateLine_Click">
+            <MenuBarItem x:Uid="MainPage_MenuAdvanced" Title="Advanced">
+                <MenuFlyoutItem x:Uid="MainPage_AdvancedDuplicateLine" Text="Duplicate line" Click="DuplicateLine_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="D" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutSubItem Text="Syntax Highlighting" x:Name="LanguagesMenubarItem"/>
+                <MenuFlyoutSubItem x:Uid="MainPage_AdvancedSyntaxHighlighting" Text="Syntax Highlighting" x:Name="LanguagesMenubarItem"/>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutSubItem Text="Tab Behaviour (Tabs/Spaces)" x:Name="TabKeyBehaviourFlyout">
+                <MenuFlyoutSubItem x:Uid="MainPage_AdvancedTabBehavior" Text="Tab Behaviour (Tabs/Spaces)" x:Name="TabKeyBehaviourFlyout">
                     <MenuFlyoutSubItem.Items>
-                        <MenuFlyoutItem Text="Auto Detect" Click="AutodetectTabsSpaces_Click"/>
+                        <MenuFlyoutItem x:Uid="MainPage_AdvancedAutoDetectTabsSpaces" Text="Auto Detect" Click="AutodetectTabsSpaces_Click"/>
                         <MenuFlyoutSeparator/>
-                        <MenuFlyoutItem Text="Use Tab (\t)" Click="TabSpaces_Click" Tag="-1"/>
+                        <MenuFlyoutItem x:Uid="MainPage_AdvancedUseTab" Text="Use Tab (\t)" Click="TabSpaces_Click" Tag="-1"/>
                         <MenuFlyoutSeparator/>
-                        <MenuFlyoutItem Text="2 Spaces" Click="TabSpaces_Click" Tag="2" />
-                        <MenuFlyoutItem Text="4 Spaces" Click="TabSpaces_Click" Tag="4"/>
-                        <MenuFlyoutItem Text="8 Spaces" Click="TabSpaces_Click" Tag="8"/>
+                        <MenuFlyoutItem x:Uid="MainPage_Advanced2Spaces" Text="2 Spaces" Click="TabSpaces_Click" Tag="2" />
+                        <MenuFlyoutItem x:Uid="MainPage_Advanced4Spaces" Text="4 Spaces" Click="TabSpaces_Click" Tag="4"/>
+                        <MenuFlyoutItem x:Uid="MainPage_Advanced8Spaces" Text="8 Spaces" Click="TabSpaces_Click" Tag="8"/>
                     </MenuFlyoutSubItem.Items>
                 </MenuFlyoutSubItem>
-                <MenuFlyoutSubItem Text="Reformat Tabs/Spaces">
+                <MenuFlyoutSubItem x:Uid="MainPage_AdvancedReformatTabsSpaces" Text="Reformat Tabs/Spaces">
                     <MenuFlyoutSubItem.Items>
-                        <MenuFlyoutItem Text="Use Tab (\t)" Click="ReformatTabsInDocument_Click" Tag="-1"/>
+                        <MenuFlyoutItem x:Uid="MainPage_AdvancedReformatUseTab" Text="Use Tab (\t)" Click="ReformatTabsInDocument_Click" Tag="-1"/>
                         <MenuFlyoutSeparator/>
-                        <MenuFlyoutItem Text="2 Spaces" Click="ReformatTabsInDocument_Click" Tag="2"/>
-                        <MenuFlyoutItem Text="4 Spaces" Click="ReformatTabsInDocument_Click" Tag="4"/>
-                        <MenuFlyoutItem Text="8 Spaces" Click="ReformatTabsInDocument_Click" Tag="8"/>
+                        <MenuFlyoutItem x:Uid="MainPage_AdvancedReformat2Spaces" Text="2 Spaces" Click="ReformatTabsInDocument_Click" Tag="2"/>
+                        <MenuFlyoutItem x:Uid="MainPage_AdvancedReformat4Spaces" Text="4 Spaces" Click="ReformatTabsInDocument_Click" Tag="4"/>
+                        <MenuFlyoutItem x:Uid="MainPage_AdvancedReformat8Spaces" Text="8 Spaces" Click="ReformatTabsInDocument_Click" Tag="8"/>
                     </MenuFlyoutSubItem.Items>
                 </MenuFlyoutSubItem>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Quick Access" Click="ShowQuickAccess_Click">
+                <MenuFlyoutItem x:Uid="MainPage_AdvancedQuickAccess" Text="Quick Access" Click="ShowQuickAccess_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="B" Modifiers="Control"/>
                         <KeyboardAccelerator Key="P" Modifiers="Control,Shift"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
             </MenuBarItem>
-            <MenuBarItem Title="View">
-                <MenuFlyoutItem Text="Compact overlay" Click="CompactOverlay_Click">
+            <MenuBarItem x:Uid="MainPage_MenuView" Title="View">
+                <MenuFlyoutItem x:Uid="MainPage_ViewCompactOverlay" Text="Compact overlay" Click="CompactOverlay_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="K" Modifiers="Control"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
-                <MenuFlyoutItem Text="Fullscreen" Click="Fullscreen_Click">
+                <MenuFlyoutItem x:Uid="MainPage_ViewFullscreen" Text="Fullscreen" Click="Fullscreen_Click">
                     <MenuFlyoutItem.KeyboardAccelerators>
                         <KeyboardAccelerator Key="F11"/>
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Zoom in" Click="ZoomIn_Click"/>
-                <MenuFlyoutItem Text="Zoom out" Click="ZoomOut_Click"/>
+                <MenuFlyoutItem x:Uid="MainPage_ViewZoomIn" Text="Zoom in" Click="ZoomIn_Click"/>
+                <MenuFlyoutItem x:Uid="MainPage_ViewZoomOut" Text="Zoom out" Click="ZoomOut_Click"/>
             </MenuBarItem>
         </MenuBar>
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FluentEdit.Views;
 using Microsoft.UI.Xaml.Controls;
 using TextControlBoxNS;
+using FluentEdit.Extensions;
 
 namespace FluentEdit.Dialogs;
 
@@ -18,11 +19,11 @@ internal class AskSaveDialog
 
         var saveDialog = new ContentDialog
         {
-            Title = "Save file?",
-            Content = "Would you like to save the file?",
-            PrimaryButtonText = "Save",
-            SecondaryButtonText = "Don't save",
-            CloseButtonText = "Cancel",
+            Title = "Save file?".Localized("Dialog_SaveFile_Headline/Text"),
+            Content = "Would you like to save the file?".Localized("Dialog_SaveFile_Message/Text"),
+            PrimaryButtonText = "Save".Localized("Dialog_Button_Save/Text"),
+            SecondaryButtonText = "Don't save".Localized("Dialog_Button_DontSave/Text"),
+            CloseButtonText = "Cancel".Localized("Dialog_Button_Cancel/Text"),
             DefaultButton = ContentDialogButton.Primary,
             RequestedTheme = DialogHelper.DialogTheme,
             XamlRoot = App.m_window.XamlRoot

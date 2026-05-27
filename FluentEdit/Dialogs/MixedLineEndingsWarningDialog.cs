@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TextControlBoxNS;
+using FluentEdit.Extensions;
 
 namespace FluentEdit.Dialogs
 {
@@ -20,10 +21,10 @@ namespace FluentEdit.Dialogs
             {
                 RequestedTheme = DialogHelper.DialogTheme,
                 XamlRoot = App.m_window.XamlRoot,
-                Title = "Warning",
+                Title = "Warning".Localized("Dialog_MixedLineEndings_Headline/Text"),
                 Content = dialogPage,
-                PrimaryButtonText = "Apply",
-                CloseButtonText = "Cancel",
+                PrimaryButtonText = "Apply".Localized("Dialog_MixedLineEndings_Primary/Text"),
+                CloseButtonText = "Cancel".Localized("Dialog_Button_Cancel/Text"),
                 DefaultButton = ContentDialogButton.Primary,
             };
 

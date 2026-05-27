@@ -19,4 +19,5 @@ internal class AppSettingsValues
     public const string windowTop = "windowTop";
     public const string windowState = "windowState";
     public const string KeepAcrylicOnFocusLost = "keepAcrylicOnFocusLost";
+    public const string Language = "language";
 }

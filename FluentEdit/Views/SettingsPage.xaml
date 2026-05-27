@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:FluentEdit.Controls"
+    xmlns:controls="using:FluentEdit.Controls" xmlns:models="using:FluentEdit.Models"
     mc:Ignorable="d"
     KeyDown="Page_KeyDown">
 
@@ -12,13 +12,13 @@
             
         <StackPanel Spacing="20" Margin="40,20,40,40" HorizontalAlignment="Stretch" Width="Auto">
             <!-- Seitentitel -->
-            <TextBlock Text="Settings" 
+            <TextBlock x:Uid="SettingsPage_Title" Text="Settings" 
                        Style="{StaticResource TitleTextBlockStyle}" 
                        Margin="0,0,0,10"/>
 
             <!-- SEKTION: ERSCHEINUNGSBILD -->
             <StackPanel Spacing="4">
-                <TextBlock Text="Appearance" Margin="2,0,0,8"/>
+                <TextBlock x:Uid="SettingsPage_AppearanceHeader" Text="Appearance" Margin="2,0,0,8"/>
 
                 <!-- Font Einstellungen -->
                 <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
@@ -30,8 +30,8 @@
                             </Grid.ColumnDefinitions>
                             <FontIcon Glyph="&#xE8D2;" FontSize="16"/>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="Font Customization" Style="{StaticResource BodyTextBlockStyle}"/>
-                                <TextBlock Text="Change family and size of the editor text" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                                <TextBlock x:Uid="SettingsPage_FontCustomizationHeader" Text="Font Customization" Style="{StaticResource BodyTextBlockStyle}"/>
+                                <TextBlock x:Uid="SettingsPage_FontCustomizationDescription" Text="Change family and size of the editor text" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
                             </StackPanel>
                         </Grid>
                     </Expander.Header>
@@ -39,7 +39,7 @@
                     <StackPanel Spacing="16" Margin="16">
                         <!-- Font Family -->
                         <Grid>
-                            <TextBlock Text="Font Family" VerticalAlignment="Center"/>
+                            <TextBlock x:Uid="SettingsPage_FontFamilyLabel" Text="Font Family" VerticalAlignment="Center"/>
                             <ComboBox x:Name="fontFamilyCombobox" 
                                       HorizontalAlignment="Right" Width="200"
                                       ItemsSource="{x:Bind Fonts}" 
@@ -56,7 +56,7 @@
 
                         <!-- Font Size -->
                         <Grid>
-                            <TextBlock Text="Font Size" VerticalAlignment="Center"/>
+                            <TextBlock x:Uid="SettingsPage_FontSizeLabel" Text="Font Size" VerticalAlignment="Center"/>
                             <NumberBox x:Name="fontSizeNumberBox" 
                                        HorizontalAlignment="Right" Width="200"
                                        ValueChanged="fontSizeNumberBox_ValueChanged" 
@@ -76,8 +76,8 @@
                             </Grid.ColumnDefinitions>
                             <FontIcon Glyph="&#xE790;" FontSize="16"/>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="Background &amp; Theme" Style="{StaticResource BodyTextBlockStyle}"/>
-                                <TextBlock Text="Personalize your workspace materials and colors" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                                <TextBlock x:Uid="SettingsPage_BackgroundThemeHeader" Text="Background &amp; Theme" Style="{StaticResource BodyTextBlockStyle}"/>
+                                <TextBlock x:Uid="SettingsPage_BackgroundThemeDescription" Text="Personalize your workspace materials and colors" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
                             </StackPanel>
                         </Grid>
                     </Expander.Header>
@@ -85,12 +85,12 @@
                     <StackPanel Spacing="16" Margin="16">
                         <!-- App Theme -->
                         <Grid>
-                            <TextBlock Text="App Theme" VerticalAlignment="Center"/>
+                            <TextBlock x:Uid="SettingsPage_AppThemeLabel" Text="App Theme" VerticalAlignment="Center"/>
                             <ComboBox x:Name="themeCombobox" HorizontalAlignment="Right" Width="200" 
                                       SelectionChanged="themeCombobox_SelectionChanged">
-                                <ComboBoxItem Content="System default" Tag="0"/>
-                                <ComboBoxItem Content="Light" Tag="1"/>
-                                <ComboBoxItem Content="Dark" Tag="2"/>
+                                <ComboBoxItem x:Uid="SettingsPage_ThemeSystemDefault" Content="System default" Tag="0"/>
+                                <ComboBoxItem x:Uid="SettingsPage_ThemeLight" Content="Light" Tag="1"/>
+                                <ComboBoxItem x:Uid="SettingsPage_ThemeDark" Content="Dark" Tag="2"/>
                             </ComboBox>
                         </Grid>
 
@@ -98,32 +98,32 @@
 
                         <!-- Backdrop Type -->
                         <Grid>
-                            <TextBlock Text="Background Material" VerticalAlignment="Center"/>
+                            <TextBlock x:Uid="SettingsPage_BackgroundMaterialLabel" Text="Background Material" VerticalAlignment="Center"/>
                             <ComboBox x:Name="appBackgroundCombobox" HorizontalAlignment="Right" Width="200" 
                                       SelectionChanged="AppBackground_SelectionChanged">
-                                <ComboBoxItem Content="Mica"/>
-                                <ComboBoxItem Content="Acrylic"/>
-                                <ComboBoxItem Content="Static"/>
+                                <ComboBoxItem x:Uid="SettingsPage_BackgroundMica" Content="Mica"/>
+                                <ComboBoxItem x:Uid="SettingsPage_BackgroundAcrylic" Content="Acrylic"/>
+                                <ComboBoxItem x:Uid="SettingsPage_BackgroundStatic" Content="Static"/>
                             </ComboBox>
                         </Grid>
 
                         <!-- Dynamische Controls je nach Background -->
                         <StackPanel x:Name="acrylicGrid" Spacing="16" Margin="0,8,0,0">
                             <Grid>
-                                <TextBlock Text="Acrylic Tint Color" VerticalAlignment="Center"/>
+                                <TextBlock x:Uid="SettingsPage_AcrylicTintColorLabel" Text="Acrylic Tint Color" VerticalAlignment="Center"/>
                                 <controls:ColorPickerButton x:Name="acrylicColorPicker" HorizontalAlignment="Right" 
                                                             IsAlphaEnabled="True" ColorChanged="acrylicColorPicker_ColorChanged"/>
                             </Grid>
                             <Grid>
-                                <TextBlock Text="Persistent Acrylic" VerticalAlignment="Center"/>
-                                <ToggleSwitch Style="{StaticResource LeftSideToggleSwitch}" x:Name="keepAcrylicOnFocusLost" HorizontalAlignment="Right" 
+                                <TextBlock x:Uid="SettingsPage_PersistentAcrylicLabel" Text="Persistent Acrylic" VerticalAlignment="Center"/>
+                                <ToggleSwitch x:Uid="SettingsPage_PersistentAcrylicToggle" Style="{StaticResource LeftSideToggleSwitch}" x:Name="keepAcrylicOnFocusLost" HorizontalAlignment="Right" 
                                               OnContent="On" OffContent="Off"
                                               Toggled="keepAcrylicOnFocusLost_Toggled"/>
                             </Grid>
                         </StackPanel>
 
                         <Grid x:Name="staticGrid">
-                            <TextBlock Text="Static Background Color" VerticalAlignment="Center"/>
+                            <TextBlock x:Uid="SettingsPage_StaticBackgroundColorLabel" Text="Static Background Color" VerticalAlignment="Center"/>
                             <controls:ColorPickerButton x:Name="staticColorPicker" HorizontalAlignment="Right" 
                                                         IsAlphaEnabled="False" ColorChanged="staticColorPicker_ColorChanged"/>
                         </Grid>
@@ -133,8 +133,19 @@
 
             <!-- SEKTION: ALLGEMEIN -->
             <StackPanel Spacing="4">
-                <TextBlock Text="General" Margin="2,0,0,8"/>
-                <controls:SettingsControl IsTabStop="False" Header="Hide Donation Information" Glyph="&#xE170;">
+                <TextBlock x:Uid="SettingsPage_GeneralHeader" Text="General" Margin="2,0,0,8"/>
+                <controls:SettingsControl x:Uid="SettingsPage_LanguageHeader" Header="Language" Glyph="&#xE774;">
+                    <ComboBox x:Name="languageCombobox" HorizontalAlignment="Right" Width="200"
+                              
+                              SelectionChanged="languageCombobox_SelectionChanged" >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:LanguageItem">
+                                <TextBlock Text="{x:Bind DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </controls:SettingsControl>
+                <controls:SettingsControl x:Uid="SettingsPage_HideDonationHeader" IsTabStop="False" Header="Hide Donation Information" Glyph="&#xE170;">
                     <ToggleSwitch Style="{StaticResource LeftSideToggleSwitch}" Grid.Column="2" x:Name="hideDonationInfosButton" 
                                       Toggled="hideDonationInfosButton_Toggled" 
                                       OnContent="" OffContent="" VerticalAlignment="Center" HorizontalAlignment="Right"/>

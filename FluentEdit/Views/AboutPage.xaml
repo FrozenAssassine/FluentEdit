@@ -14,12 +14,12 @@
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" FontWeight="SemiBold" FontSize="36" Text="About"/>
+            <TextBlock x:Uid="AboutPage_Title" Grid.Column="0" FontWeight="SemiBold" FontSize="36" Text="About"/>
             <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,20,0,0">
                 <Grid VerticalAlignment="Stretch" MinWidth="{ThemeResource FlyoutThemeMinWidth}" Margin="0,5,0,0" CornerRadius="5" Padding="{StaticResource ExpanderHeaderPadding}" HorizontalAlignment="Stretch" Background="{ThemeResource ExpanderHeaderBackground}" BorderThickness="{ThemeResource ExpanderHeaderBorderThickness}" BorderBrush="{ThemeResource ExpanderHeaderBorderBrush}">
                     <StackPanel Height="70" Padding="0" Orientation="Horizontal">
                         <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Width="50" Height="50" Source="ms-appx:///Assets/StoreLogo.scale-400.png"/>
-                        <TextBlock Text="FluentEdit" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBlock x:Uid="AboutPage_AppName" Text="FluentEdit" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     </StackPanel>
                     <Grid Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
@@ -31,26 +31,26 @@
                         </Grid.ColumnDefinitions>
                         <FontIcon Margin="0,0,5,0" Grid.Column="0" Glyph="&#xE946;" VerticalAlignment="Center" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
                         <StackPanel Grid.Column="1">
-                            <TextBlock FontSize="16" TextAlignment="Center" Text="Version"/>
+                            <TextBlock x:Uid="AboutPage_VersionLabel" FontSize="16" TextAlignment="Center" Text="Version"/>
                             <TextBlock TextAlignment="Center" Text="{x:Bind AppVersion}"/>
                         </StackPanel>
 
                         <FontIcon Margin="0,0,5,0" Grid.Column="3" Glyph="&#xE77B;" VerticalAlignment="Center" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
                         <StackPanel Grid.Column="4">
-                            <TextBlock FontSize="16" TextAlignment="Center" Text="Developer"/>
+                            <TextBlock x:Uid="AboutPage_DeveloperLabel" FontSize="16" TextAlignment="Center" Text="Developer"/>
                             <TextBlock TextAlignment="Center" >
                                 <Hyperlink NavigateUri="https://frozenassassine.de/?ref=fluentedit">Julius Kirsch</Hyperlink>
                             </TextBlock>
                         </StackPanel>
                     </Grid>
                 </Grid>
-                <controls:SettingsControl Foreground="White" FontWeight="Bold" Background="#182c8c" Tag="https://www.paypal.com/donate/?hosted_button_id=Q7YWPMBV6YNCQ" Clickable="True" Clicked="NavigateToLink_Click" Glyph="&#xE716;" Header="Support my development on Paypal" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <controls:SettingsControl x:Uid="AboutPage_PaypalSupport" Foreground="White" FontWeight="Bold" Background="#182c8c" Tag="https://www.paypal.com/donate/?hosted_button_id=Q7YWPMBV6YNCQ" Clickable="True" Clicked="NavigateToLink_Click" Glyph="&#xE716;" Header="Support my development on Paypal" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                     <controls:SettingsControl.Content>
                         <TextBlock Text="&#xe8a7;"  FontFamily="{StaticResource SymbolThemeFontFamily}" />
                     </controls:SettingsControl.Content>
                 </controls:SettingsControl>
 
-                <controls:SettingsControl Tag="https://github.com/FrozenAssassine/FluentEdit/" Clickable="True" Clicked="NavigateToLink_Click" Glyph="&#xE946;" Header="Github" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <controls:SettingsControl x:Uid="AboutPage_GitHub" Tag="https://github.com/FrozenAssassine/FluentEdit/" Clickable="True" Clicked="NavigateToLink_Click" Glyph="&#xE946;" Header="Github" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                     <controls:SettingsControl.Content>
                         <TextBlock Text="&#xe8a7;" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
                     </controls:SettingsControl.Content>
@@ -59,12 +59,12 @@
                 <Grid VerticalAlignment="Stretch" MinWidth="{ThemeResource FlyoutThemeMinWidth}" Margin="0,5,0,0" CornerRadius="5" Padding="{StaticResource ExpanderHeaderPadding}" HorizontalAlignment="Stretch" Background="{ThemeResource ExpanderHeaderBackground}" BorderThickness="{ThemeResource ExpanderHeaderBorderThickness}" BorderBrush="{ThemeResource ExpanderHeaderBorderBrush}">
                     <StackPanel Height="70" Padding="0" Orientation="Horizontal">
                         <SymbolIcon Margin="0,4,10,0" Symbol="People"/>
-                        <TextBlock Text="Contribute" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBlock x:Uid="AboutPage_ContributeHeader" Text="Contribute" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <HyperlinkButton NavigateUri="https://github.com/FrozenAssassine/FluentEdit/issues/new" Margin="5" Content="Report Bug"></HyperlinkButton>
-                        <HyperlinkButton NavigateUri="https://github.com/FrozenAssassine/FluentEdit/issues/new" Margin="5" Content="Request Feature"></HyperlinkButton>
+                        <HyperlinkButton x:Uid="AboutPage_ReportBug" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/issues/new" Margin="5" Content="Report Bug"></HyperlinkButton>
+                        <HyperlinkButton x:Uid="AboutPage_RequestFeature" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/issues/new" Margin="5" Content="Request Feature"></HyperlinkButton>
                     </StackPanel>
                 </Grid>
 
@@ -72,13 +72,13 @@
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal" Height="70">
                             <TextBlock Margin="0,4,10,0" FontSize="20" VerticalAlignment="Center" Text="&#xf6fa;" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
-                            <TextBlock VerticalAlignment="Center" FontSize="20" Text="Additional dependencies used"/>
+                            <TextBlock x:Uid="AboutPage_DependenciesHeader" VerticalAlignment="Center" FontSize="20" Text="Additional dependencies used"/>
                         </StackPanel>
                     </Expander.Header>
                     <Expander.Content>
                         <StackPanel>
-                            <HyperlinkButton FontSize="16" NavigateUri="https://github.com/FrozenAssassine/TextControlBox-Winui" Content="TextControlBox"/>
-                            <HyperlinkButton FontSize="16" NavigateUri="https://github.com/Microsoft/WindowsAppSdk" Content="Windows App Sdk"/>
+                            <HyperlinkButton x:Uid="AboutPage_TextControlBox" FontSize="16" NavigateUri="https://github.com/FrozenAssassine/TextControlBox-Winui" Content="TextControlBox"/>
+                            <HyperlinkButton x:Uid="AboutPage_WindowsAppSdk" FontSize="16" NavigateUri="https://github.com/Microsoft/WindowsAppSdk" Content="Windows App Sdk"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>
@@ -86,15 +86,15 @@
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal" Height="70">
                             <TextBlock Margin="0,4,10,0" FontSize="20" VerticalAlignment="Center" Text="&#xECA7;" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
-                            <TextBlock VerticalAlignment="Center" FontSize="20" Text="Legal"/>
+                            <TextBlock x:Uid="AboutPage_LegalHeader" VerticalAlignment="Center" FontSize="20" Text="Legal"/>
                         </StackPanel>
                     </Expander.Header>
                     <Expander.Content>
                         <StackPanel Grid.Column="1" Grid.Row="1">
-                            <TextBlock FontSize="18" Text="Legal"/>
+                            <TextBlock x:Uid="AboutPage_LegalTitle" FontSize="18" Text="Legal"/>
                             <StackPanel Orientation="Vertical" Margin="0,10,0,0">
-                                <HyperlinkButton FontSize="20" Grid.Row="0" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/blob/master/PrivacyPolicy.md"  Content="Privacy Policy"/>
-                                <HyperlinkButton FontSize="20" Grid.Row="1" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/blob/master/Disclaimer.md"  Content="Disclaimer"/>
+                                <HyperlinkButton x:Uid="AboutPage_PrivacyPolicy" FontSize="20" Grid.Row="0" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/blob/master/PrivacyPolicy.md"  Content="Privacy Policy"/>
+                                <HyperlinkButton x:Uid="AboutPage_Disclaimer" FontSize="20" Grid.Row="1" NavigateUri="https://github.com/FrozenAssassine/FluentEdit/blob/master/Disclaimer.md"  Content="Disclaimer"/>
                             </StackPanel>
                         </StackPanel>
                     </Expander.Content>

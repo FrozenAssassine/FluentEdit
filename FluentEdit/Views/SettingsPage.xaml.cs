@@ -1,5 +1,7 @@
-﻿using Microsoft.Graphics.Canvas.Text;
+using Microsoft.Graphics.Canvas.Text;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -7,11 +9,13 @@ using Microsoft.UI.Xaml.Input;
 using FluentEdit.Helper;
 using FluentEdit.Core.Settings;
 using FluentEdit.Models;
+using Windows.Globalization;
 
 namespace FluentEdit.Views
 {
     public sealed partial class SettingsPage : Page
     {
+        private bool isInitializing = true;
         public List<string> Fonts => CanvasTextFormat.GetSystemFontFamilies().OrderBy(f => f).ToList();
         
         public SettingsPage()
@@ -30,6 +34,13 @@ namespace FluentEdit.Views
 
             hideDonationInfosButton.IsOn = AppSettings.HideDonationInfo;
             keepAcrylicOnFocusLost.IsOn = AppSettings.KeepAcrylicOnFocusLost;
+
+            languageCombobox.ItemsSource = MainWindow.localizationManager.languages;
+
+            var languageTag = AppSettings.Language;
+            languageCombobox.SelectedIndex = MainWindow.localizationManager.languages.FindIndex(x => x.Tag == languageTag);
+
+            isInitializing = false;
         }
 
         private void themeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -99,5 +110,22 @@ namespace FluentEdit.Views
         {
             AppSettings.KeepAcrylicOnFocusLost = keepAcrylicOnFocusLost.IsOn;
         }
+
+        private void languageCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (isInitializing)
+                return;
+
+            if (languageCombobox.SelectedItem is not LanguageItem selectedItem)
+                return;
+
+            AppSettings.Language = (selectedItem).Tag;
+            MainWindow.localizationManager.SetLanguage(selectedItem);
+        }
     }
 }
+
+
+
+
+

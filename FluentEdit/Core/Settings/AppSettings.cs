@@ -93,4 +93,10 @@ public class AppSettings
         get => SettingsManager.GetSettingsAsInt(AppSettingsValues.KeepAcrylicOnFocusLost, 0) == 1;
         set => SettingsManager.SaveSettings(AppSettingsValues.KeepAcrylicOnFocusLost, value == true ? 1 : 0);
     }
+
+    public static string Language
+    {
+        get => SettingsManager.GetSettings(AppSettingsValues.Language, DefaultValues.Language);
+        set => SettingsManager.SaveSettings(AppSettingsValues.Language, value ?? string.Empty);
+    }
 }

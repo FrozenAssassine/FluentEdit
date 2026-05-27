@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using FluentEdit.Extensions;
 
 namespace FluentEdit.Dialogs
 {
@@ -15,10 +16,10 @@ namespace FluentEdit.Dialogs
             TextBox renameTextbox;
             var dialog = new ContentDialog
             {
-                Title = "Rename File",
+                Title = "Rename File".Localized("Dialog_RenameFile_Headline/Text"),
                 Content = renameTextbox = new TextBox { Text = document.FileName, HorizontalAlignment = HorizontalAlignment.Stretch},
-                PrimaryButtonText = "Rename",
-                CloseButtonText = "Cancel",
+                PrimaryButtonText = "Rename".Localized("Dialog_RenameFile_Primary/Text"),
+                CloseButtonText = "Cancel".Localized("Dialog_Button_Cancel/Text"),
                 DefaultButton = ContentDialogButton.Primary,
                 RequestedTheme = DialogHelper.DialogTheme,
                 XamlRoot = App.m_window.XamlRoot

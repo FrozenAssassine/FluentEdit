@@ -1,4 +1,5 @@
 using FluentEdit.Core;
+using FluentEdit.Helper;
 using FluentEdit.Views;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
@@ -11,6 +12,7 @@ namespace FluentEdit;
 
 public sealed partial class MainWindow : Window
 {
+    public static LocalizationManager localizationManager = new();
     public string[] ActivationArguments;
     public DispatcherQueue UIDispatcherQueue = null;
     public XamlRoot XamlRoot = null;
@@ -34,6 +36,7 @@ public sealed partial class MainWindow : Window
         restoreWindowManager = new RestoreWindowManager(this, windowStateManager);
 
         restoreWindowManager.RestoreSettings();
+        localizationManager.Initialize();
 
         this.WindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
         UIDispatcherQueue = DispatcherQueue.GetForCurrentThread();
@@ -42,7 +45,7 @@ public sealed partial class MainWindow : Window
 
         SetTitleBar(titleBarGrid);
         SetAppTitle("FluentEdit");
-        
+
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\Icon.ico"));
     }
 

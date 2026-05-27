@@ -15,4 +15,5 @@ public class DefaultValues
     public const int windowHeight = 700;
     public const int windowLeft = -1;
     public const int windowTop = -1;
+    public const string Language = "en-US";
 }

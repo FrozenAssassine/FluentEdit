@@ -32,6 +32,13 @@ To build FluentEdit you need Visual Studio and UWP installed. Then you can clone
 ## 👨‍👩‍👧‍👦 Contributors:
 If you want to contribute to this project, feel free to open an <a href="https://github.com/FrozenAssassine/FluentEdit/issues/new">issue</a> or a <a href="https://github.com/FrozenAssassine/FluentEdit/pulls">pull request</a>.
 
+## How to Contribute a Translation:
+1. Create a folder inside the Strings folder of the repository
+2. Inside this folder create a folder with the desired [language identifier.](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/app-package-requirements#supported-languages).
+3. Inside the folder create a new Resource.resw file or copy the existing english Resource.resw file to translate it directly.
+4. Also add an entry for the new language inside the LanguageList.resw.
+
+✅ Editing through Visual Studio directly or VScode using an extension for .resw files is the simplest options
 
 ## 📸 Images
 

@@ -123,4 +123,7 @@
   <data name="en-US" xml:space="preserve">
     <value>English</value>
   </data>
+  <data name="es-ES" xml:space="preserve">
+    <value>Español</value>
+  </data>
 </root>
